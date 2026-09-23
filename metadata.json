@@ -1,0 +1,6 @@
+{
+  "name": "Litdom Academy",
+  "description": "A premium online learning platform for editorial mastery and writing craftsmanship.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

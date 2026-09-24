@@ -563,24 +563,12 @@
     .journey-map {
       position: relative;
       margin-top: 24px;
-      padding-left: 20px;
-    }
-
-    .journey-map::before {
-      content: '';
-      position: absolute;
-      left: 36px;
-      top: 30px;
-      bottom: 40px;
-      width: 2px;
-      background: linear-gradient(180deg, var(--gold) 0%, rgba(212, 175, 55, 0.2) 80%, transparent 100%);
-      z-index: 1;
+      padding-left: 10px;
     }
 
     .module-group {
-      margin-bottom: 36px;
+      margin-bottom: 28px;
       position: relative;
-      z-index: 2;
     }
 
     .module-header {
@@ -588,65 +576,272 @@
       align-items: center;
       gap: 16px;
       margin-bottom: 16px;
+      position: relative;
+      z-index: 2;
     }
 
+    /* Large Circles for Modules */
     .module-badge {
-      width: 34px;
-      height: 34px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
-      background: var(--charcoal);
-      border: 2px solid var(--gold);
-      color: var(--gold);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
-      font-size: 0.85rem;
-      box-shadow: 0 0 10px var(--gold-glow-soft);
+      font-weight: 800;
+      font-size: 1rem;
+      flex-shrink: 0;
+      transition: var(--transition);
+      position: relative;
+      z-index: 3;
+    }
+
+    .module-badge.locked {
+      background: #17171C;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .module-badge.available {
+      background: rgba(212, 175, 55, 0.18);
+      border: 2px solid var(--gold);
+      color: var(--gold);
+      box-shadow: 0 0 16px var(--gold-glow);
+    }
+
+    .module-badge.completed {
+      background: var(--gold);
+      border: 2px solid var(--gold);
+      color: #0B0B0F;
+      box-shadow: 0 0 16px var(--gold-glow);
+      font-weight: 900;
     }
 
     .module-title {
-      font-size: 1.15rem;
+      font-size: 1.18rem;
       color: var(--champagne);
+      font-family: var(--font-serif);
+      font-weight: 700;
+    }
+
+    /* Connecting branch line inside the module */
+    .sections-tree-wrapper {
+      position: relative;
+      margin-left: 22px;
+      padding-left: 28px;
+    }
+
+    .tree-connector-stem {
+      position: absolute;
+      left: 0px;
+      top: -12px;
+      bottom: 20px;
+      width: 3px;
+      background: rgba(255, 255, 255, 0.16);
+      transition: background 0.4s ease;
+      z-index: 1;
+    }
+
+    .tree-connector-stem.completed {
+      background: var(--gold);
+      box-shadow: 0 0 10px var(--gold-glow);
     }
 
     .sections-list {
-      margin-left: 36px;
       display: flex;
       flex-direction: column;
       gap: 12px;
+      position: relative;
+      z-index: 2;
     }
 
     .section-node {
       background: var(--charcoal);
       border: 1px solid var(--charcoal-border);
       border-radius: var(--radius-md);
-      padding: 16px 20px;
+      padding: 14px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 14px;
       transition: var(--transition);
       cursor: pointer;
       position: relative;
     }
 
-    /* Section States */
+    /* Smaller Circles for Sections */
+    .section-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+
+    .section-circle.locked {
+      background: #141419;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: rgba(255, 255, 255, 0.35);
+    }
+
+    .section-circle.available {
+      background: rgba(212, 175, 55, 0.2);
+      border: 2px solid var(--gold);
+      color: var(--gold);
+      box-shadow: 0 0 12px var(--gold-glow);
+      animation: pulseGlow 2s infinite ease-in-out;
+    }
+
+    .section-circle.completed {
+      background: var(--gold);
+      border: 2px solid var(--gold);
+      color: #0B0B0F;
+      font-weight: 900;
+      box-shadow: 0 0 10px var(--gold-glow-soft);
+    }
+
     .section-node.completed {
-      border-color: rgba(56, 176, 0, 0.4);
-      background: linear-gradient(135deg, rgba(56, 176, 0, 0.06), var(--charcoal));
-    }
-
-    .section-node.completed .node-status-icon {
-      color: var(--success);
-      background: rgba(56, 176, 0, 0.15);
-      border-color: var(--success);
-    }
-
-    .section-node.unlocked {
-      border-color: var(--gold);
+      border-color: rgba(212, 175, 55, 0.45);
       background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), var(--charcoal));
+    }
+
+    .section-node.available {
+      border-color: var(--gold);
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.12), var(--charcoal));
       box-shadow: 0 4px 20px var(--gold-glow-soft);
+    }
+
+    .section-node.available:hover {
+      transform: translateX(4px);
+      box-shadow: 0 6px 24px var(--gold-glow);
+    }
+
+    .section-node.locked {
+      opacity: 0.55;
+      border-color: rgba(255, 255, 255, 0.07);
+      cursor: not-allowed;
+      background: rgba(15, 15, 20, 0.6);
+    }
+
+    /* Module Assessment Node */
+    .module-assessment-node {
+      margin-top: 14px;
+      background: #13131a;
+      border: 1px dashed rgba(255, 255, 255, 0.22);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .module-assessment-node.available {
+      border: 1px solid var(--gold);
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), #161620);
+      box-shadow: 0 4px 18px var(--gold-glow-soft);
+    }
+
+    .module-assessment-node.completed {
+      border: 1px solid var(--gold);
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), #14141e);
+    }
+
+    .module-assessment-node.locked {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Vertical connector between modules */
+    .inter-module-connector {
+      width: 3px;
+      height: 24px;
+      margin-left: 22px;
+      background: rgba(255, 255, 255, 0.16);
+      transition: background 0.4s ease;
+    }
+
+    .inter-module-connector.completed {
+      background: var(--gold);
+      box-shadow: 0 0 8px var(--gold-glow);
+    }
+
+    /* Example & Embed Content Blocks */
+    .example-block-card {
+      border: 1px solid var(--charcoal-border);
+      border-radius: var(--radius-md);
+      background: #121218;
+      padding: 20px;
+      margin-top: 14px;
+    }
+
+    .example-compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .example-compare-grid { grid-template-columns: 1fr; }
+    }
+
+    .example-pane {
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      background: var(--charcoal);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .example-pane.before { border-left: 3px solid #ff6b6b; }
+    .example-pane.after { border-left: 3px solid var(--gold); }
+
+    .embed-container-card {
+      border: 1px solid var(--charcoal-border);
+      border-radius: var(--radius-md);
+      background: #111116;
+      overflow: hidden;
+      margin-top: 14px;
+    }
+
+    .embed-frame {
+      width: 100%;
+      height: 380px;
+      border: none;
+      background: #0d0d12;
+    }
+
+    /* Mandatory Section Assessment Test (1 Question, 3 Options) */
+    .section-test-box {
+      background: linear-gradient(135deg, #181822, #121217);
+      border: 2px solid var(--gold);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-top: 32px;
+      box-shadow: 0 8px 32px var(--gold-glow-soft);
+    }
+
+    .section-test-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--champagne);
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid var(--gold);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
     }
 
     .section-node.unlocked:hover {
@@ -1555,7 +1750,57 @@
     </section>
 
     <!-- ========================================== -->
-    <!-- VIEW E: FINAL EXAM VIEW                    -->
+    <!-- VIEW E1: MODULE ASSESSMENT VIEW            -->
+    <!-- ========================================== -->
+    <section id="view-module-assessment" class="view-screen">
+      <div class="back-bar">
+        <button class="btn-back" onclick="navigateTo('dashboard')" title="Back to Dashboard">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+        </button>
+        <div class="breadcrumb-text">Dashboard / <span id="moduleAssessmentBreadcrumb" style="color: var(--gold);">Module Assessment</span></div>
+      </div>
+
+      <div class="exam-header-banner">
+        <div class="exam-seal">📜</div>
+        <h1 id="modAssessmentTitle">Module 1 Assessment</h1>
+        <p id="modAssessmentDesc" style="color: var(--muted); max-width: 600px; margin: 0 auto; font-size: 0.95rem;">
+          Demonstrate foundational mastery across all sections in this module to unlock the next stage.
+        </p>
+
+        <div class="exam-meta-grid">
+          <div class="exam-stat-item">
+            <h6>Passing Score Required</h6>
+            <p id="modAssessmentPassingLabel" style="color: var(--gold); font-weight: 700;">4 of 5 (80%)</p>
+          </div>
+          <div class="exam-stat-item">
+            <h6>Total Questions</h6>
+            <p>5 Comprehensive Problems</p>
+          </div>
+          <div class="exam-stat-item">
+            <h6>Milestone Reward</h6>
+            <p id="modAssessmentOutcomeLabel">Module Mastery & Progression</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="moduleAssessmentQuestionsContainer" style="margin-top: 24px;">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div style="text-align: center; margin-top: 30px;" id="modAssessmentSubmitWrapper">
+        <button class="btn btn-gold" style="padding: 16px 36px; font-size: 1.05rem;" onclick="submitModuleAssessment()">
+          Submit Module Assessment for Evaluation &rarr;
+        </button>
+      </div>
+
+      <!-- Module Assessment Result Box -->
+      <div class="exam-result-box" id="modAssessmentResultBox" style="display: none; margin-top: 28px;"></div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW E2: FINAL EXAM VIEW                   -->
     <!-- ========================================== -->
     <section id="view-exam" class="view-screen">
       <div class="back-bar">
@@ -1703,1248 +1948,7 @@
   <!-- ==================================================== -->
   <!-- 3. JAVASCRIPT: DATA-DRIVEN ENGINE & STATE           -->
   <!-- ==================================================== -->
-  <script>
-    /* ===================================================
-       CENTRAL COURSE DATA MODEL
-       Easily swap in new academies, lessons, modules, and 
-       rich content blocks (Video, Text, Quiz, Audio, PDF, 
-       Interactive Exercise, Assignment, Download)
-    =================================================== */
-    const LITDOM_DATA = {
-      courses: [
-        {
-          id: "editor-academy",
-          title: "Editor Academy",
-          category: "Editorial Craft",
-          level: "Foundational to Advanced",
-          duration: "4.5 Hours",
-          icon: "✒️",
-          description: "Transform raw manuscripts into published literature. Master line editing, substantive diagnosis, and author psychology.",
-          supportedPaths: ["oneway", "practical"],
-          lesson: {
-            id: "lesson-1",
-            title: "Lesson 1 — Fundamentals of Editing",
-            modules: [
-              {
-                id: "mod-1",
-                num: 1,
-                title: "Who Is an Editor?",
-                description: "The distinct identity, responsibilities, and philosophy of the modern editor.",
-                sections: [
-                  {
-                    id: "sec-1-1",
-                    title: "The Editor's Persona & Role",
-                    duration: "8 mins",
-                    blocks: [
-                      {
-                        type: "TEXT",
-                        title: "The Guardian of the Reader's Attention",
-                        content: `
-                          <p>An editor is neither a glorified proofreader nor an authoritarian censor. The true editor acts as the author's most dedicated champion, an empathetic surrogate for the eventual reader, and an objective diagnostician of prose.</p>
-                          <div class="callout-quote">
-                            "The best editors leave no fingerprints. They amplify the author's singular voice while quietly removing the obstructions that stand between the sentence and the reader's heart."
-                          </div>
-                          <p>While the author is consumed with the creative act of birthing characters and themes into existence, the editor steps back to examine structure, cadence, semantic precision, and narrative momentum.</p>
-                        `
-                      },
-                      {
-                        type: "AUDIO",
-                        title: "Masterclass Clip: Julian Sterling on 'The Invisible Touch'",
-                        caption: "Listen to our Dean unpack why humility is the primary virtue of great line editors."
-                      },
-                      {
-                        type: "QUIZ",
-                        title: "Concept Check: Defining the Editorial Stance",
-                        question: "What is the primary operational distinction between a writer and an editor?",
-                        options: [
-                          "The editor rewrites the entire story in their own stylistic voice.",
-                          "The writer creates raw substance; the editor clarifies and diagnoses that substance on behalf of the reader.",
-                          "The editor's only job is catching typographical misspellings and punctuation errors.",
-                          "The editor determines the commercial royalty rate for the author."
-                        ],
-                        correctIndex: 1,
-                        explanation: "Correct! The editor is an objective diagnostician who clarifies and optimizes the writer's vision without usurping their artistic authority."
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                id: "mod-2",
-                num: 2,
-                title: "What Does an Editor Do?",
-                description: "The taxonomy of editorial levels: Developmental, Line, Copyediting, and Proofreading.",
-                sections: [
-                  {
-                    id: "sec-2-1",
-                    title: "The Four Tiers of Editorial Intervention",
-                    duration: "12 mins",
-                    blocks: [
-                      {
-                        type: "TEXT",
-                        title: "From Macro to Micro: The Hierarchy of Polish",
-                        content: `
-                          <p>Effective editing is sequential. Attempting to fix comma splices while the third act of a novel has a fatal structural hole is wasted effort. Every professional editorial house operates across four distinct levels:</p>
-                          <p><strong>1. Developmental (Substantive) Editing:</strong> Examines macro-architecture: premise, pacing, narrative arc, character consistency, and thematic coherence.</p>
-                          <p><strong>2. Line Editing:</strong> Focuses on craft at the sentence and paragraph level: cadence, musicality, tone, transitions, and redundant phrasing.</p>
-                          <p><strong>3. Copyediting:</strong> Enforces mechanics, grammar, syntax, factual consistency, and house style guides (such as The Chicago Manual of Style).</p>
-                          <p><strong>4. Proofreading:</strong> The final pre-print sweep for layout orphans, typographic widows, and errant artifacts.</p>
-                        `
-                      },
-                      {
-                        type: "VIDEO",
-                        title: "Manuscript Breakdown: Identifying Level of Need",
-                        caption: "Watch senior editors conduct a triage on a submitted chapter draft."
-                      },
-                      {
-                        type: "QUIZ",
-                        title: "Diagnostic Check: Hierarchy of Editing",
-                        question: "If an author submits a manuscript where chapter 4 contradicts the ending in chapter 12, which level of editing addresses this?",
-                        options: [
-                          "Proofreading",
-                          "Copyediting",
-                          "Developmental (Substantive) Editing",
-                          "Typesetting"
-                        ],
-                        correctIndex: 2,
-                        explanation: "Spot on! Narrative consistency and structural contradictions fall squarely within Developmental Editing."
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                id: "mod-3",
-                num: 3,
-                title: "Editor–Author Relationship",
-                description: "Cultivating creative trust, delivering constructive feedback, and navigating revision resistance.",
-                sections: [
-                  {
-                    id: "sec-3-1",
-                    title: "The Psychology of Revision & Critique",
-                    duration: "10 mins",
-                    blocks: [
-                      {
-                        type: "TEXT",
-                        title: "The Editorial Letter as an Instrument of Inspiration",
-                        content: `
-                          <p>Writing is an act of vulnerability. When an author receives an annotated manuscript dripping with red ink, their biological response is defense. A master editor therefore approaches communication as diplomacy.</p>
-                          <div class="callout-quote">
-                            "Frame your editorial queries not as accusations of error, but as shared investigations into potential."
-                          </div>
-                          <p>Instead of declaring: <em>'This dialogue sounds wooden and unrealistic,'</em> frame the query: <em>'Could we lean into Marcus's underlying anxiety here by shortening his syntax?'</em> This invites collaboration rather than confrontation.</p>
-                        `
-                      },
-                      {
-                        type: "PDF",
-                        title: "Downloadable Reference: Exemplary Editorial Letter Archive",
-                        caption: "Annotated real-world editorial letter demonstrating masterclass author feedback."
-                      },
-                      {
-                        type: "QUIZ",
-                        title: "Diplomacy Check: Phrasing Editorial Queries",
-                        question: "Which of the following queries exemplifies masterclass author diplomacy?",
-                        options: [
-                          "Delete this paragraph immediately; it adds nothing.",
-                          "I didn't like this character, make her nicer.",
-                          "Consider tightening this passage so Clara's internal urgency lands with more momentum.",
-                          "Your grammar in this chapter is deeply concerning."
-                        ],
-                        correctIndex: 2,
-                        explanation: "Exactly right! Suggesting specific artistic impact preserves authorial dignity while illuminating clarity."
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                id: "mod-4",
-                num: 4,
-                title: "Editorial Ethics",
-                description: "Intellectual property, confidentiality, AI disclosure, and sensitivity.",
-                sections: [
-                  {
-                    id: "sec-4-1",
-                    title: "The Editorial Code of Honor",
-                    duration: "10 mins",
-                    blocks: [
-                      {
-                        type: "TEXT",
-                        title: "Guarding Integrity in a Changing Literary Landscape",
-                        content: `
-                          <p>An editor holds privileged access to unpublished creative capital. Ethical editorial practice requires unyielding adherence to four cardinal tenets:</p>
-                          <p><strong>Confidentiality:</strong> Never share drafts, premise notes, or queries without explicit written consent.</p>
-                          <p><strong>Transparency:</strong> Disclose any utilization of assisted computational tooling, and respect author preferences regarding automated technologies.</p>
-                          <p><strong>Authorial Primacy:</strong> In all non-legal disputes of creative taste, the author retains final veto power over their artistic work.</p>
-                        `
-                      },
-                      {
-                        type: "INTERACTIVE_EXERCISE",
-                        title: "Interactive Exercise: Spotting Editorial Overreach",
-                        instructions: "Click on the flagged sentence below to approve the legitimate edit or flag the editorial overreach:"
-                      },
-                      {
-                        type: "QUIZ",
-                        title: "Ethics Evaluation: Authorial Agency",
-                        question: "If an author refuses to accept a stylistic line edit that does not violate factual or legal standards, what is the editor's ethical stance?",
-                        options: [
-                          "Refuse to return the manuscript until the author complies.",
-                          "Quietly change the sentence in the final print file anyway.",
-                          "Respect the author's final creative autonomy after explaining the rationale.",
-                          "Publicly denounce the author on social media."
-                        ],
-                        correctIndex: 2,
-                        explanation: "Correct! The editor advises and advocates, but the author's artistic signature remains their sovereign property."
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                id: "mod-5",
-                num: 5,
-                title: "The Editing Workflow",
-                description: "From submission ingestion to production-ready file delivery.",
-                sections: [
-                  {
-                    id: "sec-5-1",
-                    title: "The Professional Editorial Pipeline",
-                    duration: "14 mins",
-                    blocks: [
-                      {
-                        type: "TEXT",
-                        title: "Standard Operating Procedures of the Publishing House",
-                        content: `
-                          <p>Discipline distinguishes the hobbyist from the professional. A standard production workflow comprises:</p>
-                          <p>1. <strong>First Blind Read:</strong> Reading the work purely as a reader without pen in hand to capture initial emotional cadence.</p>
-                          <p>2. <strong>Style Sheet Compilation:</strong> Logging character names, timeline milestones, hyphenation rules, and idiosyncrasies.</p>
-                          <p>3. <strong>Deep Markup Pass:</strong> Executing line edits, track changes, and marginal queries.</p>
-                          <p>4. <strong>Author Reconciliation Pass:</strong> Resolving marginal queries together before locking layout.</p>
-                        `
-                      },
-                      {
-                        type: "DOWNLOAD",
-                        title: "Template: Litdom Professional Manuscript Style Sheet (.docx/.pdf)",
-                        caption: "Standard industry style sheet for logging timeline, character spellings, and lexicon."
-                      },
-                      {
-                        type: "QUIZ",
-                        title: "Workflow Evaluation: The Style Sheet",
-                        question: "Why must an editor maintain a Manuscript Style Sheet throughout a project?",
-                        options: [
-                          "To increase the invoice billing hours artificially.",
-                          "To ensure consistency of hyphenation, character names, dates, and stylistic anomalies across hundreds of pages.",
-                          "To replace the book's table of contents.",
-                          "To send to marketing teams for book jacket quotes."
-                        ],
-                        correctIndex: 1,
-                        explanation: "Perfect! A style sheet is an editor's sacred ledger for tracking orthographic and narrative consistency."
-                      }
-                    ]
-                  }
-                ]
-              }
-            ],
-            // Final Exam configuration
-            finalExam: {
-              title: "The Editorial Board Examination",
-              passingPercentage: 80,
-              questions: [
-                {
-                  id: "eq-1",
-                  question: "What is the hallmark of a masterclass editor's intervention in an author's manuscript?",
-                  options: [
-                    "Imposing the editor's personal vocabulary and favorite phrases throughout.",
-                    "Preserving and clarifying the author's singular voice while eliminating distractions for the reader.",
-                    "Rewriting the ending to align with current commercial bestseller tropes.",
-                    "Deleting all adverbs and dialogue tags unconditionally."
-                  ],
-                  correctIndex: 1
-                },
-                {
-                  id: "eq-2",
-                  question: "In what chronological sequence should a professional editorial project proceed?",
-                  options: [
-                    "Proofreading → Copyediting → Developmental Editing",
-                    "Copyediting → Proofreading → Structural Overhaul",
-                    "Developmental Editing → Line Editing → Copyediting → Proofreading",
-                    "Immediate typesetting without preliminary reads"
-                  ],
-                  correctIndex: 2
-                },
-                {
-                  id: "eq-3",
-                  question: "Which document serves as the canonical record of spelling conventions, recurring names, and chronology during manuscript editing?",
-                  options: [
-                    "The Marketing Brief",
-                    "The Style Sheet",
-                    "The Royalties Schedule",
-                    "The ISBN Barcode Registry"
-                  ],
-                  correctIndex: 1
-                },
-                {
-                  id: "eq-4",
-                  question: "When drafting an editorial letter, how should substantial critique be framed to foster constructive revisions?",
-                  options: [
-                    "As collaborative diagnostic questions highlighting reader impact rather than personal reprimands.",
-                    "With brutal bluntness to test the author's emotional stamina.",
-                    "By obscuring all critique and pretending the book requires no changes.",
-                    "By threatening cancellation of the contract if rewrites aren't submitted within 48 hours."
-                  ],
-                  correctIndex: 0
-                },
-                {
-                  id: "eq-5",
-                  question: "Under the Litdom Academy Editorial Code of Ethics, who holds the final creative determination on stylistic choices?",
-                  options: [
-                    "The Copyeditor",
-                    "The Author",
-                    "The Bookstore Distributor",
-                    "The Printer's Bindery"
-                  ],
-                  correctIndex: 1
-                }
-              ]
-            }
-          }
-        },
-        {
-          id: "fiction-academy",
-          title: "Fiction Writing Academy",
-          category: "Story Engineering",
-          level: "Intermediate",
-          duration: "6.0 Hours",
-          icon: "🔮",
-          description: "Architect irresistible character trajectories, tension spirals, and worldbuilding systems.",
-          supportedPaths: ["oneway"],
-          comingSoon: false,
-          modulesCount: 6
-        },
-        {
-          id: "prose-stylist",
-          title: "Prose Stylist Academy",
-          category: "Literary Aesthetics",
-          level: "Advanced",
-          duration: "3.5 Hours",
-          icon: "📜",
-          description: "The music of the sentence: rhythmic variations, poetic cadence, and syntactic dissonance.",
-          supportedPaths: ["oneway"],
-          comingSoon: false,
-          modulesCount: 4
-        }
-      ]
-    };
-
-    /* ===================================================
-       APP STATE & LOCAL STORAGE PERSISTENCE
-    =================================================== */
-    const STORAGE_KEY = "litdom_academy_progress_v1";
-
-    let state = {
-      currentView: "hub",
-      selectedCourseId: "editor-academy",
-      selectedPath: "oneway",
-      activeModuleIndex: 0,
-      activeSectionIndex: 0,
-      studentName: "Eleanor Vance",
-      // Progress map: { [sectionId]: { completed: boolean, blocksDone: [indexes] } }
-      progress: {},
-      examState: {
-        passed: false,
-        lastAttemptTimestamp: null,
-        lastScorePct: 0
-      }
-    };
-
-    // Load persisted state
-    function loadState() {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          state = { ...state, ...parsed };
-        }
-      } catch (e) {
-        console.warn("Storage loading failed:", e);
-      }
-    }
-
-    function saveState() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({
-          selectedCourseId: state.selectedCourseId,
-          selectedPath: state.selectedPath,
-          studentName: state.studentName,
-          progress: state.progress,
-          examState: state.examState
-        }));
-      } catch (e) {
-        console.warn("Storage save failed:", e);
-      }
-    }
-
-    /* ===================================================
-       VIEW NAVIGATION SYSTEM
-    =================================================== */
-    function navigateTo(viewName) {
-      state.currentView = viewName;
-      document.querySelectorAll(".view-screen").forEach(el => {
-        el.classList.remove("active");
-      });
-
-      const target = document.getElementById("view-" + viewName);
-      if (target) {
-        target.classList.add("active");
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-
-      // View-specific initializations
-      if (viewName === "hub") {
-        renderHub();
-      } else if (viewName === "dashboard") {
-        renderDashboard();
-      } else if (viewName === "content") {
-        renderSectionContent();
-      } else if (viewName === "exam") {
-        renderExamScreen();
-      } else if (viewName === "certificate") {
-        renderCertificate();
-      }
-    }
-
-    /* Toast Helper */
-    let toastTimeout;
-    function showToast(message, icon = "✨") {
-      const toast = document.getElementById("toastMsg");
-      const text = document.getElementById("toastText");
-      const iconSpan = document.getElementById("toastIcon");
-      text.innerText = message;
-      iconSpan.innerText = icon;
-      toast.classList.add("show");
-      clearTimeout(toastTimeout);
-      toastTimeout = setTimeout(() => {
-        toast.classList.remove("show");
-      }, 3400);
-    }
-
-    /* ===================================================
-       1. HUB VIEW
-    =================================================== */
-    function renderHub() {
-      const grid = document.getElementById("courseCardsGrid");
-      grid.innerHTML = "";
-
-      LITDOM_DATA.courses.forEach(course => {
-        const card = document.createElement("div");
-        card.className = "card card-hover course-card";
-        card.onclick = () => openPathModal(course.id);
-
-        card.innerHTML = `
-          <div class="course-banner">
-            <span class="course-banner-icon">${course.icon}</span>
-            <span class="course-badge">${course.category}</span>
-          </div>
-          <h3 class="course-title">${course.title}</h3>
-          <p class="course-desc">${course.description}</p>
-          <div class="course-meta">
-            <div class="course-meta-item">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              <span>${course.duration}</span>
-            </div>
-            <div class="course-meta-item">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              <span>${course.level}</span>
-            </div>
-          </div>
-          <button class="btn btn-gold" style="width: 100%;">
-            Start Learning &rarr;
-          </button>
-        `;
-        grid.appendChild(card);
-      });
-
-      // Update student avatar pill
-      document.getElementById("navLearnerName").innerText = state.studentName;
-      document.getElementById("navAvatar").innerText = state.studentName.charAt(0).toUpperCase();
-    }
-
-    /* ===================================================
-       2. PATH SELECTION MODAL
-    =================================================== */
-    function openPathModal(courseId) {
-      state.selectedCourseId = courseId;
-      const course = LITDOM_DATA.courses.find(c => c.id === courseId) || LITDOM_DATA.courses[0];
-      document.getElementById("modalCourseTitle").innerText = course.title;
-      document.getElementById("pathModal").classList.add("active");
-    }
-
-    function closePathModal() {
-      document.getElementById("pathModal").classList.remove("active");
-    }
-
-    function selectPath(pathType) {
-      state.selectedPath = pathType;
-      saveState();
-      closePathModal();
-      navigateTo("dashboard");
-      showToast("Path confirmed: One-Way Autonomous Learning. Welcome!");
-    }
-
-    /* ===================================================
-       3. COURSE DASHBOARD & TIMELINE ROADMAP
-    =================================================== */
-    function getActiveCourse() {
-      return LITDOM_DATA.courses.find(c => c.id === state.selectedCourseId) || LITDOM_DATA.courses[0];
-    }
-
-    // Check if a section is completed
-    function isSectionCompleted(sectionId) {
-      return state.progress[sectionId] && state.progress[sectionId].completed;
-    }
-
-    // Determine lock state: sequential progression
-    function getSectionState(moduleIndex, sectionIndex) {
-      const course = getActiveCourse();
-      const currentModule = course.lesson.modules[moduleIndex];
-      const currentSection = currentModule.sections[sectionIndex];
-
-      if (isSectionCompleted(currentSection.id)) {
-        return "completed";
-      }
-
-      // First section of first module is unlocked by default
-      if (moduleIndex === 0 && sectionIndex === 0) {
-        return "unlocked";
-      }
-
-      // Prior section in same module check
-      if (sectionIndex > 0) {
-        const prevSection = currentModule.sections[sectionIndex - 1];
-        return isSectionCompleted(prevSection.id) ? "unlocked" : "locked";
-      }
-
-      // First section of subsequent module: check last section of prior module
-      const prevModule = course.lesson.modules[moduleIndex - 1];
-      const lastSectionOfPrevMod = prevModule.sections[prevModule.sections.length - 1];
-      return isSectionCompleted(lastSectionOfPrevMod.id) ? "unlocked" : "locked";
-    }
-
-    // Calculate overall course progress percentage
-    function calculateCourseProgress() {
-      const course = getActiveCourse();
-      if (!course.lesson) return 0;
-
-      let totalSections = 0;
-      let completedCount = 0;
-
-      course.lesson.modules.forEach(m => {
-        m.sections.forEach(s => {
-          totalSections++;
-          if (isSectionCompleted(s.id)) completedCount++;
-        });
-      });
-
-      // Factor in final exam
-      const totalSteps = totalSections + 1;
-      const finishedSteps = completedCount + (state.examState.passed ? 1 : 0);
-
-      return Math.round((finishedSteps / totalSteps) * 100);
-    }
-
-    function renderDashboard() {
-      const course = getActiveCourse();
-      document.getElementById("dashBreadcrumbCourse").innerText = course.title;
-      document.getElementById("dashCourseCategory").innerText = course.category;
-      document.getElementById("dashCourseTitle").innerText = course.title;
-      document.getElementById("dashCourseDesc").innerText = course.description;
-
-      const pct = calculateCourseProgress();
-      document.getElementById("dashProgressPct").innerText = pct + "%";
-      document.getElementById("dashProgressBar").style.width = pct + "%";
-
-      const journeyContainer = document.getElementById("journeyMapContainer");
-      journeyContainer.innerHTML = "";
-
-      let modulesCleared = 0;
-
-      course.lesson.modules.forEach((mod, mIdx) => {
-        const modGroup = document.createElement("div");
-        modGroup.className = "module-group";
-
-        let modAllCompleted = true;
-
-        const sectionsList = document.createElement("div");
-        sectionsList.className = "sections-list";
-
-        mod.sections.forEach((sec, sIdx) => {
-          const secStatus = getSectionState(mIdx, sIdx);
-          if (secStatus !== "completed") modAllCompleted = false;
-
-          const node = document.createElement("div");
-          node.className = `section-node ${secStatus}`;
-          
-          let iconHtml = "";
-          let actionLabel = "";
-
-          if (secStatus === "completed") {
-            iconHtml = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>`;
-            actionLabel = "Review";
-          } else if (secStatus === "unlocked") {
-            iconHtml = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
-            actionLabel = "Enter Section";
-          } else {
-            iconHtml = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
-            actionLabel = "Locked";
-          }
-
-          node.onclick = () => {
-            if (secStatus === "locked") {
-              // Explain unlock condition
-              explainUnlockRequirement(mIdx, sIdx);
-            } else {
-              openSection(mIdx, sIdx);
-            }
-          };
-
-          node.innerHTML = `
-            <div class="node-content-wrap">
-              <div class="node-status-icon">${iconHtml}</div>
-              <div class="node-text">
-                <h5>${sec.title}</h5>
-                <div class="node-meta">
-                  <span>${sec.duration}</span>
-                  <span>•</span>
-                  <span>${sec.blocks.length} Content Blocks</span>
-                </div>
-              </div>
-            </div>
-            <button class="btn ${secStatus === 'unlocked' ? 'btn-gold' : 'btn-outline'} node-action-btn">
-              ${actionLabel}
-            </button>
-          `;
-          sectionsList.appendChild(node);
-        });
-
-        if (modAllCompleted) modulesCleared++;
-
-        modGroup.innerHTML = `
-          <div class="module-header">
-            <div class="module-badge">${mod.num}</div>
-            <div>
-              <div class="module-title">${mod.title}</div>
-              <div style="font-size: 0.8rem; color: var(--muted);">${mod.description}</div>
-            </div>
-          </div>
-        `;
-        modGroup.appendChild(sectionsList);
-        journeyContainer.appendChild(modGroup);
-      });
-
-      document.getElementById("dashStepsCounter").innerText = `${modulesCleared} of ${course.lesson.modules.length} Modules Cleared`;
-
-      // Check if all modules completed to unlock Final Exam milestone
-      const allModulesDone = modulesCleared === course.lesson.modules.length;
-      const examMilestone = document.createElement("div");
-      examMilestone.className = "exam-milestone-card";
-
-      if (state.examState.passed) {
-        examMilestone.innerHTML = `
-          <div>
-            <span class="path-tag active-tag" style="background: rgba(56, 176, 0, 0.2); color: #86efac; border-color: var(--success);">Examination Passed</span>
-            <h3 style="margin-top: 6px;">Editorial Board Certification Earned</h3>
-            <p style="color: var(--muted); font-size: 0.88rem;">Your professional credential has been permanently signed and sealed.</p>
-          </div>
-          <button class="btn btn-gold" onclick="navigateTo('certificate')">
-            View Certificate &rarr;
-          </button>
-        `;
-      } else if (allModulesDone) {
-        examMilestone.innerHTML = `
-          <div>
-            <span class="path-tag active-tag">Final Capstone Unlocked</span>
-            <h3 style="margin-top: 6px;">The Editorial Board Examination</h3>
-            <p style="color: var(--muted); font-size: 0.88rem;">Test your diagnostic ability, author diplomacy, and copyediting precision to earn certification.</p>
-          </div>
-          <button class="btn btn-gold" onclick="navigateTo('exam')">
-            Begin Final Exam &rarr;
-          </button>
-        `;
-      } else {
-        examMilestone.style.opacity = "0.55";
-        examMilestone.style.borderColor = "rgba(255, 255, 255, 0.1)";
-        examMilestone.onclick = () => showToast("Complete all 5 lesson modules to unlock the Editorial Board Examination.", "🔒");
-        examMilestone.innerHTML = `
-          <div>
-            <span class="path-tag soon-tag">Locked Milestone</span>
-            <h3 style="margin-top: 6px; color: var(--muted);">The Editorial Board Examination</h3>
-            <p style="color: var(--muted); font-size: 0.88rem;">Requires 100% completion of all preceding modules.</p>
-          </div>
-          <button class="btn btn-outline disabled">
-            Locked
-          </button>
-        `;
-      }
-      journeyContainer.appendChild(examMilestone);
-    }
-
-    function explainUnlockRequirement(mIdx, sIdx) {
-      if (mIdx > 0 && sIdx === 0) {
-        const prevModule = getActiveCourse().lesson.modules[mIdx - 1];
-        showToast(`Locked: Complete all sections in Module ${prevModule.num} ("${prevModule.title}") to unlock this.`, "🔒");
-      } else {
-        showToast(`Locked: Complete the preceding section to unlock this lesson.`, "🔒");
-      }
-    }
-
-    function resetCourseProgressPrompt() {
-      if (confirm("Reset all progress for Litdom Academy? This will clear section completions and exam scores for testing.")) {
-        state.progress = {};
-        state.examState = { passed: false, lastAttemptTimestamp: null, lastScorePct: 0 };
-        saveState();
-        renderDashboard();
-        showToast("Progress successfully reset. Starting afresh!", "🔄");
-      }
-    }
-
-    /* ===================================================
-       4. LESSON / SECTION CONTENT VIEW
-    =================================================== */
-    function openSection(mIdx, sIdx) {
-      state.activeModuleIndex = mIdx;
-      state.activeSectionIndex = sIdx;
-      navigateTo("content");
-    }
-
-    function renderSectionContent() {
-      const course = getActiveCourse();
-      const mod = course.lesson.modules[state.activeModuleIndex];
-      const sec = mod.sections[state.activeSectionIndex];
-
-      document.getElementById("contentBreadcrumb").innerText = `${mod.title} / ${sec.title}`;
-      document.getElementById("contentModuleLabel").innerText = `Module ${mod.num} — ${mod.title}`;
-      document.getElementById("contentSectionTitle").innerText = sec.title;
-      document.getElementById("contentSectionDesc").innerText = mod.description;
-
-      const container = document.getElementById("contentBlocksFlow");
-      container.innerHTML = "";
-
-      const secProgress = state.progress[sec.id] || { completed: false, blocksDone: [] };
-      const totalBlocks = sec.blocks.length;
-
-      // Update Section Progress Bar
-      updateSectionProgressBar(secProgress.blocksDone.length, totalBlocks);
-
-      sec.blocks.forEach((block, bIdx) => {
-        const blockEl = document.createElement("div");
-        blockEl.className = "content-block";
-        blockEl.id = `block-${bIdx}`;
-
-        const isDone = secProgress.blocksDone.includes(bIdx);
-
-        let bodyHtml = "";
-        let badgeType = block.type;
-
-        switch (block.type) {
-          case "TEXT":
-            badgeType = "📖 Reading Lecture";
-            bodyHtml = `
-              <h3>${block.title}</h3>
-              <div class="text-content-body">${block.content}</div>
-              <div style="margin-top: 18px; text-align: right;">
-                <button class="btn ${isDone ? 'btn-secondary' : 'btn-outline'}" onclick="markBlockDone(${bIdx})">
-                  ${isDone ? '✓ Finished Reading' : 'Mark as Read'}
-                </button>
-              </div>
-            `;
-            break;
-
-          case "AUDIO":
-            badgeType = "🎙️ Audio Masterclass";
-            bodyHtml = `
-              <h3>${block.title}</h3>
-              <p style="color: var(--muted); font-size: 0.88rem; margin-bottom: 16px;">${block.caption}</p>
-              <div class="audio-block-box">
-                <button class="audio-play-toggle" id="audioToggle-${bIdx}" onclick="toggleAudioDemo(${bIdx})">▶</button>
-                <div class="audio-waveform" id="waveform-${bIdx}">
-                  ${Array.from({ length: 28 }).map((_, i) => `<div class="wave-bar" style="height: ${Math.max(6, (i * 7) % 28)}px;"></div>`).join("")}
-                </div>
-                <span style="font-size: 0.82rem; font-family: monospace; color: var(--champagne);" id="audioTimer-${bIdx}">0:48 / 3:15</span>
-              </div>
-              <div style="margin-top: 14px; text-align: right;">
-                <button class="btn ${isDone ? 'btn-secondary' : 'btn-outline'}" onclick="markBlockDone(${bIdx})">
-                  ${isDone ? '✓ Audio Completed' : 'Mark Audio Complete'}
-                </button>
-              </div>
-            `;
-            break;
-
-          case "VIDEO":
-            badgeType = "🎬 Video Masterclass";
-            bodyHtml = `
-              <h3>${block.title}</h3>
-              <p style="color: var(--muted); font-size: 0.88rem; margin-bottom: 14px;">${block.caption}</p>
-              <div class="video-block-wrap">
-                <div class="video-screen-mock">
-                  <button class="video-play-btn" onclick="simulateVideoPlay(${bIdx})">▶</button>
-                  <h4 style="color: var(--champagne);">${block.title}</h4>
-                  <p style="font-size: 0.8rem; color: var(--muted);">Litdom Academy Video Classroom</p>
-                </div>
-                <div class="video-controls-bar">
-                  <span>02:14 / 08:30</span>
-                  <div class="video-scrubber"><div class="video-scrubber-fill"></div></div>
-                  <span>1080p HD</span>
-                </div>
-              </div>
-              <div style="margin-top: 14px; text-align: right;">
-                <button class="btn ${isDone ? 'btn-secondary' : 'btn-outline'}" onclick="markBlockDone(${bIdx})">
-                  ${isDone ? '✓ Video Watched' : 'Mark Video Complete'}
-                </button>
-              </div>
-            `;
-            break;
-
-          case "PDF":
-            badgeType = "📄 Essential Document";
-            bodyHtml = `
-              <h3>${block.title}</h3>
-              <div class="pdf-viewer-card">
-                <div class="pdf-info">
-                  <div class="pdf-icon">PDF</div>
-                  <div>
-                    <strong style="color: var(--ivory); font-size: 0.94rem;">${block.title}</strong>
-                    <div style="font-size: 0.78rem; color: var(--muted);">${block.caption} • 14 Pages (2.4 MB)</div>
-                  </div>
-                </div>
-                <button class="btn btn-outline" style="font-size: 0.82rem;" onclick="simulatePdfDownload(${bIdx})">
-                  Read / Download
-                </button>
-              </div>
-            `;
-            break;
-
-          case "DOWNLOAD":
-            badgeType = "💾 Practical Asset";
-            bodyHtml = `
-              <h3>${block.title}</h3>
-              <p style="color: var(--muted); font-size: 0.88rem; margin-bottom: 14px;">${block.caption}</p>
-              <button class="btn btn-outline" onclick="simulateAssetDownload(${bIdx})">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Download Style Sheet Template (.docx)
-              </button>
-            `;
-            break;
-
-          case "INTERACTIVE_EXERCISE":
-            badgeType = "✏️ Hands-On Editorial Lab";
-            bodyHtml = `
-              <h3>${block.title}</h3>
-              <p style="color: var(--muted); font-size: 0.88rem;">${block.instructions}</p>
-              <div class="editor-exercise-box">
-                <div style="font-size: 0.8rem; color: var(--champagne); text-transform: uppercase; letter-spacing: 0.08em;">Raw Manuscript Excerpt</div>
-                <div class="markup-workspace">
-                  "The fog drifted through the silent cobbled alleyways. 
-                  <span class="markup-error-target" id="markupTarget" onclick="toggleMarkupCorrection(${bIdx})">He was very, very exceedingly furious at her betrayal</span>, 
-                  clenched his fists tightly, and stared at the iron gates."
-                </div>
-                <p style="font-size: 0.82rem; color: var(--muted);" id="markupHint">
-                  💡 <em>Click the highlighted passage above to diagnose editorial redundancy and apply substantive tightening.</em>
-                </p>
-              </div>
-            `;
-            break;
-
-          case "QUIZ":
-            badgeType = "⚡ Knowledge Check";
-            bodyHtml = `
-              <div class="quiz-container">
-                <div class="quiz-question-text">${block.question}</div>
-                <div class="quiz-options">
-                  ${block.options.map((opt, oIdx) => `
-                    <button class="quiz-option-btn" id="opt-${bIdx}-${oIdx}" onclick="handleQuizAnswer(${bIdx}, ${oIdx}, ${block.correctIndex})">
-                      <span style="font-family: monospace; opacity: 0.6;">[${String.fromCharCode(65 + oIdx)}]</span>
-                      <span>${opt}</span>
-                    </button>
-                  `).join("")}
-                </div>
-                <div class="quiz-feedback-box" id="quizFeedback-${bIdx}"></div>
-              </div>
-            `;
-            break;
-        }
-
-        blockEl.innerHTML = `
-          <div class="block-type-badge">${badgeType}</div>
-          ${bodyHtml}
-        `;
-        container.appendChild(blockEl);
-      });
-
-      // Update Section Complete banner visibility
-      checkSectionCompleteStatus();
-    }
-
-    function updateSectionProgressBar(doneCount, totalCount) {
-      const pct = Math.round((doneCount / totalCount) * 100);
-      document.getElementById("sectionProgressPct").innerText = `${pct}% (${doneCount}/${totalCount} Blocks Completed)`;
-      document.getElementById("sectionProgressBar").style.width = pct + "%";
-    }
-
-    function markBlockDone(blockIdx) {
-      const course = getActiveCourse();
-      const sec = course.lesson.modules[state.activeModuleIndex].sections[state.activeSectionIndex];
-
-      if (!state.progress[sec.id]) {
-        state.progress[sec.id] = { completed: false, blocksDone: [] };
-      }
-
-      if (!state.progress[sec.id].blocksDone.includes(blockIdx)) {
-        state.progress[sec.id].blocksDone.push(blockIdx);
-        saveState();
-        updateSectionProgressBar(state.progress[sec.id].blocksDone.length, sec.blocks.length);
-        renderSectionContent();
-        showToast("Block verified complete!", "✓");
-      }
-    }
-
-    /* Interactive Exercise markup toggle */
-    function toggleMarkupCorrection(blockIdx) {
-      const el = document.getElementById("markupTarget");
-      const hint = document.getElementById("markupHint");
-      if (el) {
-        el.classList.toggle("corrected");
-        if (el.classList.contains("corrected")) {
-          el.innerText = "Her betrayal burned cold within him";
-          hint.innerHTML = `<span style="color: var(--success);">✓ Substantive line edit applied! Redundancy removed, visceral subtext amplified.</span>`;
-          markBlockDone(blockIdx);
-        } else {
-          el.innerText = "He was very, very exceedingly furious at her betrayal";
-          hint.innerHTML = `💡 <em>Click the highlighted passage above to diagnose editorial redundancy and apply substantive tightening.</em>`;
-        }
-      }
-    }
-
-    /* Quiz Interaction */
-    function handleQuizAnswer(blockIdx, selectedIdx, correctIdx) {
-      const course = getActiveCourse();
-      const sec = course.lesson.modules[state.activeModuleIndex].sections[state.activeSectionIndex];
-      const block = sec.blocks[blockIdx];
-
-      const feedback = document.getElementById(`quizFeedback-${blockIdx}`);
-      const isCorrect = selectedIdx === correctIdx;
-
-      // Lock buttons & style
-      block.options.forEach((_, idx) => {
-        const btn = document.getElementById(`opt-${blockIdx}-${idx}`);
-        if (btn) {
-          btn.classList.add("locked-answer");
-          if (idx === correctIdx) {
-            btn.classList.add("correct");
-          } else if (idx === selectedIdx) {
-            btn.classList.add("wrong");
-          }
-        }
-      });
-
-      if (isCorrect) {
-        feedback.className = "quiz-feedback-box pass show";
-        feedback.innerHTML = `
-          <strong>✓ Masterclass Precision!</strong>
-          <p style="margin-top: 6px;">${block.explanation}</p>
-        `;
-        markBlockDone(blockIdx);
-      } else {
-        feedback.className = "quiz-feedback-box fail show";
-        feedback.innerHTML = `
-          <strong>Review Needed</strong>
-          <p style="margin-top: 6px;">That is not the optimal editorial posture. Take a moment to review the lecture above.</p>
-          <button class="btn btn-outline" style="font-size: 0.78rem; padding: 6px 12px; margin-top: 8px;" onclick="renderSectionContent()">
-            Retry Question
-          </button>
-        `;
-      }
-    }
-
-    /* Simulation Helpers */
-    let audioInterval;
-    function toggleAudioDemo(bIdx) {
-      const btn = document.getElementById(`audioToggle-${bIdx}`);
-      const waves = document.querySelectorAll(`#waveform-${bIdx} .wave-bar`);
-      if (btn.innerText === "▶") {
-        btn.innerText = "⏸";
-        waves.forEach(w => w.classList.add("playing"));
-        showToast("Audio masterclass playing...", "🎧");
-        setTimeout(() => markBlockDone(bIdx), 2000);
-      } else {
-        btn.innerText = "▶";
-        waves.forEach(w => w.classList.remove("playing"));
-      }
-    }
-
-    function simulateVideoPlay(bIdx) {
-      showToast("Video masterclass streaming...", "🎬");
-      setTimeout(() => markBlockDone(bIdx), 1500);
-    }
-
-    function simulatePdfDownload(bIdx) {
-      showToast("Opening Litdom Document Archive...", "📄");
-      markBlockDone(bIdx);
-    }
-
-    function simulateAssetDownload(bIdx) {
-      showToast("Downloading Litdom Style Sheet (.docx)...", "💾");
-      markBlockDone(bIdx);
-    }
-
-    function checkSectionCompleteStatus() {
-      const course = getActiveCourse();
-      const sec = course.lesson.modules[state.activeModuleIndex].sections[state.activeSectionIndex];
-      const banner = document.getElementById("sectionCompleteBanner");
-
-      const secProgress = state.progress[sec.id] || { blocksDone: [] };
-      const allDone = secProgress.blocksDone.length >= sec.blocks.length;
-
-      if (allDone) {
-        secProgress.completed = true;
-        state.progress[sec.id] = secProgress;
-        saveState();
-        banner.classList.add("active");
-      } else {
-        banner.classList.remove("active");
-      }
-    }
-
-    function advanceToNextSection() {
-      const course = getActiveCourse();
-      const currentMod = course.lesson.modules[state.activeModuleIndex];
-
-      // Check if more sections in this module
-      if (state.activeSectionIndex + 1 < currentMod.sections.length) {
-        state.activeSectionIndex++;
-        renderSectionContent();
-        showToast("Advancing to next section...", "✨");
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      } 
-      // Check if more modules
-      else if (state.activeModuleIndex + 1 < course.lesson.modules.length) {
-        state.activeModuleIndex++;
-        state.activeSectionIndex = 0;
-        renderSectionContent();
-        showToast(`Congratulations! Module ${state.activeModuleIndex} unlocked!`, "🏆");
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      } 
-      // All modules done -> back to dashboard to open exam!
-      else {
-        navigateTo("dashboard");
-        showToast("All lesson modules completed! The Editorial Board Exam is now unlocked!", "🎓");
-      }
-    }
-
-    /* ===================================================
-       5. FINAL EXAM VIEW
-    =================================================== */
-    let examSelectedAnswers = {};
-    let cooldownTimerInterval;
-
-    function renderExamScreen() {
-      const course = getActiveCourse();
-      const exam = course.lesson.finalExam;
-
-      document.getElementById("examPassingScoreLabel").innerText = `${exam.passingPercentage}% to Pass`;
-      document.getElementById("examQuestionsCountLabel").innerText = `${exam.questions.length} Case Problems`;
-
-      const cooldownBox = document.getElementById("examCooldownBox");
-      const submitWrapper = document.getElementById("examSubmitWrapper");
-      const container = document.getElementById("examQuestionsContainer");
-      const resultBox = document.getElementById("examResultBox");
-
-      resultBox.style.display = "none";
-      examSelectedAnswers = {};
-
-      // Check 24-hour cooldown
-      const now = Date.now();
-      const cooldownMs = 24 * 60 * 60 * 1000;
-      const lastAttempt = state.examState.lastAttemptTimestamp;
-      const isCoolingDown = !state.examState.passed && lastAttempt && (now - lastAttempt < cooldownMs);
-
-      if (isCoolingDown) {
-        cooldownBox.style.display = "block";
-        submitWrapper.style.display = "none";
-        startCooldownTimer(lastAttempt + cooldownMs);
-      } else {
-        cooldownBox.style.display = "none";
-        submitWrapper.style.display = "block";
-        clearInterval(cooldownTimerInterval);
-      }
-
-      container.innerHTML = "";
-
-      exam.questions.forEach((q, qIdx) => {
-        const card = document.createElement("div");
-        card.className = "exam-question-card";
-        card.innerHTML = `
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <span class="path-tag active-tag">Case Question ${qIdx + 1}</span>
-            <span style="font-size: 0.78rem; color: var(--muted);">Board Accreditation Standard</span>
-          </div>
-          <h4 style="font-size: 1.05rem; margin-bottom: 16px;">${q.question}</h4>
-          <div class="quiz-options">
-            ${q.options.map((opt, oIdx) => `
-              <button class="quiz-option-btn" id="exam-opt-${qIdx}-${oIdx}" onclick="selectExamAnswer(${qIdx}, ${oIdx})">
-                <span style="font-family: monospace; opacity: 0.6;">[${String.fromCharCode(65 + oIdx)}]</span>
-                <span>${opt}</span>
-              </button>
-            `).join("")}
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    function selectExamAnswer(qIdx, oIdx) {
-      examSelectedAnswers[qIdx] = oIdx;
-      const course = getActiveCourse();
-      const q = course.lesson.finalExam.questions[qIdx];
-
-      q.options.forEach((_, idx) => {
-        const btn = document.getElementById(`exam-opt-${qIdx}-${idx}`);
-        if (btn) {
-          if (idx === oIdx) {
-            btn.classList.add("selected");
-          } else {
-            btn.classList.remove("selected");
-          }
-        }
-      });
-    }
-
-    function submitFinalExam() {
-      const course = getActiveCourse();
-      const exam = course.lesson.finalExam;
-      const totalQ = exam.questions.length;
-
-      // Ensure all questions answered
-      const answeredCount = Object.keys(examSelectedAnswers).length;
-      if (answeredCount < totalQ) {
-        showToast(`Please answer all ${totalQ} questions before submitting. (${answeredCount}/${totalQ} completed)`, "⚠️");
-        return;
-      }
-
-      let correctCount = 0;
-      exam.questions.forEach((q, qIdx) => {
-        if (examSelectedAnswers[qIdx] === q.correctIndex) {
-          correctCount++;
-        }
-      });
-
-      const scorePct = Math.round((correctCount / totalQ) * 100);
-      const passed = scorePct >= exam.passingPercentage;
-
-      state.examState = {
-        passed: passed,
-        lastAttemptTimestamp: Date.now(),
-        lastScorePct: scorePct
-      };
-      saveState();
-
-      const resultBox = document.getElementById("examResultBox");
-      const submitWrapper = document.getElementById("examSubmitWrapper");
-      submitWrapper.style.display = "none";
-
-      if (passed) {
-        resultBox.className = "exam-result-box pass";
-        resultBox.innerHTML = `
-          <div style="font-size: 3rem; margin-bottom: 10px;">🏆</div>
-          <h2 style="color: #86efac;">Board Accreditation Conferred!</h2>
-          <p style="font-size: 1.1rem; color: var(--ivory); margin: 10px 0;">
-            Outstanding mastery. You attained a score of <strong>${scorePct}%</strong> (${correctCount}/${totalQ} correct).
-          </p>
-          <p style="color: var(--muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto 24px;">
-            The Board of Editorial Studies has officially verified your credential. Your signed certificate is now available.
-          </p>
-          <button class="btn btn-gold" style="padding: 14px 32px;" onclick="navigateTo('certificate')">
-            Claim Official Certificate &rarr;
-          </button>
-        `;
-        showToast("Exemplary work! Examination passed with honors!", "🎓");
-      } else {
-        resultBox.className = "exam-result-box fail";
-        resultBox.innerHTML = `
-          <div style="font-size: 3rem; margin-bottom: 10px;">⚖️</div>
-          <h2 style="color: #fca5a5;">Examination Score: ${scorePct}%</h2>
-          <p style="font-size: 1.05rem; color: var(--ivory); margin: 10px 0;">
-            Minimum passing threshold: <strong>${exam.passingPercentage}%</strong> (${correctCount}/${totalQ} correct).
-          </p>
-          <p style="color: var(--muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto 24px;">
-            Editorial mastery demands rigorous reflection. You may retake the board examination once your 24-hour review window concludes.
-          </p>
-          <button class="btn btn-outline" onclick="navigateTo('dashboard')">
-            Return to Curriculum Review
-          </button>
-        `;
-        showToast("Passing score not reached. 24h review cooldown initiated.", "⏳");
-        renderExamScreen();
-      }
-
-      resultBox.scrollIntoView({ behavior: "smooth" });
-    }
-
-    function startCooldownTimer(targetTime) {
-      clearInterval(cooldownTimerInterval);
-      function tick() {
-        const remaining = targetTime - Date.now();
-        if (remaining <= 0) {
-          clearInterval(cooldownTimerInterval);
-          renderExamScreen();
-          return;
-        }
-        const hours = Math.floor(remaining / (1000 * 60 * 60));
-        const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-        document.getElementById("cooldownTimerText").innerText = 
-          `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-      }
-      tick();
-      cooldownTimerInterval = setInterval(tick, 1000);
-    }
-
-    function bypassCooldownForTesting() {
-      state.examState.lastAttemptTimestamp = null;
-      saveState();
-      renderExamScreen();
-      showToast("Cooldown reset for demonstration purposes!", "⚡");
-    }
-
-    /* ===================================================
-       6. CERTIFICATE VIEW
-    =================================================== */
-    function renderCertificate() {
-      const course = getActiveCourse();
-      document.getElementById("certLearnerName").innerText = state.studentName;
-      document.getElementById("certCourseTitle").innerText = `${course.title}: Fundamentals of Editing`;
-      
-      const now = new Date();
-      const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      document.getElementById("certDateIssued").innerText = now.toLocaleDateString('en-US', options);
-    }
-
-    function changeStudentNamePrompt() {
-      const newName = prompt("Enter the recipient name for the certificate:", state.studentName);
-      if (newName && newName.trim()) {
-        state.studentName = newName.trim();
-        saveState();
-        renderCertificate();
-        document.getElementById("navLearnerName").innerText = state.studentName;
-        document.getElementById("navAvatar").innerText = state.studentName.charAt(0).toUpperCase();
-        showToast("Recipient name updated!", "✓");
-      }
-    }
-
-    /* Initialize App */
-    document.addEventListener("DOMContentLoaded", () => {
-      loadState();
-      renderHub();
-    });
-  </script>
+  <script src="litdom_data.js"></script>
+  <script src="litdom_engine.js"></script>
 </body>
 </html>

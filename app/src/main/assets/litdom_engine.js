@@ -1,5 +1,33 @@
-/* LITDOM ACADEMY - PROGRESSION & INTERACTION ENGINE */
-const STORAGE_KEY = "litdom_academy_progression_v2";
+/* =========================================================================
+ * LITDOM ACADEMY - COMPREHENSIVE PROGRESSION & INTERACTION ENGINE
+ * =========================================================================
+ * 
+ * 🎓 WELCOME DEAR DEVELOPER / INSTRUCTOR!
+ * This engine powers the entire learner journey across Litdom Academy.
+ * The code is organized into 11 clearly designated regions below so you
+ * can easily find, modify, add, remove, or duplicate any feature.
+ * 
+ * -------------------------------------------------------------------------
+ * TABLE OF CONTENTS / CODE REGIONS:
+ * -------------------------------------------------------------------------
+ *   REGION 1: STATE MANAGEMENT & DATA PERSISTENCE
+ *   REGION 2: CURRICULUM HELPERS (DYNAMIC SCALING FOR ANY COURSES/MODULES)
+ *   REGION 3: VIEW NAVIGATION & ROUTING
+ *   REGION 4: VIEW A - COURSE HUB & PATHWAY MODAL
+ *   REGION 5: VIEW B - VISUAL ROADMAP JOURNEY MAP (DYNAMIC MODULES/SECTIONS)
+ *   REGION 6: VIEW C - SECTION CONTENT & VIDEO TIMER ENGINE
+ *   REGION 7: INTERACTIVE EDITORIAL LABS (EMERALD GREEN SUCCESS ENGINE)
+ *   REGION 8: SECTION KNOWLEDGE CHECKS & "MARK AS COMPLETE" GATE
+ *   REGION 9: VIEW D - MODULE ASSESSMENTS (5-QUESTION EVALUATION)
+ *   REGION 10: VIEW E - FINAL CAPSTONE EXAM & CERTIFICATION
+ *   REGION 11: UTILITIES, AUDIO SIMULATOR & TOAST NOTIFICATIONS
+ * ========================================================================= */
+
+
+/* =========================================================================
+ * REGION 1: STATE MANAGEMENT & DATA PERSISTENCE
+ * ========================================================================= */
+const STORAGE_KEY = "litdom_academy_progression_v3";
 
 let state = {
   currentView: "hub",
@@ -8,9 +36,12 @@ let state = {
   activeSectionIndex: 0,
   activeAssessmentModIndex: 0,
   studentName: "Eleanor Vance",
-  completedSections: {},
-  completedModules: {},
-  moduleScores: {},
+  completedSections: {},   // Map of sectionId -> boolean
+  completedModules: {},    // Map of moduleId -> boolean
+  completedVideos: {},     // Map of videoId -> boolean (Watched to end)
+  completedExercises: {},  // Map of exerciseId -> boolean (Solved correctly)
+  sectionTestPassed: {},   // Map of sectionId -> boolean (1-question test passed)
+  moduleScores: {},        // Map of moduleId -> score (out of 5)
   examState: {
     passed: false,
     score: 0,
@@ -18,7 +49,9 @@ let state = {
   }
 };
 
-/* --- State Persistence --- */
+/**
+ * Loads saved state from localStorage or initializes default values.
+ */
 function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -32,6 +65,9 @@ function loadState() {
   updateNavUser();
 }
 
+/**
+ * Persists the current state object to browser localStorage.
+ */
 function saveState() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -41,6 +77,9 @@ function saveState() {
   updateNavUser();
 }
 
+/**
+ * Updates learner avatar and name in the top navigation bar.
+ */
 function updateNavUser() {
   const nameEl = document.getElementById("navLearnerName");
   const avatarEl = document.getElementById("navAvatar");
@@ -48,16 +87,22 @@ function updateNavUser() {
   if (avatarEl) avatarEl.textContent = (state.studentName || "E").charAt(0).toUpperCase();
 }
 
+/**
+ * Prompts user to confirm resetting all progression, clearing storage.
+ */
 function resetProgress() {
-  if (confirm("Reset all course progression, quiz attempts, and exam scores?")) {
+  if (confirm("Reset all course progression, quiz attempts, video timers, and exam scores?")) {
     state.completedSections = {};
     state.completedModules = {};
+    state.completedVideos = {};
+    state.completedExercises = {};
+    state.sectionTestPassed = {};
     state.moduleScores = {};
     state.examState = { passed: false, score: 0, timestamp: null };
     state.activeModuleIndex = 0;
     state.activeSectionIndex = 0;
     saveState();
-    showToast("Progress has been reset.", "ℹ️");
+    showToast("Progress has been completely reset.", "ℹ️");
     if (state.currentView === "dashboard") {
       renderDashboard();
     } else {
@@ -66,19 +111,36 @@ function resetProgress() {
   }
 }
 
-/* --- Helpers --- */
+
+/* =========================================================================
+ * REGION 2: CURRICULUM HELPERS (DYNAMIC SCALING FOR ANY COURSES/MODULES)
+ * ========================================================================= */
+
+/**
+ * Retrieves the currently active course from LITDOM_DATA.
+ */
 function getActiveCourse() {
   return LITDOM_DATA.courses.find(c => c.id === state.selectedCourseId) || LITDOM_DATA.courses[0];
 }
 
+/**
+ * Returns whether a section is marked completed.
+ */
 function isSectionCompleted(secId) {
   return !!state.completedSections[secId];
 }
 
+/**
+ * Returns whether a module is marked completed.
+ */
 function isModuleCompleted(modId) {
   return !!state.completedModules[modId];
 }
 
+/**
+ * Computes section state: "completed", "available", or "locked".
+ * Enforces sequential progression: Section N requires Section N-1 completion.
+ */
 function getSectionState(mIdx, sIdx) {
   const course = getActiveCourse();
   const mod = course.modules[mIdx];
@@ -100,6 +162,9 @@ function getSectionState(mIdx, sIdx) {
   return "locked";
 }
 
+/**
+ * Computes module state: "completed", "available", or "locked".
+ */
 function getModuleState(mIdx) {
   const course = getActiveCourse();
   const mod = course.modules[mIdx];
@@ -111,18 +176,31 @@ function getModuleState(mIdx) {
   return isModuleCompleted(prevMod.id) ? "available" : "locked";
 }
 
+/**
+ * Returns true if all sections in a module have been completed.
+ */
 function canTakeModuleAssessment(mIdx) {
   const course = getActiveCourse();
   const mod = course.modules[mIdx];
   return mod.sections.every(s => isSectionCompleted(s.id));
 }
 
+/**
+ * Returns true if all modules have been completed, unlocking Capstone Exam.
+ */
 function canTakeFinalExam() {
   const course = getActiveCourse();
   return course.modules.every(m => isModuleCompleted(m.id));
 }
 
-/* --- View Switching --- */
+
+/* =========================================================================
+ * REGION 3: VIEW NAVIGATION & ROUTING
+ * ========================================================================= */
+
+/**
+ * Primary single-page-application view switcher.
+ */
 function navigateTo(viewId) {
   state.currentView = viewId;
   document.querySelectorAll(".view-screen").forEach(el => el.classList.remove("active"));
@@ -133,6 +211,9 @@ function navigateTo(viewId) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  // Clear any active video intervals when switching screens
+  clearAllVideoTimers();
+
   if (viewId === "hub") renderHub();
   else if (viewId === "dashboard") renderDashboard();
   else if (viewId === "content") renderSectionContent();
@@ -141,27 +222,46 @@ function navigateTo(viewId) {
   else if (viewId === "certificate") renderCertificate();
 }
 
-function showToast(msg, icon = "✨") {
-  const el = document.getElementById("toastMsg");
-  const txt = document.getElementById("toastText");
-  const icn = document.getElementById("toastIcon");
-  if (!el || !txt) return;
 
-  txt.textContent = msg;
-  if (icn) icn.textContent = icon;
-  el.classList.add("show");
-  clearTimeout(window.__toastTimer);
-  window.__toastTimer = setTimeout(() => el.classList.remove("show"), 3200);
+/* =========================================================================
+ * REGION 4: VIEW A - COURSE HUB & PATHWAY MODAL
+ * ========================================================================= */
+
+function renderHub() {
+  const container = document.getElementById("coursesContainer");
+  if (!container) return;
+
+  container.innerHTML = LITDOM_DATA.courses.map(course => `
+    <div class="course-card" id="course-card-${course.id}">
+      <div style="font-size: 2.2rem; margin-bottom: 12px;">${course.icon}</div>
+      <span class="path-tag active-tag" style="margin-bottom: 12px; display: inline-block;">${course.category}</span>
+      <h3 style="margin-bottom: 8px;">${course.title}</h3>
+      <p style="color: var(--muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px;">
+        ${course.description}
+      </p>
+      
+      <div style="font-size: 0.82rem; color: var(--champagne); margin-bottom: 20px; display: flex; gap: 16px; flex-wrap: wrap;">
+        <span>📚 ${course.modules.length} Modules</span>
+        <span>⏱️ ${course.duration}</span>
+        <span>🎖️ Certified</span>
+      </div>
+
+      <button class="btn btn-gold" style="width: 100%;" onclick="openPathModal('${course.id}')">
+        Start Learning &rarr;
+      </button>
+    </div>
+  `).join("");
 }
 
-/* --- Modal Controls --- */
 function openPathModal(courseId) {
   state.selectedCourseId = courseId || (LITDOM_DATA.courses[0] && LITDOM_DATA.courses[0].id) || "editor-academy";
   const course = getActiveCourse();
-  const titleEl = document.getElementById("modalCourseTitle");
-  if (titleEl && course) {
-    titleEl.textContent = course.title;
-  }
+
+  const titleEl = document.getElementById("pathModalTitle");
+  const descEl = document.getElementById("pathModalDesc");
+  if (titleEl) titleEl.textContent = `${course.title}: Select Your Learning Pathway`;
+  if (descEl) descEl.textContent = `Choose your study mode for ${course.title}. You may switch or reset at any time.`;
+
   const modal = document.getElementById("pathModal");
   if (modal) {
     modal.classList.add("active");
@@ -177,235 +277,171 @@ function closePathModal() {
   }
 }
 
-function selectPath(path) {
+function selectPath(pathType) {
   closePathModal();
-  saveState();
+  showToast(`Selected ${pathType === "oneway" ? "Sequential Mastery" : "Practical Apprenticeship"} Pathway`, "✨");
   navigateTo("dashboard");
 }
 
-/* --- View A: Academy Hub --- */
-function renderHub() {
-  const container = document.getElementById("courseCardsGrid") || document.getElementById("coursesGrid");
-  if (!container) return;
 
-  container.innerHTML = LITDOM_DATA.courses.map(c => `
-    <div class="course-card" onclick="openPathModal('${c.id}')" style="cursor: pointer;">
-      <div class="course-card-top">
-        <span class="course-badge">${c.level}</span>
-        <div style="font-size: 2.2rem; margin: 12px 0 8px;">${c.icon}</div>
-        <h3 class="course-card-title">${c.title}</h3>
-        <p class="course-card-desc">${c.description}</p>
-      </div>
-      <div class="course-card-footer">
-        <div class="course-meta-pills">
-          <span class="meta-pill">⏱️ ${c.duration}</span>
-          <span class="meta-pill">📚 ${c.modules.length} Modules</span>
-        </div>
-        <button type="button" class="btn btn-gold" style="width: 100%; margin-top: 10px; cursor: pointer;" onclick="event.stopPropagation(); openPathModal('${c.id}');">
-          Start Learning &rarr;
-        </button>
-      </div>
-    </div>
-  `).join("");
-}
+/* =========================================================================
+ * REGION 5: VIEW B - VISUAL ROADMAP JOURNEY MAP (DYNAMIC MODULES/SECTIONS)
+ * ========================================================================= */
 
-function openCourse(courseId) {
-  state.selectedCourseId = courseId || (LITDOM_DATA.courses[0] && LITDOM_DATA.courses[0].id) || "editor-academy";
-  saveState();
-  navigateTo("dashboard");
-}
-
-/* --- View B: Journey Map / Dashboard --- */
 function renderDashboard() {
   const course = getActiveCourse();
 
-  // Update Breadcrumb & Header info
-  const courseTitleEl = document.getElementById("dashCourseTitle");
-  const courseDescEl = document.getElementById("dashCourseDesc");
-  const courseBreadcrumb = document.getElementById("dashBreadcrumbCourse");
-  const courseCatEl = document.getElementById("dashCourseCategory");
+  // Update Header Banner
+  const titleEl = document.getElementById("dashCourseTitle");
+  const descEl = document.getElementById("dashCourseDesc");
+  if (titleEl) titleEl.textContent = course.title;
+  if (descEl) descEl.textContent = course.description;
 
-  if (courseTitleEl) courseTitleEl.textContent = course.title;
-  if (courseDescEl) courseDescEl.textContent = course.description;
-  if (courseBreadcrumb) courseBreadcrumb.textContent = course.title;
-  if (courseCatEl) courseCatEl.textContent = course.category;
-
-  // Progress metrics calculation
+  // Calculate Overall Progress
   let totalSections = 0;
-  let completedSecs = 0;
-  let completedMods = 0;
+  let clearedSections = 0;
+  let clearedModules = 0;
 
   course.modules.forEach(m => {
-    if (isModuleCompleted(m.id)) completedMods++;
+    totalSections += m.sections.length;
     m.sections.forEach(s => {
-      totalSections++;
-      if (isSectionCompleted(s.id)) completedSecs++;
+      if (isSectionCompleted(s.id)) clearedSections++;
     });
+    if (isModuleCompleted(m.id)) clearedModules++;
   });
 
-  const pct = Math.round((completedSecs / totalSections) * 100);
-  const bar = document.getElementById("dashProgressBar");
-  const pctTxt = document.getElementById("dashProgressPct");
+  const pct = totalSections > 0 ? Math.round((clearedSections / totalSections) * 100) : 0;
+  const pBar = document.getElementById("dashProgressBar");
+  const pPct = document.getElementById("dashProgressPct");
   const counter = document.getElementById("dashStepsCounter");
 
-  if (bar) bar.style.width = pct + "%";
-  if (pctTxt) pctTxt.textContent = pct + "%";
-  if (counter) counter.textContent = `${completedMods} of ${course.modules.length} Modules Cleared`;
+  if (pBar) pBar.style.width = pct + "%";
+  if (pPct) pPct.textContent = pct + "%";
+  if (counter) counter.textContent = `${clearedModules} of ${course.modules.length} Modules Cleared (${clearedSections}/${totalSections} Sections)`;
 
-  // Render Visual Roadmap Tree
-  const container = document.getElementById("journeyMapContainer");
-  if (!container) return;
+  // Render Dynamic Journey Map
+  const mapContainer = document.getElementById("journeyMapContainer");
+  if (!mapContainer) return;
 
-  let html = "";
-
-  course.modules.forEach((mod, mIdx) => {
+  let mapHtml = course.modules.map((mod, mIdx) => {
     const modState = getModuleState(mIdx);
-    const modCompleted = modState === "completed";
-    const allSecsDone = mod.sections.every(s => isSectionCompleted(s.id));
+    const modScore = state.moduleScores[mod.id];
+    const canTestModule = canTakeModuleAssessment(mIdx);
+    const isModDone = isModuleCompleted(mod.id);
 
-    // Module circle indicator (Large Circle)
-    let badgeContent = mod.num;
-    if (modCompleted) {
-      badgeContent = "✓";
-    }
-
-    html += `
-      <div class="module-group" id="module-group-${mod.id}">
-        <div class="module-header">
-          <div class="module-badge ${modState}" title="Module ${mod.num}: ${modState}">
-            ${badgeContent}
+    return `
+      <div class="module-group ${modState}" id="module-group-${mod.id}">
+        <div class="module-header-row">
+          <div class="module-badge ${modState}">
+            ${isModDone ? "✓" : mod.num}
           </div>
           <div>
-            <div class="module-title">MODULE ${mod.num}: ${mod.title}</div>
-            <div style="font-size: 0.8rem; color: var(--muted);">${mod.description}</div>
+            <div style="font-size: 0.76rem; text-transform: uppercase; color: var(--gold); letter-spacing: 0.08em; font-weight: 700;">
+              Module ${mod.num}
+            </div>
+            <h4 style="font-size: 1.15rem; color: var(--ivory);">${mod.title}</h4>
+            <p style="font-size: 0.85rem; color: var(--muted); margin-top: 2px;">${mod.description}</p>
           </div>
         </div>
 
-        <div class="sections-tree-wrapper">
-          <div class="tree-connector-stem ${allSecsDone ? 'completed' : ''}"></div>
-          <div class="sections-list">
-    `;
+        <div class="sections-list">
+          ${mod.sections.map((sec, sIdx) => {
+            const secState = getSectionState(mIdx, sIdx);
+            const isSecDone = isSectionCompleted(sec.id);
+            const hasVideo = sec.content.some(b => b.type === "video");
+            const hasEx = sec.content.some(b => b.type === "interactive_exercise" || b.type === "exercise");
 
-    // Render smaller section circles
-    mod.sections.forEach((sec, sIdx) => {
-      const sState = getSectionState(mIdx, sIdx);
-      const isDone = sState === "completed";
-      const isAvail = sState === "available";
-
-      let circleContent = `${sIdx + 1}`;
-      if (isDone) circleContent = "✓";
-
-      let actionBtn = `<span class="btn btn-outline node-action-btn" style="opacity: 0.5;">Locked</span>`;
-      if (isDone) {
-        actionBtn = `<span class="btn btn-outline node-action-btn" style="border-color: var(--gold); color: var(--champagne);">Review</span>`;
-      } else if (isAvail) {
-        actionBtn = `<span class="btn btn-gold node-action-btn">Enter &rarr;</span>`;
-      }
-
-      html += `
-        <div class="section-node ${sState}" onclick="selectSection(${mIdx}, ${sIdx})">
-          <div class="node-content-wrap">
-            <div class="section-circle ${sState}">
-              ${circleContent}
-            </div>
-            <div class="node-text">
-              <h5>Section ${sIdx + 1}: ${sec.title}</h5>
-              <div class="node-meta">
-                <span>⏱️ ${sec.duration}</span>
-                <span>📑 ${sec.content.length} Blocks + Test</span>
-                ${isDone ? '<span style="color: var(--gold); font-weight: 600;">Passed</span>' : ''}
-              </div>
-            </div>
-          </div>
-          <div>${actionBtn}</div>
-        </div>
-      `;
-    });
-
-    // Render Module Assessment Node
-    let assessmentClass = "locked";
-    let assessmentLabel = `Module ${mod.num} Assessment (Locked — Complete all sections)`;
-    let assessmentIcon = "🔒";
-    let assessmentBtn = `<span class="btn btn-outline node-action-btn" style="opacity: 0.5;">Locked</span>`;
-
-    if (modCompleted) {
-      assessmentClass = "completed";
-      assessmentLabel = `Module ${mod.num} Assessment Passed (Score: ${state.moduleScores[mod.id] || 5}/5)`;
-      assessmentIcon = "✓";
-      assessmentBtn = `<span class="btn btn-outline node-action-btn" style="border-color: var(--gold); color: var(--gold);">Passed</span>`;
-    } else if (allSecsDone) {
-      assessmentClass = "available";
-      assessmentLabel = `Module ${mod.num} Assessment: 5 Questions (Passing score: ${mod.passingScore}/5)`;
-      assessmentIcon = "⚡";
-      assessmentBtn = `<span class="btn btn-gold node-action-btn">Take Assessment &rarr;</span>`;
-    }
-
-    html += `
-          <div class="module-assessment-node ${assessmentClass}" onclick="openModuleAssessment(${mIdx})">
-            <div class="node-content-wrap">
-              <div class="section-circle ${assessmentClass}">
-                ${assessmentIcon}
-              </div>
-              <div class="node-text">
-                <h5 style="color: var(--champagne);">${assessmentLabel}</h5>
-                <div class="node-meta">
-                  <span>Passing score required to unlock Module ${mIdx + 2}</span>
+            return `
+              <div class="section-node ${secState}" id="sec-node-${sec.id}">
+                <div class="node-status-icon">
+                  ${isSecDone ? "✓" : secState === "available" ? "▶" : "🔒"}
+                </div>
+                <div class="node-text">
+                  <h5>${sec.title}</h5>
+                  <div class="node-meta">
+                    <span>⏱️ ${sec.duration}</span>
+                    ${hasVideo ? "<span>🎬 Video</span>" : ""}
+                    ${hasEx ? "<span>✏️ Exercise</span>" : ""}
+                    ${isSecDone ? "<span style='color: #10b981; font-weight: 700;'>✓ Mastered</span>" : ""}
+                  </div>
+                </div>
+                <div>
+                  ${
+                    secState !== "locked"
+                      ? `<button class="btn ${isSecDone ? 'btn-outline' : 'btn-gold'} node-action-btn" onclick="openSection(${mIdx}, ${sIdx})">
+                           ${isSecDone ? "Review" : "Start"}
+                         </button>`
+                      : `<button class="btn btn-outline node-action-btn" disabled style="opacity: 0.4; cursor: not-allowed;">
+                           Locked
+                         </button>`
+                  }
                 </div>
               </div>
+            `;
+          }).join("")}
+
+          <!-- Module Assessment Node -->
+          <div class="section-node ${isModDone ? 'completed' : canTestModule ? 'available' : 'locked'}" style="background: rgba(212, 175, 55, 0.04); border-color: rgba(212, 175, 55, 0.3);">
+            <div class="node-status-icon" style="border-color: var(--gold); color: var(--gold);">
+              ${isModDone ? "★" : canTestModule ? "📝" : "🔒"}
             </div>
-            <div>${assessmentBtn}</div>
+            <div class="node-text">
+              <h5 style="color: var(--champagne);">Module ${mod.num} Comprehensive Assessment</h5>
+              <div class="node-meta">
+                <span>5 Questions • 80% Passing (4/5)</span>
+                ${modScore !== undefined ? `<span style="color: #10b981; font-weight: 700;">Score: ${modScore}/5</span>` : ""}
+              </div>
+            </div>
+            <div>
+              ${
+                canTestModule
+                  ? `<button class="btn btn-gold node-action-btn" onclick="openModuleAssessment(${mIdx})">
+                       ${isModDone ? "Retake" : "Take Exam"}
+                     </button>`
+                  : `<button class="btn btn-outline node-action-btn" disabled style="opacity: 0.4; cursor: not-allowed;">
+                       Complete Sections First
+                     </button>`
+              }
+            </div>
           </div>
         </div>
       </div>
     `;
+  }).join("");
 
-    // Inter-module connector line to next module (if not last)
-    if (mIdx < course.modules.length - 1) {
-      html += `<div class="inter-module-connector ${modCompleted ? 'completed' : ''}"></div>`;
-    }
-
-    html += `</div>`;
-  });
-
-  // Final Examination Capstone Milestone at the end of the roadmap
-  const allModulesCleared = canTakeFinalExam();
-  const examPassed = state.examState.passed;
-
-  html += `
-    <div class="inter-module-connector ${allModulesCleared ? 'completed' : ''}"></div>
-    <div class="exam-milestone-card" style="border-color: ${examPassed || allModulesCleared ? 'var(--gold)' : 'rgba(255,255,255,0.15)'};">
+  // Final Exam Milestone Card
+  const examUnlocked = canTakeFinalExam();
+  mapHtml += `
+    <div class="exam-milestone-card" id="finalExamMilestone">
       <div>
-        <div class="section-test-badge" style="background: ${examPassed ? 'rgba(56, 176, 0, 0.2)' : 'rgba(212, 175, 55, 0.2)'};">
-          ${examPassed ? 'ACCREDITATION EARNED' : allModulesCleared ? 'CAPSTONE READY' : 'MILESTONE LOCKED'}
+        <div style="font-size: 0.78rem; text-transform: uppercase; color: var(--gold); letter-spacing: 0.1em; font-weight: 700;">
+          CAPSTONE MILESTONE
         </div>
-        <h3 style="margin-top: 8px; font-size: 1.25rem; color: var(--champagne);">
-          The Editorial Board Examination (50 Questions)
+        <h3 style="color: var(--champagne); font-size: 1.35rem; margin-top: 4px;">
+          The Editorial Board Final Examination
         </h3>
-        <p style="font-size: 0.88rem; color: var(--muted); margin-top: 4px; max-width: 500px;">
-          The rigorous 50-problem accreditation exam requiring 45/50 (90%) to confer the official Litdom Editor Certification.
+        <p style="color: var(--ivory); font-size: 0.9rem; max-width: 520px; margin-top: 6px;">
+          A rigorous 50-question board certification covering all 5 modules. Requires 90% (45/50) to earn the Litdom Master Editor Credential.
         </p>
       </div>
       <div>
         ${
-          examPassed
-            ? `<button class="btn btn-gold" onclick="navigateTo('certificate')">View Official Certificate 🎓 &rarr;</button>`
-            : allModulesCleared
-            ? `<button class="btn btn-gold" onclick="navigateTo('exam')">Begin Final Exam &rarr;</button>`
-            : `<button class="btn btn-outline" style="opacity: 0.5; cursor: not-allowed;" onclick="showToast('Complete all 5 modules and assessments first.', '🔒')">Locked (Pass All 5 Modules)</button>`
+          examUnlocked
+            ? `<button class="btn btn-gold" onclick="navigateTo('exam')">
+                 ${state.examState.passed ? "View Credential ★" : "Take Capstone Exam &rarr;"}
+               </button>`
+            : `<button class="btn btn-outline" disabled style="opacity: 0.4; cursor: not-allowed;">
+                 🔒 Complete All 5 Modules
+               </button>`
         }
       </div>
     </div>
   `;
 
-  container.innerHTML = html;
+  mapContainer.innerHTML = mapHtml;
 }
 
-function selectSection(mIdx, sIdx) {
-  const sState = getSectionState(mIdx, sIdx);
-  if (sState === "locked") {
-    showToast("This section is locked. Complete the preceding section test first.", "🔒");
-    return;
-  }
+function openSection(mIdx, sIdx) {
   state.activeModuleIndex = mIdx;
   state.activeSectionIndex = sIdx;
   saveState();
@@ -413,16 +449,35 @@ function selectSection(mIdx, sIdx) {
 }
 
 function openModuleAssessment(mIdx) {
-  if (!canTakeModuleAssessment(mIdx)) {
-    showToast("Complete all section tests in this module first.", "🔒");
-    return;
-  }
   state.activeAssessmentModIndex = mIdx;
   saveState();
   navigateTo("module-assessment");
 }
 
-/* --- View C: Section Content & Assessment --- */
+
+/* =========================================================================
+ * REGION 6: VIEW C - SECTION CONTENT & VIDEO TIMER ENGINE
+ * ========================================================================= */
+
+// Global registry of running video timers
+const videoTimers = {};
+
+function clearAllVideoTimers() {
+  Object.keys(videoTimers).forEach(vidId => {
+    if (videoTimers[vidId].interval) {
+      clearInterval(videoTimers[vidId].interval);
+    }
+  });
+}
+
+/**
+ * Renders the full content flow for the active section, including:
+ * - Header with section level & progress
+ * - Dynamic media blocks (text, video with countdown timer, audio, examples)
+ * - Interactive Editorial Exercises (turns emerald green)
+ * - Section Knowledge Test (1 Question, 3 Options)
+ * - Section Mastery Checklist & "Mark as Complete" gate
+ */
 function renderSectionContent() {
   const course = getActiveCourse();
   const mod = course.modules[state.activeModuleIndex];
@@ -434,21 +489,22 @@ function renderSectionContent() {
   const descEl = document.getElementById("contentSectionDesc");
   const bcEl = document.getElementById("contentBreadcrumb");
 
-  if (modLabel) modLabel.textContent = `Module ${mod.num} / Section ${state.activeSectionIndex + 1}`;
+  if (modLabel) modLabel.textContent = `Module ${mod.num} • Section ${state.activeSectionIndex + 1}`;
   if (titleEl) titleEl.textContent = sec.title;
-  if (descEl) descEl.textContent = `Duration: ${sec.duration} • Curriculum of Litdom Academy`;
+  if (descEl) descEl.textContent = `Estimated Time: ${sec.duration} • Litdom Master Curriculum`;
   if (bcEl) bcEl.textContent = sec.title;
 
   const isCompleted = isSectionCompleted(sec.id);
   const pBar = document.getElementById("sectionProgressBar");
   const pTxt = document.getElementById("sectionProgressPct");
-  if (pBar) pBar.style.width = isCompleted ? "100%" : "50%";
-  if (pTxt) pTxt.textContent = isCompleted ? "100% Completed" : "In Progress";
+  if (pBar) pBar.style.width = isCompleted ? "100%" : "40%";
+  if (pTxt) pTxt.textContent = isCompleted ? "100% Mastered" : "In Progress";
 
-  // Render Rich Content Blocks
+  // Flow Container
   const flowContainer = document.getElementById("contentBlocksFlow");
   if (!flowContainer) return;
 
+  // Render Blocks
   let blocksHtml = sec.content.map(block => {
     switch (block.type) {
       case "text":
@@ -460,6 +516,106 @@ function renderSectionContent() {
             </div>
           </div>
         `;
+
+      case "video": {
+        const vidId = block.id || `${sec.id}-vid`;
+        const isWatched = !!state.completedVideos[vidId];
+        const duration = block.durationSeconds || 20;
+
+        return `
+          <div class="video-card-container" id="video-card-${vidId}">
+            <div style="padding: 16px 20px 0;">
+              <span class="editorial-badge ${isWatched ? 'solved' : ''}">
+                ${isWatched ? '✓ VIDEO VERIFIED' : '🎬 LECTURE REQUIREMENT'}
+              </span>
+              <h4 style="margin-top: 4px; font-size: 1.15rem;">${block.title}</h4>
+              <p style="font-size: 0.85rem; color: var(--muted); margin: 4px 0 14px;">${block.caption}</p>
+            </div>
+
+            <!-- Video Player Viewport -->
+            <div class="video-player-viewport">
+              <button class="video-play-overlay-btn" id="vid-play-btn-${vidId}" onclick="toggleVideoPlayback('${vidId}', ${duration})">
+                ${isWatched ? '↻' : '▶'}
+              </button>
+              <div style="font-size: 0.92rem; color: var(--champagne); margin-top: 12px; font-weight: 600;">
+                ${block.instructor || "Dean Julian Sterling"}
+              </div>
+              <div style="font-size: 0.78rem; color: var(--muted); margin-top: 2px;">
+                ${block.badge || "Litdom Studio Master Lecture"}
+              </div>
+            </div>
+
+            <!-- Video Live Timer Strip -->
+            <div class="video-timer-strip">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <button class="btn btn-outline" style="font-size: 0.78rem; padding: 4px 12px;" onclick="toggleVideoPlayback('${vidId}', ${duration})">
+                  <span id="vid-ctrl-text-${vidId}">Play</span>
+                </button>
+                <button class="btn btn-outline" style="font-size: 0.72rem; padding: 4px 8px; color: var(--gold);" title="Fast-forward preview for instructors" onclick="fastForwardVideo('${vidId}')">
+                  ⚡ Fast-Forward (Preview)
+                </button>
+              </div>
+
+              <!-- Progress bar -->
+              <div class="video-progress-bar-bg">
+                <div class="video-progress-bar-fill ${isWatched ? 'finished' : ''}" id="vid-progress-${vidId}" style="width: ${isWatched ? '100%' : '0%'};"></div>
+              </div>
+
+              <!-- Live Timer Badge -->
+              <div class="video-countdown-pill ${isWatched ? 'completed' : ''}" id="vid-badge-${vidId}">
+                ${isWatched ? '✓ Lecture Watched' : `⏱️ 00:${duration < 10 ? '0' + duration : duration} remaining`}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      case "interactive_exercise":
+      case "exercise": {
+        const exId = block.id || `${sec.id}-ex`;
+        const isSolved = !!state.completedExercises[exId];
+
+        return `
+          <div class="interactive-editorial-card ${isSolved ? 'solved' : ''}" id="exercise-card-${exId}">
+            <div class="editorial-badge ${isSolved ? 'solved' : ''}" id="ex-badge-${exId}">
+              ${isSolved ? '✓ EDITORIAL EXERCISE CLEARED' : `✏️ ${block.category || 'LINE EDITING CRUCIBLE'}`}
+            </div>
+            
+            <h4 style="margin-top: 6px; font-size: 1.15rem; color: var(--ivory);">${block.title}</h4>
+            <p style="font-size: 0.9rem; color: var(--muted); margin: 8px 0 12px; line-height: 1.6;">${block.instructions}</p>
+
+            <!-- Raw Draft Sentence -->
+            <div class="interactive-sentence-box" id="ex-draft-${exId}">
+              <div style="font-size: 0.74rem; text-transform: uppercase; color: var(--gold); letter-spacing: 0.08em; font-family: sans-serif; margin-bottom: 6px;">
+                Raw Manuscript Draft:
+              </div>
+              <div style="font-style: italic;">"${block.draft || 'The sentence was written hurriedly by the author.'}"</div>
+            </div>
+
+            <!-- Multiple Choice Diagnosis Options -->
+            <div class="editorial-options-grid">
+              ${(block.options || []).map((opt, optIdx) => `
+                <button class="editorial-choice-btn ${isSolved && opt.correct ? 'correct-choice' : ''}" 
+                        id="ex-${exId}-opt-${optIdx}"
+                        onclick="evaluateExerciseOption('${exId}', ${optIdx})">
+                  <span style="font-weight: 700; color: var(--gold);">${String.fromCharCode(65 + optIdx)}.</span>
+                  <span>${opt.text}</span>
+                </button>
+              `).join("")}
+            </div>
+
+            <!-- Feedback Box (Shows vibrant green on correct choice!) -->
+            <div class="editorial-feedback-box ${isSolved ? 'show success' : ''}" id="ex-feedback-${exId}">
+              ${
+                isSolved
+                  ? `<strong>✓ Masterful Edit!</strong> You correctly resolved this craft challenge.`
+                  : ""
+              }
+            </div>
+          </div>
+        `;
+      }
+
       case "audio":
         return `
           <div class="content-block-card">
@@ -471,7 +627,7 @@ function renderSectionContent() {
               </button>
               <div style="flex-grow: 1;">
                 <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--muted); margin-bottom: 4px;">
-                  <span>Litdom Masterclass Audio</span>
+                  <span>Litdom Audio Masterclass</span>
                   <span>04:15</span>
                 </div>
                 <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
@@ -481,17 +637,7 @@ function renderSectionContent() {
             </div>
           </div>
         `;
-      case "video":
-        return `
-          <div class="content-block-card">
-            <h4>🎬 ${block.title}</h4>
-            <p style="font-size: 0.88rem; color: var(--muted); margin: 6px 0 14px;">${block.caption}</p>
-            <div style="position: relative; background: #000; border-radius: var(--radius-sm); height: 260px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid var(--charcoal-border);">
-              <div style="font-size: 3rem; color: var(--gold); cursor: pointer;" onclick="showToast('Video streaming ready.', '▶')">▶</div>
-              <span style="font-size: 0.85rem; color: var(--muted); margin-top: 10px;">Litdom Studio Master Lecture</span>
-            </div>
-          </div>
-        `;
+
       case "example":
         return `
           <div class="example-block-card">
@@ -502,124 +648,261 @@ function renderSectionContent() {
                 <p style="font-size: 0.9rem; color: var(--ivory); margin-top: 6px; font-style: italic;">"${block.before}"</p>
               </div>
               <div class="example-pane after">
-                <span style="font-size: 0.75rem; font-weight: 700; color: var(--gold); text-transform: uppercase;">Editorially Diagnosed</span>
-                <p style="font-size: 0.9rem; color: var(--champagne); margin-top: 6px; font-weight: 500;">"${block.after}"</p>
+                <span style="font-size: 0.75rem; font-weight: 700; color: #10b981; text-transform: uppercase;">Editorially Diagnosed</span>
+                <p style="font-size: 0.9rem; color: #a7f3d0; margin-top: 6px; font-weight: 500;">"${block.after}"</p>
               </div>
             </div>
             <p style="font-size: 0.82rem; color: var(--muted); margin-top: 12px;"><strong>Diagnostic Note:</strong> ${block.explanation}</p>
           </div>
         `;
-      case "exercise":
-        return `
-          <div class="content-block-card" style="border-left: 3px solid var(--gold);">
-            <h4>✏️ ${block.title}</h4>
-            <p style="font-size: 0.9rem; color: var(--ivory); margin: 8px 0;">${block.instructions}</p>
-            <div style="background: #111116; padding: 14px; border-radius: var(--radius-sm); margin-top: 10px; font-family: monospace; font-size: 0.88rem; color: var(--champagne);">
-              "The moonlight reflected off the cold water. [Click to flag overzealous line-edit: <span style='text-decoration: underline; color: #ff8b8b; cursor: pointer;' onclick='showToast(\"Author voice preserved! Avoid unnecessary synonym replacement.\", \"✓\")'>Delete superfluous adjective</span>]"
-            </div>
-          </div>
-        `;
-      case "download":
-      case "pdf":
+
+      default:
         return `
           <div class="content-block-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
-              <div>
-                <h4>📑 ${block.title}</h4>
-                <p style="font-size: 0.82rem; color: var(--muted); margin-top: 4px;">${block.caption}</p>
-              </div>
-              <button class="btn btn-outline" style="border-color: var(--gold); color: var(--gold);" onclick="showToast('Document downloaded to device.', '📥')">
-                Download Resource 📥
-              </button>
-            </div>
+            <h4>${block.title || 'Curriculum Material'}</h4>
+            <p style="font-size: 0.88rem; color: var(--muted);">${block.caption || ''}</p>
           </div>
         `;
-      case "embed":
-        return `
-          <div class="embed-container-card">
-            <div style="padding: 14px 18px; border-bottom: 1px solid var(--charcoal-border); display: flex; justify-content: space-between; align-items: center;">
-              <h5 style="color: var(--champagne); font-size: 0.9rem;">📊 ${block.title}</h5>
-              <span style="font-size: 0.75rem; color: var(--muted);">${block.caption}</span>
-            </div>
-            <div style="padding: 24px; text-align: center; background: #0c0c11;">
-              <div style="border: 2px dashed rgba(212,175,55,0.3); border-radius: var(--radius-md); padding: 30px 20px;">
-                <h4 style="color: var(--ivory); font-family: var(--font-serif);">Litdom Editorial Framework</h4>
-                <p style="font-size: 0.85rem; color: var(--muted); margin: 8px auto 14px; max-width: 440px;">
-                  Interactive Diagnostic Matrix for assessing narrative pacing and thematic gravity.
-                </p>
-                <button class="btn btn-gold" style="font-size: 0.82rem; padding: 8px 18px;" onclick="showToast('Matrix loaded successfully.', '✓')">
-                  Expand Presentation Fullscreen
-                </button>
-              </div>
-            </div>
-          </div>
-        `;
-      default:
-        return "";
     }
   }).join("");
 
-  // SECTION ASSESSMENT TEST (MANDATORY: 1 QUESTION, 3 OPTIONS)
-  const testData = sec.test;
-  let testHtml = `
-    <div class="section-test-box" id="sectionTestBox">
-      <div class="section-test-badge">Section Assessment Test</div>
-      <h3 style="color: var(--champagne); font-size: 1.15rem; margin-bottom: 8px;">
-        Knowledge Verification: Unlock Next Stage
-      </h3>
-      <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 20px;">
-        You must answer this single question correctly to unlock the subsequent section on your roadmap.
-      </p>
+  // Append Section Knowledge Test Card
+  const test = sec.test;
+  const isTestPassed = !!state.sectionTestPassed[sec.id] || isCompleted;
 
-      <div style="background: rgba(0,0,0,0.3); padding: 18px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.08);">
-        <h4 style="font-size: 1rem; color: var(--ivory); margin-bottom: 14px;">
-          ${testData.question}
-        </h4>
+  blocksHtml += `
+    <div class="quiz-container" id="sectionQuizContainer">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <span class="path-tag active-tag" style="background: rgba(212, 175, 55, 0.15);">
+          🎯 SECTION KNOWLEDGE VERIFICATION
+        </span>
+        <span style="font-size: 0.8rem; color: var(--muted);">1 Question • Required</span>
+      </div>
 
-        <div style="display: flex; flex-direction: column; gap: 10px;" id="sectionOptionsList">
-  `;
+      <div class="quiz-question-text">${test.question}</div>
 
-  testData.options.forEach((opt, idx) => {
-    testHtml += `
-      <label class="quiz-option-card" id="sec-opt-${idx}" onclick="handleSectionAnswer(${idx})" style="cursor: pointer;">
-        <input type="radio" name="section_quiz" value="${idx}" style="margin-right: 12px; accent-color: var(--gold);" ${isCompleted && idx === testData.correctAnswer ? 'checked' : ''}>
-        <span style="font-size: 0.92rem; color: var(--ivory);">${opt}</span>
-      </label>
-    `;
-  });
+      <div class="quiz-options" id="sectionOptionsList">
+        ${test.options.map((opt, optIdx) => `
+          <button class="quiz-option-btn ${isTestPassed && optIdx === test.correctAnswer ? 'correct' : ''}" 
+                  id="sec-opt-${optIdx}"
+                  onclick="handleSectionAnswer(${optIdx})">
+            <span style="font-weight: 700; color: var(--gold);">${String.fromCharCode(65 + optIdx)}.</span>
+            <span>${opt}</span>
+          </button>
+        `).join("")}
+      </div>
 
-  testHtml += `
-        </div>
-        <div id="sectionFeedbackArea" style="margin-top: 16px; display: ${isCompleted ? 'block' : 'none'};">
-          ${
-            isCompleted
-              ? `<div style="background: rgba(212, 175, 55, 0.15); border: 1px solid var(--gold); border-radius: var(--radius-sm); padding: 12px 16px; color: var(--champagne);">
-                   <strong>✓ Correct!</strong> Section completed. Next phase is unlocked on your roadmap.
-                 </div>`
-              : ''
-          }
+      <div id="sectionFeedbackArea" style="display: ${isTestPassed ? 'block' : 'none'};">
+        <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; border-radius: var(--radius-sm); padding: 14px 18px; color: #d1fae5;">
+          <div style="color: #34d399; font-weight: 700; margin-bottom: 4px; font-size: 0.98rem;">
+            ✓ Knowledge Check Cleared!
+          </div>
+          <p style="font-size: 0.88rem; color: #a7f3d0;">${test.explanation}</p>
         </div>
       </div>
     </div>
   `;
 
-  flowContainer.innerHTML = blocksHtml + testHtml;
+  // Append Requirements Checklist & "Mark as Complete" Action Bar
+  blocksHtml += renderSectionChecklistHtml(sec);
 
-  // Complete Banner state
-  const banner = document.getElementById("sectionCompleteBanner");
-  if (banner) {
-    banner.style.display = isCompleted ? "block" : "none";
+  flowContainer.innerHTML = blocksHtml;
+
+  // Hide the old advance banner if it exists
+  const oldBanner = document.getElementById("sectionCompleteBanner");
+  if (oldBanner) oldBanner.style.display = "none";
+}
+
+/**
+ * Handles play/pause and countdown ticking for a video.
+ */
+function toggleVideoPlayback(vidId, totalSeconds) {
+  if (!videoTimers[vidId]) {
+    videoTimers[vidId] = {
+      remaining: totalSeconds,
+      total: totalSeconds,
+      isPlaying: false,
+      interval: null
+    };
+  }
+
+  const timerObj = videoTimers[vidId];
+
+  if (timerObj.isPlaying) {
+    // Pause
+    clearInterval(timerObj.interval);
+    timerObj.isPlaying = false;
+    updateVideoUI(vidId, false);
+    showToast("Video paused.", "⏸️");
+  } else {
+    // Start or Resume
+    timerObj.isPlaying = true;
+    showToast(`Video playing... Watch timer active (${timerObj.remaining}s remaining)`, "🎬");
+    updateVideoUI(vidId, true);
+
+    timerObj.interval = setInterval(() => {
+      timerObj.remaining--;
+
+      const pct = Math.round(((timerObj.total - timerObj.remaining) / timerObj.total) * 100);
+      const fillEl = document.getElementById(`vid-progress-${vidId}`);
+      const badgeEl = document.getElementById(`vid-badge-${vidId}`);
+
+      if (fillEl) fillEl.style.width = pct + "%";
+      if (badgeEl) badgeEl.textContent = `⏱️ 00:${timerObj.remaining < 10 ? '0' + timerObj.remaining : timerObj.remaining} remaining`;
+
+      if (timerObj.remaining <= 0) {
+        // FINISHED!
+        clearInterval(timerObj.interval);
+        timerObj.isPlaying = false;
+        state.completedVideos[vidId] = true;
+        saveState();
+
+        if (fillEl) {
+          fillEl.style.width = "100%";
+          fillEl.classList.add("finished");
+        }
+        if (badgeEl) {
+          badgeEl.className = "video-countdown-pill completed";
+          badgeEl.textContent = "✓ Lecture Watched & Verified";
+        }
+
+        updateVideoUI(vidId, false);
+        showToast("✓ Video lecture completed! Video requirement satisfied.", "🎉");
+
+        // Refresh section checklist
+        refreshSectionChecklist();
+      }
+    }, 1000);
   }
 }
 
+/**
+ * Allows instant completion of the video for testing or instructors.
+ */
+function fastForwardVideo(vidId) {
+  if (videoTimers[vidId] && videoTimers[vidId].interval) {
+    clearInterval(videoTimers[vidId].interval);
+  }
+  state.completedVideos[vidId] = true;
+  saveState();
+
+  const fillEl = document.getElementById(`vid-progress-${vidId}`);
+  const badgeEl = document.getElementById(`vid-badge-${vidId}`);
+  if (fillEl) {
+    fillEl.style.width = "100%";
+    fillEl.classList.add("finished");
+  }
+  if (badgeEl) {
+    badgeEl.className = "video-countdown-pill completed";
+    badgeEl.textContent = "✓ Lecture Watched & Verified";
+  }
+
+  showToast("Video verified! Lecture requirement fulfilled.", "⚡");
+  refreshSectionChecklist();
+}
+
+function updateVideoUI(vidId, isPlaying) {
+  const btn = document.getElementById(`vid-play-btn-${vidId}`);
+  const ctrlText = document.getElementById(`vid-ctrl-text-${vidId}`);
+  if (btn) btn.textContent = isPlaying ? "❚❚" : "▶";
+  if (ctrlText) ctrlText.textContent = isPlaying ? "Pause" : "Play";
+}
+
+
+/* =========================================================================
+ * REGION 7: INTERACTIVE EDITORIAL LABS (EMERALD GREEN SUCCESS ENGINE)
+ * ========================================================================= */
+
+/**
+ * Evaluates an option chosen by the student in an editorial exercise.
+ * Upon choosing the correct option, turns the button and card glowing EMERALD GREEN!
+ */
+function evaluateExerciseOption(exId, optionIdx) {
+  const course = getActiveCourse();
+  const sec = course.modules[state.activeModuleIndex].sections[state.activeSectionIndex];
+  const block = sec.content.find(b => (b.id || `${sec.id}-ex`) === exId);
+  if (!block || !block.options) return;
+
+  const chosenOpt = block.options[optionIdx];
+  const cardEl = document.getElementById(`exercise-card-${exId}`);
+  const badgeEl = document.getElementById(`ex-badge-${exId}`);
+  const feedbackEl = document.getElementById(`ex-feedback-${exId}`);
+  const draftEl = document.getElementById(`ex-draft-${exId}`);
+
+  // Clear previous option styles
+  block.options.forEach((_, idx) => {
+    const btn = document.getElementById(`ex-${exId}-opt-${idx}`);
+    if (btn) btn.classList.remove("correct-choice", "wrong-choice");
+  });
+
+  const selectedBtn = document.getElementById(`ex-${exId}-opt-${optionIdx}`);
+
+  if (chosenOpt.correct) {
+    // 🌟 CORRECT ANSWER -> TURN EMERALD GREEN!
+    state.completedExercises[exId] = true;
+    saveState();
+
+    if (selectedBtn) selectedBtn.classList.add("correct-choice");
+    if (cardEl) cardEl.classList.add("solved");
+    if (badgeEl) {
+      badgeEl.classList.add("solved");
+      badgeEl.textContent = "✓ EDITORIAL EXERCISE CLEARED";
+    }
+
+    if (draftEl && chosenOpt.polishedText) {
+      draftEl.innerHTML = `
+        <div style="font-size: 0.74rem; text-transform: uppercase; color: #10b981; letter-spacing: 0.08em; font-family: sans-serif; margin-bottom: 6px;">
+          ✓ Masterfully Polished Sentence:
+        </div>
+        <div style="color: #a7f3d0; font-weight: 500;">"${chosenOpt.polishedText}"</div>
+      `;
+    }
+
+    if (feedbackEl) {
+      feedbackEl.className = "editorial-feedback-box show success";
+      feedbackEl.innerHTML = `
+        <div style="font-weight: 700; color: #34d399; margin-bottom: 4px; font-size: 0.98rem;">
+          ✓ Masterful Editorial Diagnosis!
+        </div>
+        <div>${chosenOpt.feedback}</div>
+      `;
+    }
+
+    showToast("Masterful edit! Exercise solved and verified in green.", "✨");
+    refreshSectionChecklist();
+  } else {
+    // INCORRECT OPTION
+    if (selectedBtn) selectedBtn.classList.add("wrong-choice");
+    if (feedbackEl) {
+      feedbackEl.className = "editorial-feedback-box show error";
+      feedbackEl.innerHTML = `
+        <div style="font-weight: 700; color: #f87171; margin-bottom: 4px; font-size: 0.95rem;">
+          ✕ Craft Diagnosis Note
+        </div>
+        <div>${chosenOpt.feedback}</div>
+        <div style="margin-top: 6px; font-size: 0.82rem; color: var(--muted);">Review the editorial principle and select the elevated alternative.</div>
+      `;
+    }
+
+    showToast("Re-evaluate the craft diagnosis and try again.", "⚠️");
+  }
+}
+
+
+/* =========================================================================
+ * REGION 8: SECTION KNOWLEDGE CHECKS & "MARK AS COMPLETE" GATE
+ * ========================================================================= */
+
+/**
+ * Handles section quiz submission (1 question, 3 options).
+ */
 function handleSectionAnswer(selectedIdx) {
   const course = getActiveCourse();
-  const mod = course.modules[state.activeModuleIndex];
-  const sec = mod.sections[state.activeSectionIndex];
+  const sec = course.modules[state.activeModuleIndex].sections[state.activeSectionIndex];
   const test = sec.test;
 
   const feedback = document.getElementById("sectionFeedbackArea");
-  const options = document.querySelectorAll("#sectionOptionsList .quiz-option-card");
+  const options = document.querySelectorAll("#sectionOptionsList .quiz-option-btn");
 
   options.forEach((el, idx) => {
     el.classList.remove("selected", "correct", "wrong");
@@ -628,7 +911,7 @@ function handleSectionAnswer(selectedIdx) {
 
   if (selectedIdx === test.correctAnswer) {
     // CORRECT!
-    state.completedSections[sec.id] = true;
+    state.sectionTestPassed[sec.id] = true;
     saveState();
 
     const selectedEl = document.getElementById(`sec-opt-${selectedIdx}`);
@@ -637,24 +920,17 @@ function handleSectionAnswer(selectedIdx) {
     if (feedback) {
       feedback.style.display = "block";
       feedback.innerHTML = `
-        <div style="background: rgba(212, 175, 55, 0.18); border: 1px solid var(--gold); border-radius: var(--radius-sm); padding: 14px 18px; color: var(--ivory);">
-          <div style="color: var(--gold); font-weight: 700; margin-bottom: 4px; font-size: 1rem;">
-            ✓ Correct Answer! Section Mastery Achieved
+        <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; border-radius: var(--radius-sm); padding: 14px 18px; color: #d1fae5;">
+          <div style="color: #34d399; font-weight: 700; margin-bottom: 4px; font-size: 1rem;">
+            ✓ Correct Answer! Knowledge Check Cleared
           </div>
-          <p style="font-size: 0.88rem; color: var(--muted);">${test.explanation}</p>
+          <p style="font-size: 0.88rem; color: #a7f3d0;">${test.explanation}</p>
         </div>
       `;
     }
 
-    const banner = document.getElementById("sectionCompleteBanner");
-    if (banner) banner.style.display = "block";
-
-    const pBar = document.getElementById("sectionProgressBar");
-    const pTxt = document.getElementById("sectionProgressPct");
-    if (pBar) pBar.style.width = "100%";
-    if (pTxt) pTxt.textContent = "100% Completed";
-
-    showToast("Section cleared! Next stage unlocked on roadmap.", "✓");
+    showToast("Knowledge check passed! Requirement satisfied.", "✓");
+    refreshSectionChecklist();
   } else {
     // INCORRECT!
     const selectedEl = document.getElementById(`sec-opt-${selectedIdx}`);
@@ -663,54 +939,207 @@ function handleSectionAnswer(selectedIdx) {
     if (feedback) {
       feedback.style.display = "block";
       feedback.innerHTML = `
-        <div style="background: rgba(255, 107, 107, 0.15); border: 1px solid #ff6b6b; border-radius: var(--radius-sm); padding: 14px 18px; color: var(--ivory);">
-          <div style="color: #ff8b8b; font-weight: 700; margin-bottom: 4px; font-size: 0.95rem;">
+        <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; border-radius: var(--radius-sm); padding: 14px 18px; color: #fee2e2;">
+          <div style="color: #f87171; font-weight: 700; margin-bottom: 4px; font-size: 0.95rem;">
             ✕ Incorrect Answer
           </div>
-          <p style="font-size: 0.88rem; color: var(--muted); margin-bottom: 8px;">
-            Review the section concepts above and select the correct option to unlock the next section.
+          <p style="font-size: 0.88rem; color: #fca5a5; margin-bottom: 8px;">
+            Review the section material above and choose the correct answer.
           </p>
-          <button class="btn btn-outline" style="font-size: 0.8rem; padding: 6px 14px;" onclick="renderSectionContent()">
-            Try Again ↻
-          </button>
         </div>
       `;
     }
 
-    showToast("Incorrect. Re-read the section materials and try again.", "⚠️");
+    showToast("Incorrect. Re-read the section material and try again.", "⚠️");
   }
 }
 
-function advanceToNextSection() {
+/**
+ * Checks if all requirements for the given section are met.
+ */
+function areSectionRequirementsMet(sec) {
+  // Check video requirements
+  const videoBlocks = sec.content.filter(b => b.type === "video");
+  const allVideosDone = videoBlocks.every(v => !!state.completedVideos[v.id || `${sec.id}-vid`]);
+
+  // Check interactive exercise requirements
+  const exBlocks = sec.content.filter(b => b.type === "interactive_exercise" || b.type === "exercise");
+  const allExDone = exBlocks.every(e => !!state.completedExercises[e.id || `${sec.id}-ex`]);
+
+  // Check section knowledge check
+  const testDone = !!state.sectionTestPassed[sec.id] || isSectionCompleted(sec.id);
+
+  return {
+    allMet: allVideosDone && allExDone && testDone,
+    videosDone: allVideosDone,
+    videoCount: videoBlocks.length,
+    exDone: allExDone,
+    exCount: exBlocks.length,
+    testDone: testDone
+  };
+}
+
+/**
+ * Renders the Section Completion Checklist HTML block.
+ */
+function renderSectionChecklistHtml(sec) {
+  const reqs = areSectionRequirementsMet(sec);
+  const isCompleted = isSectionCompleted(sec.id);
+
+  let totalItems = 1; // Section test is always 1
+  let completedItems = reqs.testDone ? 1 : 0;
+
+  if (reqs.videoCount > 0) {
+    totalItems += reqs.videoCount;
+    if (reqs.videosDone) completedItems += reqs.videoCount;
+  }
+  if (reqs.exCount > 0) {
+    totalItems += reqs.exCount;
+    if (reqs.exDone) completedItems += reqs.exCount;
+  }
+
+  const isReady = reqs.allMet || isCompleted;
+
+  return `
+    <div class="section-checklist-box" id="sectionChecklistCard">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <span style="font-size: 0.74rem; text-transform: uppercase; color: var(--gold); letter-spacing: 0.08em; font-weight: 700;">
+            LEVEL CLEARANCE PROTOCOL
+          </span>
+          <h4 style="color: var(--ivory); font-size: 1.15rem; margin-top: 2px;">
+            Required Section Milestones
+          </h4>
+        </div>
+        <div style="font-size: 0.85rem; font-weight: 700; color: ${isReady ? '#10b981' : 'var(--gold)'};">
+          ${completedItems} / ${totalItems} Satisfied
+        </div>
+      </div>
+
+      <div class="checklist-items-grid">
+        ${
+          reqs.videoCount > 0
+            ? `
+              <div class="checklist-row ${reqs.videosDone ? 'completed' : ''}">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span style="font-size: 1.1rem;">${reqs.videosDone ? '✓' : '🎬'}</span>
+                  <span style="font-size: 0.9rem; color: var(--ivory);">Masterclass Video Lecture (Watch Timer Enforced)</span>
+                </div>
+                <span class="checklist-status-badge">
+                  ${reqs.videosDone ? 'Watched' : 'Watch Required'}
+                </span>
+              </div>
+            `
+            : ''
+        }
+
+        ${
+          reqs.exCount > 0
+            ? `
+              <div class="checklist-row ${reqs.exDone ? 'completed' : ''}">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span style="font-size: 1.1rem;">${reqs.exDone ? '✓' : '✏️'}</span>
+                  <span style="font-size: 0.9rem; color: var(--ivory);">Interactive Editorial Exercise (Solve Correctly)</span>
+                </div>
+                <span class="checklist-status-badge">
+                  ${reqs.exDone ? 'Cleared' : 'Pending Diagnosis'}
+                </span>
+              </div>
+            `
+            : ''
+        }
+
+        <div class="checklist-row ${reqs.testDone ? 'completed' : ''}">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.1rem;">${reqs.testDone ? '✓' : '🎯'}</span>
+            <span style="font-size: 0.9rem; color: var(--ivory);">Section Knowledge Verification (1 Question)</span>
+          </div>
+          <span class="checklist-status-badge">
+            ${reqs.testDone ? 'Passed' : 'Pending Check'}
+          </span>
+        </div>
+      </div>
+
+      <!-- Mark as Complete Button -->
+      <button class="btn-complete-level ${isReady ? 'ready' : 'locked'}" 
+              id="btnMarkSectionComplete"
+              onclick="${isReady ? 'markSectionCompleteAndAdvance()' : 'explainPendingRequirements()'}">
+        ${
+          isCompleted
+            ? "✓ Level Completed • Continue to Next &rarr;"
+            : isReady
+            ? "✓ Mark Level as Complete & Advance &rarr;"
+            : `Mark Level as Complete (${completedItems}/${totalItems} Satisfied)`
+        }
+      </button>
+    </div>
+  `;
+}
+
+/**
+ * Re-renders only the checklist widget so user sees live updates.
+ */
+function refreshSectionChecklist() {
+  const course = getActiveCourse();
+  const sec = course.modules[state.activeModuleIndex].sections[state.activeSectionIndex];
+  const oldBox = document.getElementById("sectionChecklistCard");
+  if (!oldBox) return;
+
+  const temp = document.createElement("div");
+  temp.innerHTML = renderSectionChecklistHtml(sec);
+  oldBox.parentNode.replaceChild(temp.firstElementChild, oldBox);
+}
+
+/**
+ * Called when learner clicks "Mark Level as Complete & Advance".
+ */
+function markSectionCompleteAndAdvance() {
   const course = getActiveCourse();
   const currentMod = course.modules[state.activeModuleIndex];
+  const currentSec = currentMod.sections[state.activeSectionIndex];
 
+  // Mark section as completed in state
+  state.completedSections[currentSec.id] = true;
+  saveState();
+
+  showToast("🎉 Congratulations! Section cleared and unlocked on the roadmap.", "🏆");
+
+  // Advance to next section or module assessment
   if (state.activeSectionIndex < currentMod.sections.length - 1) {
-    // Next section in current module
     state.activeSectionIndex++;
     saveState();
     renderSectionContent();
     window.scrollTo({ top: 0, behavior: "smooth" });
   } else {
-    // End of module sections -> Advance to Module Assessment
-    showToast(`All sections cleared! Proceeding to Module ${currentMod.num} Assessment.`, "📜");
+    // All sections in this module cleared -> Advance to Module Assessment!
+    showToast(`All sections cleared! Opening Module ${currentMod.num} Assessment.`, "📜");
     state.activeAssessmentModIndex = state.activeModuleIndex;
     saveState();
     navigateTo("module-assessment");
   }
 }
 
-function toggleAudioDemo(btn) {
-  if (btn.textContent.trim() === "▶") {
-    btn.textContent = "❚❚";
-    showToast("Audio masterclass playing...", "🔊");
-  } else {
-    btn.textContent = "▶";
-    showToast("Audio paused.", "⏸️");
-  }
+/**
+ * Alerts the user to which requirements are still missing.
+ */
+function explainPendingRequirements() {
+  const course = getActiveCourse();
+  const sec = course.modules[state.activeModuleIndex].sections[state.activeSectionIndex];
+  const reqs = areSectionRequirementsMet(sec);
+
+  let missing = [];
+  if (reqs.videoCount > 0 && !reqs.videosDone) missing.push("Watch video lecture until timer completes");
+  if (reqs.exCount > 0 && !reqs.exDone) missing.push("Solve the interactive editorial exercise");
+  if (!reqs.testDone) missing.push("Answer the section knowledge question correctly");
+
+  showToast(`Please complete requirements before moving on: ${missing.join(" • ")}`, "⚠️");
 }
 
-/* --- View E1: Module Assessment View --- */
+
+/* =========================================================================
+ * REGION 9: VIEW D - MODULE ASSESSMENTS (5-QUESTION EVALUATION)
+ * ========================================================================= */
+
 function renderModuleAssessment() {
   const course = getActiveCourse();
   const mod = course.modules[state.activeAssessmentModIndex];
@@ -726,7 +1155,7 @@ function renderModuleAssessment() {
   if (passEl) passEl.textContent = `${mod.passingScore} of 5 (${(mod.passingScore/5)*100}%)`;
   if (outcomeEl) outcomeEl.textContent = state.activeAssessmentModIndex < course.modules.length - 1
     ? `Unlocks Module ${mod.num + 1}`
-    : `Unlocks Final Examination`;
+    : `Unlocks Final Capstone Examination`;
   if (bcEl) bcEl.textContent = `Module ${mod.num} Assessment`;
 
   const container = document.getElementById("moduleAssessmentQuestionsContainer");
@@ -793,14 +1222,14 @@ function submitModuleAssessment() {
       resultBox.style.display = "block";
       resultBox.innerHTML = `
         <div style="font-size: 2.8rem; margin-bottom: 10px;">🌟</div>
-        <h2 style="color: var(--champagne); font-size: 1.5rem;">Module ${mod.num} Assessment Passed!</h2>
-        <div class="score-banner" style="color: var(--gold); font-size: 2rem; font-weight: 800; margin: 12px 0;">
+        <h2 style="color: #34d399; font-size: 1.5rem;">Module ${mod.num} Assessment Passed!</h2>
+        <div class="score-banner" style="color: #10b981; font-size: 2rem; font-weight: 800; margin: 12px 0;">
           Score: ${score} / 5 (${(score/5)*100}%)
         </div>
         <p style="color: var(--ivory); font-size: 0.95rem; max-width: 500px; margin: 0 auto 24px;">
           ${
             isLastModule
-              ? "Magnificent achievement! You have completed all 5 curriculum modules. The 50-Question Final Capstone Examination is now UNLOCKED on your roadmap."
+              ? "Magnificent achievement! You have mastered all 5 curriculum modules. The 50-Question Final Capstone Examination is now UNLOCKED on your roadmap."
               : `Congratulations! You have demonstrated verified mastery of "${mod.title}". Module ${mod.num + 1} is now unlocked.`
           }
         </p>
@@ -847,7 +1276,11 @@ function proceedToNextModule() {
   navigateTo("content");
 }
 
-/* --- View E2: Final Examination View (50 Questions, Passing 45/50) --- */
+
+/* =========================================================================
+ * REGION 10: VIEW E - FINAL CAPSTONE EXAM & CERTIFICATION
+ * ========================================================================= */
+
 function renderExamScreen() {
   const course = getActiveCourse();
   if (!canTakeFinalExam()) {
@@ -903,9 +1336,11 @@ function submitFinalExam() {
   });
 
   if (unansweredIndices.length > 0) {
-    showToast(`Please answer all questions. Missing: Problem ${unansweredIndices.slice(0, 3).join(", ")}...`, "⚠️");
-    const firstMissing = document.getElementById(`final-q-item-${unansweredIndices[0] - 1}`);
-    if (firstMissing) firstMissing.scrollIntoView({ behavior: "smooth", block: "center" });
+    showToast(`You have ${unansweredIndices.length} unanswered question(s). Complete all 50.`, "⚠️");
+    const firstUnanswered = document.getElementById(`final-q-item-${unansweredIndices[0] - 1}`);
+    if (firstUnanswered) {
+      firstUnanswered.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
     return;
   }
 
@@ -913,109 +1348,150 @@ function submitFinalExam() {
   const resultBox = document.getElementById("examResultBox");
   const submitWrapper = document.getElementById("examSubmitWrapper");
 
-  state.examState.score = score;
-  state.examState.passed = passed;
-  state.examState.timestamp = Date.now();
-  saveState();
-
-  if (submitWrapper) submitWrapper.style.display = "none";
-
   if (passed) {
+    state.examState = {
+      passed: true,
+      score: score,
+      timestamp: new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
+    };
+    saveState();
+
+    if (submitWrapper) submitWrapper.style.display = "none";
     if (resultBox) {
       resultBox.style.display = "block";
       resultBox.innerHTML = `
         <div style="font-size: 3rem; margin-bottom: 12px;">🎓</div>
-        <h2 style="color: var(--champagne); font-size: 1.6rem;">Board Accreditation Conferred!</h2>
-        <div class="score-banner" style="color: var(--gold); font-size: 2.2rem; font-weight: 800; margin: 12px 0;">
-          Score: ${score} / 50 (${(score/50)*100}%)
+        <h2 style="color: #34d399; font-size: 1.8rem;">Board Examination Cleared!</h2>
+        <div class="score-banner" style="color: #10b981; font-size: 2.2rem; font-weight: 800; margin: 14px 0;">
+          Score: ${score} / 50 (${Math.round((score/50)*100)}%)
         </div>
-        <p style="color: var(--ivory); font-size: 0.98rem; max-width: 520px; margin: 0 auto 24px;">
-          Distinction achieved! You have satisfied the rigorous 45/50 standard of Litdom Academy. Your official Certificate of Editorial Mastery has been generated and sealed.
+        <p style="color: var(--ivory); font-size: 1rem; max-width: 550px; margin: 0 auto 24px;">
+          By order of the Editorial Directorate of Litdom Academy, having satisfied all examination standards, you are hereby conferred the credential of Master Editorial Fellow.
         </p>
-        <button class="btn btn-gold" style="padding: 16px 36px; font-size: 1.1rem;" onclick="navigateTo('certificate')">
-          View Official Certificate & Credentials &rarr;
+        <button class="btn btn-gold" style="padding: 14px 28px; font-size: 1.05rem;" onclick="navigateTo('certificate')">
+          View Master Certificate &rarr;
         </button>
       `;
     }
-    showToast(`Exam Passed with ${score}/50! Accreditation granted.`, "🎓");
+
+    showToast("Master Certification Achieved! 🎓", "🏆");
   } else {
     if (resultBox) {
       resultBox.style.display = "block";
       resultBox.innerHTML = `
-        <div style="font-size: 2.6rem; margin-bottom: 10px;">⚖️</div>
-        <h2 style="color: #ff8b8b; font-size: 1.4rem;">Accreditation Threshold Not Met</h2>
-        <div class="score-banner" style="color: #ff8b8b; font-size: 2rem; font-weight: 800; margin: 12px 0;">
-          Score: ${score} / 50 (Passing: 45 / 50)
+        <div style="font-size: 3rem; margin-bottom: 12px;">⚖️</div>
+        <h2 style="color: #ff8b8b; font-size: 1.6rem;">Examination Not Passed</h2>
+        <div class="score-banner" style="color: #ff8b8b; font-size: 2rem; font-weight: 800; margin: 14px 0;">
+          Score: ${score} / 50 (Passing: ${exam.passingScore} / 50)
         </div>
-        <p style="color: var(--muted); font-size: 0.92rem; max-width: 500px; margin: 0 auto 20px;">
-          The Litdom Editorial Board requires a minimum score of 45/50 (90%) for formal credentialing. Review the curriculum modules and re-attempt the examination.
+        <p style="color: var(--muted); font-size: 0.95rem; max-width: 550px; margin: 0 auto 20px;">
+          The Board requires 90% (45/50) for professional licensure. You scored ${score}/50. Review the curriculum modules and retake the examination.
         </p>
-        <div style="display: flex; gap: 14px; justify-content: center;">
-          <button class="btn btn-outline" onclick="navigateTo('dashboard')">
-            Review Roadmap
-          </button>
-          <button class="btn btn-gold" onclick="renderExamScreen()">
-            Retake Exam Now ↻
-          </button>
-        </div>
+        <button class="btn btn-gold" onclick="renderExamScreen()">
+          Retake Examination Now ↻
+        </button>
       `;
     }
+
     showToast(`Score: ${score}/50. Required: 45/50.`, "⚠️");
   }
 }
 
-/* --- View F: Official Certificate --- */
 function renderCertificate() {
   if (!state.examState.passed) {
-    showToast("Certificate locked. Pass the Final Examination (45/50) first.", "🔒");
+    showToast("Certificate locked. Complete and pass the Board Exam first.", "🔒");
     navigateTo("dashboard");
     return;
   }
 
-  const nameEl = document.getElementById("certRecipientName");
-  const courseEl = document.getElementById("certCourseTitle");
-  const dateEl = document.getElementById("certIssueDate");
-  const codeEl = document.getElementById("certCodeDisplay");
+  const nameEl = document.getElementById("certLearnerName");
+  const dateEl = document.getElementById("certDateIssued");
+  const idEl = document.getElementById("certCredentialId");
 
-  if (nameEl) nameEl.textContent = state.studentName;
-  if (courseEl) courseEl.textContent = getActiveCourse().title;
-  if (dateEl) {
-    const d = new Date(state.examState.timestamp || Date.now());
-    dateEl.textContent = d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+  if (nameEl) nameEl.textContent = state.studentName || "Eleanor Vance";
+  if (dateEl) dateEl.textContent = state.examState.timestamp || "October 2026";
+  if (idEl) idEl.textContent = "LITDOM-" + Math.abs(hashCode(state.studentName + "cert")).toString(36).toUpperCase().padStart(8, "0");
+}
+
+function downloadCertificate() {
+  window.print();
+}
+
+function hashCode(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0;
   }
-  if (codeEl) {
-    codeEl.textContent = `LIT-${state.examState.score}X-${Math.abs(state.studentName.split("").reduce((a, b) => ((a << 5) - a) + b.charCodeAt(0), 0) % 99999)}`;
+  return hash;
+}
+
+
+/* =========================================================================
+ * REGION 11: UTILITIES, AUDIO SIMULATOR & TOAST NOTIFICATIONS
+ * ========================================================================= */
+
+function toggleAudioDemo(btn) {
+  if (btn.textContent.trim() === "▶") {
+    btn.textContent = "❚❚";
+    showToast("Audio masterclass playing...", "🔊");
+  } else {
+    btn.textContent = "▶";
+    showToast("Audio paused.", "⏸️");
   }
 }
 
-function updateStudentName() {
-  const current = state.studentName;
-  const next = prompt("Enter your full legal name for the official certificate:", current);
-  if (next && next.trim()) {
-    state.studentName = next.trim();
-    saveState();
-    renderCertificate();
-    showToast("Certificate name updated!", "✓");
-  }
+function showToast(msg, icon = "✨") {
+  const el = document.getElementById("toastMsg");
+  const txt = document.getElementById("toastText");
+  const icn = document.getElementById("toastIcon");
+  if (!el || !txt) return;
+
+  txt.textContent = msg;
+  if (icn) icn.textContent = icon;
+  el.classList.add("show");
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(() => el.classList.remove("show"), 3400);
 }
 
-// Window aliases
-window.changeStudentNamePrompt = updateStudentName;
-window.updateStudentName = updateStudentName;
-window.openPathModal = openPathModal;
-window.closePathModal = closePathModal;
-window.selectPath = selectPath;
-window.openCourse = openCourse;
 
-/* --- Initialization --- */
+/* =========================================================================
+ * INITIALIZATION ON DOM LOAD
+ * ========================================================================= */
 document.addEventListener("DOMContentLoaded", () => {
   loadState();
-  renderHub();
 
+  // Attach modal overlay click-to-close
   const modal = document.getElementById("pathModal");
   if (modal) {
     modal.addEventListener("click", (e) => {
       if (e.target === modal) closePathModal();
     });
   }
+
+  // Ensure first screen loads
+  navigateTo(state.currentView || "hub");
 });
+
+// Expose globally
+if (typeof window !== "undefined") {
+  window.navigateTo = navigateTo;
+  window.openPathModal = openPathModal;
+  window.closePathModal = closePathModal;
+  window.selectPath = selectPath;
+  window.openSection = openSection;
+  window.openModuleAssessment = openModuleAssessment;
+  window.resetProgress = resetProgress;
+  window.toggleVideoPlayback = toggleVideoPlayback;
+  window.fastForwardVideo = fastForwardVideo;
+  window.evaluateExerciseOption = evaluateExerciseOption;
+  window.handleSectionAnswer = handleSectionAnswer;
+  window.markSectionCompleteAndAdvance = markSectionCompleteAndAdvance;
+  window.explainPendingRequirements = explainPendingRequirements;
+  window.submitModuleAssessment = submitModuleAssessment;
+  window.proceedToNextModule = proceedToNextModule;
+  window.submitFinalExam = submitFinalExam;
+  window.downloadCertificate = downloadCertificate;
+  window.toggleAudioDemo = toggleAudioDemo;
+  window.showToast = showToast;
+}

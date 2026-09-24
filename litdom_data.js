@@ -2,7 +2,7 @@
  * LITDOM ACADEMY - CURRICULUM ARCHITECTURE & DEVELOPER BLUEPRINT
  * =========================================================================
  * 
- * 🎓 WELCOME DEAR DEVELOPER / INSTRUCTOR!
+ * WELCOME DEAR DEVELOPER / INSTRUCTOR!
  * This file contains the complete curriculum data for Litdom Academy.
  * Everything is modular and structured in a clean, hierarchical tree:
  * 
@@ -14,7 +14,7 @@
  *                       └── test    [ Section Knowledge Check: 1 Question, 3 Options ]
  * 
  * -------------------------------------------------------------------------
- * 📋 HOW TO ADD / REMOVE / DUPLICATE CURRICULUM ELEMENTS:
+ * HOW TO ADD / REMOVE / DUPLICATE CURRICULUM ELEMENTS:
  * -------------------------------------------------------------------------
  * 
  * [1] TO ADD A NEW COURSE:
@@ -26,17 +26,19 @@
  * [3] TO ADD A NEW SECTION:
  *     Copy the TEMPLATE_SECTION below and paste it inside any module's `sections` array.
  * 
- * [4] TO ADD A VIDEO WITH COUNTDOWN TIMER:
+ * [4] TO ADD A VIDEO WITH EDITABLE COUNTDOWN TIMER:
  *     In your section's `content` array, insert:
  *     {
  *       type: "video",
  *       id: "vid-unique-id",
  *       title: "Lecture Title",
  *       caption: "Short overview of the lesson video",
- *       durationSeconds: 25, // ⏱️ Enforced timer: student must watch before marking complete!
+ *       durationSeconds: 25, // EDITABLE TIMER: Set duration in seconds for your own video (e.g., 60 = 1 min)
+ *       videoUrl: "", // EDITABLE MEDIA: Optional URL to your MP4, YouTube embed, or local video file
  *       instructor: "Dean Julian Sterling",
  *       badge: "HD Masterclass"
  *     }
+ *     NOTE: The timer duration and video URL can also be edited live directly inside the UI!
  * 
  * [5] TO ADD AN INTERACTIVE EDITORIAL EXERCISE (TURNS GREEN ON SUCCESS):
  *     In your section's `content` array, insert:
@@ -55,7 +57,7 @@
  *         },
  *         {
  *           text: "Option B description (Correct)...",
- *           correct: true, // 🌟 Setting correct: true turns the card and button emerald green!
+ *           correct: true, // Setting correct: true turns the card and button emerald green!
  *           feedback: "Praise the learner and explain the craft theory.",
  *           polishedText: "The resulting polished sentence."
  *         }
@@ -75,7 +77,7 @@ const LITDOM_DATA = {
       category: "Editorial Craft",
       level: "Foundational to Advanced",
       duration: "4.5 Hours",
-      icon: "✒️",
+      icon: "quill",
       description: "Transform raw manuscripts into published literature. Master line editing, substantive diagnosis, and author psychology.",
       supportedPaths: ["oneway", "practical"],
       modules: [

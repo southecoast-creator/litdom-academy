@@ -189,49 +189,62 @@
       margin-bottom: 28px;
     }
 
-    /* Buttons */
+    /* Buttons - Refined, Neat & Clean */
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      padding: 13px 24px;
-      border-radius: var(--radius-md);
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 8px;
       font-family: var(--font-sans);
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       font-weight: 600;
+      letter-spacing: 0.015em;
       cursor: pointer;
       text-decoration: none;
-      transition: var(--transition);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       border: 1px solid transparent;
       outline: none;
+      user-select: none;
+      white-space: nowrap;
+      box-sizing: border-box;
+      line-height: 1.4;
+    }
+
+    .btn svg {
+      flex-shrink: 0;
     }
 
     .btn-gold {
-      background: linear-gradient(135deg, var(--gold), #b89327);
+      background: linear-gradient(135deg, #d4af37 0%, #b89327 100%);
       color: #0b0b0f;
-      box-shadow: 0 4px 18px var(--gold-glow-soft);
+      border: 1px solid rgba(255, 235, 179, 0.35);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
 
     .btn-gold:hover, .btn-gold:focus-visible {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px var(--gold-glow);
-      filter: brightness(1.08);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(212, 175, 55, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      filter: brightness(1.06);
     }
 
     .btn-gold:active {
-      transform: translateY(1px);
+      transform: translateY(0);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
     }
 
     .btn-outline {
-      background: transparent;
-      border: 1px solid var(--charcoal-border);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(212, 175, 55, 0.3);
       color: var(--champagne);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
     }
 
     .btn-outline:hover {
       border-color: var(--gold);
-      background: rgba(212, 175, 55, 0.08);
+      background: rgba(212, 175, 55, 0.1);
+      color: #fff;
       transform: translateY(-1px);
     }
 
@@ -251,6 +264,89 @@
       cursor: not-allowed;
       transform: none !important;
       box-shadow: none !important;
+    }
+
+    /* Video Config Drawer for Custom Timers & Videos */
+    .video-config-drawer {
+      background: #14141c;
+      border-top: 1px solid rgba(212, 175, 55, 0.25);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+      padding: 16px 20px;
+      margin: 12px 0;
+      animation: viewFadeIn 0.25s ease;
+      border-radius: 6px;
+    }
+
+    .video-config-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--champagne);
+      margin-bottom: 4px;
+    }
+
+    .video-config-hint {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .video-config-grid {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .video-config-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .video-config-field label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--ivory);
+    }
+
+    .video-input-field {
+      background: #09090c;
+      border: 1px solid var(--charcoal-border);
+      color: var(--champagne);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      outline: none;
+      transition: var(--transition);
+      box-sizing: border-box;
+    }
+
+    .video-input-field:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 10px var(--gold-glow-soft);
+    }
+
+    .preset-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--champagne);
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .preset-btn:hover {
+      background: rgba(212, 175, 55, 0.18);
+      border-color: var(--gold);
+      color: #fff;
     }
 
     /* Cards */
@@ -1956,7 +2052,12 @@
         <div class="path-options">
           <!-- One-Way Learning (Functional) -->
           <div class="path-card" onclick="selectPath('oneway')">
-            <div class="path-icon">📖</div>
+            <div class="path-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+                <path d="M6 2v20"/>
+              </svg>
+            </div>
             <div class="path-info">
               <h4>One-Way Learning</h4>
               <p>Learn at your own pace. Interactive lessons, quizzes, editorial markup exercises, and final certification.</p>
@@ -1966,7 +2067,13 @@
 
           <!-- Intensive Practical Learning (Data-modeled Coming Soon) -->
           <div class="path-card disabled" onclick="showToast('Intensive Practical Learning cohort opens soon. One-Way path is open now!')">
-            <div class="path-icon">🛠</div>
+            <div class="path-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m14.7 6.3 5 5-11.4 11.4-5-5L14.7 6.3Z"/>
+                <path d="M19.7 1.3a3.3 3.3 0 0 1 4.7 4.7l-2 2-4.7-4.7 2-2Z"/>
+                <path d="M7 16l-4 4"/>
+              </svg>
+            </div>
             <div class="path-info">
               <h4>Intensive Practical Learning</h4>
               <p>"Don't just learn it. Do it." Live cohort manuscript teardowns, 1-on-1 editor mentorship, and portfolio critique.</p>
@@ -2000,7 +2107,13 @@
             </p>
           </div>
 
-          <div style="text-align: right;">
+          <div style="text-align: right; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <button class="btn btn-gold" id="btnDashStartLesson" style="font-size: 0.85rem; padding: 9px 18px;" onclick="resumeCurrentLesson()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="6 3 20 12 6 21 6 3"/>
+              </svg>
+              Start Lesson
+            </button>
             <button class="btn btn-outline" style="font-size: 0.8rem; padding: 8px 14px;" onclick="resetCourseProgressPrompt()">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
@@ -2075,7 +2188,11 @@
 
       <!-- Section Complete Confirmation Modal / Action -->
       <div class="section-complete-banner" id="sectionCompleteBanner">
-        <div style="font-size: 2.2rem; margin-bottom: 8px;">✨</div>
+        <div style="margin-bottom: 12px; color: var(--gold);">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="currentColor">
+            <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z"/>
+          </svg>
+        </div>
         <h3 style="color: var(--champagne); font-size: 1.3rem;">Section Mastery Achieved!</h3>
         <p style="color: var(--ivory); font-size: 0.95rem; max-width: 480px; margin: 8px auto 20px;">
           You've completed all required blocks for this module. The next phase of your editorial journey is unlocked.
@@ -2100,7 +2217,15 @@
       </div>
 
       <div class="exam-header-banner">
-        <div class="exam-seal">📜</div>
+        <div class="exam-seal">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 17V5a2 2 0 0 0-2-2H4"/>
+            <path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1z"/>
+            <path d="M4 5v14a2 2 0 0 0 2 2h2"/>
+            <path d="M9 7h6"/>
+            <path d="M9 11h6"/>
+          </svg>
+        </div>
         <h1 id="modAssessmentTitle">Module 1 Assessment</h1>
         <p id="modAssessmentDesc" style="color: var(--muted); max-width: 600px; margin: 0 auto; font-size: 0.95rem;">
           Demonstrate foundational mastery across all sections in this module to unlock the next stage.
@@ -2127,7 +2252,7 @@
       </div>
 
       <div style="text-align: center; margin-top: 30px;" id="modAssessmentSubmitWrapper">
-        <button class="btn btn-gold" style="padding: 16px 36px; font-size: 1.05rem;" onclick="submitModuleAssessment()">
+        <button class="btn btn-gold" style="padding: 14px 32px; font-size: 1rem;" onclick="submitModuleAssessment()">
           Submit Module Assessment for Evaluation &rarr;
         </button>
       </div>
@@ -2150,7 +2275,15 @@
       </div>
 
       <div class="exam-header-banner">
-        <div class="exam-seal">⚖️</div>
+        <div class="exam-seal">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+            <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+            <path d="M7 21h10"/>
+            <path d="M12 3v18"/>
+            <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>
+          </svg>
+        </div>
         <h1>The Editorial Board Examination</h1>
         <p style="color: var(--muted); max-width: 580px; margin: 0 auto; font-size: 0.95rem;">
           This formal assessment rigorously validates your grasp of editorial ethics, author diplomacy, workflow execution, and copyediting precision.
@@ -2180,7 +2313,10 @@
         </p>
         <div class="timer-display" id="cooldownTimerText">23:59:45</div>
         <button class="btn btn-outline" style="font-size: 0.76rem; padding: 6px 12px; margin-top: 8px;" onclick="bypassCooldownForTesting()">
-          ⚡ Reset Cooldown (Examiner Demo Bypass)
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+          Reset Cooldown (Examiner Demo Bypass)
         </button>
       </div>
 
@@ -2190,7 +2326,7 @@
       </div>
 
       <div style="text-align: center; margin-top: 30px;" id="examSubmitWrapper">
-        <button class="btn btn-gold" style="padding: 16px 36px; font-size: 1.05rem;" onclick="submitFinalExam()">
+        <button class="btn btn-gold" style="padding: 14px 32px; font-size: 1rem;" onclick="submitFinalExam()">
           Submit Examination for Grading &rarr;
         </button>
       </div>
@@ -2278,7 +2414,7 @@
 
   <!-- Global Toast Element -->
   <div class="toast-msg" id="toastMsg">
-    <span id="toastIcon">✨</span>
+    <span id="toastIcon" style="display: inline-flex; align-items: center; justify-content: center;"></span>
     <span id="toastText">Welcome to Litdom Academy</span>
   </div>
 

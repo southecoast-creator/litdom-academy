@@ -2,7 +2,7 @@
  * LITDOM ACADEMY - COMPREHENSIVE PROGRESSION & INTERACTION ENGINE
  * =========================================================================
  * 
- * 🎓 WELCOME DEAR DEVELOPER / INSTRUCTOR!
+ * WELCOME DEAR DEVELOPER / INSTRUCTOR!
  * This engine powers the entire learner journey across Litdom Academy.
  * The code is organized into 11 clearly designated regions below so you
  * can easily find, modify, add, remove, or duplicate any feature.
@@ -10,18 +10,69 @@
  * -------------------------------------------------------------------------
  * TABLE OF CONTENTS / CODE REGIONS:
  * -------------------------------------------------------------------------
+ *   REGION 0: SVG ICON SYSTEM (ZERO EMOJIS, PURE VECTOR GRAPHICS)
  *   REGION 1: STATE MANAGEMENT & DATA PERSISTENCE
  *   REGION 2: CURRICULUM HELPERS (DYNAMIC SCALING FOR ANY COURSES/MODULES)
  *   REGION 3: VIEW NAVIGATION & ROUTING
  *   REGION 4: VIEW A - COURSE HUB & PATHWAY MODAL
  *   REGION 5: VIEW B - VISUAL ROADMAP JOURNEY MAP (DYNAMIC MODULES/SECTIONS)
- *   REGION 6: VIEW C - SECTION CONTENT & VIDEO TIMER ENGINE
+ *   REGION 6: VIEW C - SECTION CONTENT, EDITABLE VIDEO TIMERS & PLAYERS
  *   REGION 7: INTERACTIVE EDITORIAL LABS (EMERALD GREEN SUCCESS ENGINE)
  *   REGION 8: SECTION KNOWLEDGE CHECKS & "MARK AS COMPLETE" GATE
  *   REGION 9: VIEW D - MODULE ASSESSMENTS (5-QUESTION EVALUATION)
  *   REGION 10: VIEW E - FINAL CAPSTONE EXAM & CERTIFICATION
- *   REGION 11: UTILITIES, AUDIO SIMULATOR & TOAST NOTIFICATIONS
+ *   REGION 11: UTILITIES, AUDIO SIMULATOR & SVG TOAST NOTIFICATIONS
  * ========================================================================= */
+
+
+/* =========================================================================
+ * REGION 0: SVG ICON SYSTEM (ZERO EMOJIS, PURE VECTOR GRAPHICS)
+ * ========================================================================= */
+const LITDOM_ICONS = {
+  quill: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>`,
+  pencil: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>`,
+  book: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 2v20"/></svg>`,
+  award: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>`,
+  clock: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+  video: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg>`,
+  play: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>`,
+  pause: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>`,
+  replay: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`,
+  check: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+  lock: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+  star: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+  zap: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+  headphones: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>`,
+  search: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>`,
+  target: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+  alert: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>`,
+  cross: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+  scroll: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1z"/><path d="M4 5v14a2 2 0 0 0 2 2h2"/><path d="M9 7h6"/><path d="M9 11h6"/></svg>`,
+  scales: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>`,
+  trophy: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>`,
+  sparkle: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="currentColor"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z"/></svg>`,
+  graduation: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>`,
+  sliders: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="12" y2="3"/><line x1="1" x2="7" y1="14" y2="14"/><line x1="9" x2="15" y1="8" y2="8"/><line x1="17" x2="23" y1="16" y2="16"/></svg>`,
+  sound: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>`
+};
+
+/**
+ * Returns an SVG icon string with customizable size.
+ */
+function svgIcon(name, size = 18) {
+  let template = LITDOM_ICONS[name] || LITDOM_ICONS["sparkle"];
+  return template.replace(/\{size\}/g, size);
+}
+
+/**
+ * Formats integer seconds into MM:SS string.
+ */
+function formatSeconds(sec) {
+  const s = Math.max(0, parseInt(sec, 10) || 0);
+  const m = Math.floor(s / 60);
+  const remS = s % 60;
+  return `${m < 10 ? '0' + m : m}:${remS < 10 ? '0' + remS : remS}`;
+}
 
 
 /* =========================================================================
@@ -36,12 +87,13 @@ let state = {
   activeSectionIndex: 0,
   activeAssessmentModIndex: 0,
   studentName: "Eleanor Vance",
-  completedSections: {},   // Map of sectionId -> boolean
-  completedModules: {},    // Map of moduleId -> boolean
-  completedVideos: {},     // Map of videoId -> boolean (Watched to end)
-  completedExercises: {},  // Map of exerciseId -> boolean (Solved correctly)
-  sectionTestPassed: {},   // Map of sectionId -> boolean (1-question test passed)
-  moduleScores: {},        // Map of moduleId -> score (out of 5)
+  completedSections: {},     // Map of sectionId -> boolean
+  completedModules: {},      // Map of moduleId -> boolean
+  completedVideos: {},       // Map of videoId -> boolean (Watched to end)
+  completedExercises: {},    // Map of exerciseId -> boolean (Solved correctly)
+  sectionTestPassed: {},     // Map of sectionId -> boolean (1-question test passed)
+  moduleScores: {},          // Map of moduleId -> score (out of 5)
+  customVideoSettings: {},   // Map of videoId -> { durationSeconds: number, videoUrl: string }
   examState: {
     passed: false,
     score: 0,
@@ -58,6 +110,7 @@ function loadState() {
     if (raw) {
       const parsed = JSON.parse(raw);
       state = Object.assign(state, parsed);
+      if (!state.customVideoSettings) state.customVideoSettings = {};
     }
   } catch (e) {
     console.warn("Storage load error:", e);
@@ -98,16 +151,15 @@ function resetProgress() {
     state.completedExercises = {};
     state.sectionTestPassed = {};
     state.moduleScores = {};
-    state.examState = { passed: false, score: 0, timestamp: null };
-    state.activeModuleIndex = 0;
-    state.activeSectionIndex = 0;
+    state.customVideoSettings = {};
+    state.examState = {
+      passed: false,
+      score: 0,
+      timestamp: null
+    };
     saveState();
-    showToast("Progress has been completely reset.", "ℹ️");
-    if (state.currentView === "dashboard") {
-      renderDashboard();
-    } else {
-      navigateTo("hub");
-    }
+    showToast("All curriculum progress and timers have been reset.", "replay");
+    navigateTo("hub");
   }
 }
 
@@ -116,45 +168,37 @@ function resetProgress() {
  * REGION 2: CURRICULUM HELPERS (DYNAMIC SCALING FOR ANY COURSES/MODULES)
  * ========================================================================= */
 
-/**
- * Retrieves the currently active course from LITDOM_DATA.
- */
 function getActiveCourse() {
-  return LITDOM_DATA.courses.find(c => c.id === state.selectedCourseId) || LITDOM_DATA.courses[0];
+  const course = LITDOM_DATA.courses.find(c => c.id === state.selectedCourseId);
+  return course || LITDOM_DATA.courses[0];
 }
 
-/**
- * Returns whether a section is marked completed.
- */
 function isSectionCompleted(secId) {
   return !!state.completedSections[secId];
 }
 
-/**
- * Returns whether a module is marked completed.
- */
 function isModuleCompleted(modId) {
   return !!state.completedModules[modId];
 }
 
-/**
- * Computes section state: "completed", "available", or "locked".
- * Enforces sequential progression: Section N requires Section N-1 completion.
- */
 function getSectionState(mIdx, sIdx) {
   const course = getActiveCourse();
   const mod = course.modules[mIdx];
   const sec = mod.sections[sIdx];
 
   if (isSectionCompleted(sec.id)) return "completed";
+
+  // First section of first module is available immediately
   if (mIdx === 0 && sIdx === 0) return "available";
 
+  // If previous section in same module is completed, this section is available
   if (sIdx > 0) {
     const prevSec = mod.sections[sIdx - 1];
     return isSectionCompleted(prevSec.id) ? "available" : "locked";
   }
 
-  if (sIdx === 0 && mIdx > 0) {
+  // If first section of a subsequent module, previous module assessment must be passed
+  if (mIdx > 0 && sIdx === 0) {
     const prevMod = course.modules[mIdx - 1];
     return isModuleCompleted(prevMod.id) ? "available" : "locked";
   }
@@ -162,35 +206,28 @@ function getSectionState(mIdx, sIdx) {
   return "locked";
 }
 
-/**
- * Computes module state: "completed", "available", or "locked".
- */
+function canTakeModuleAssessment(mIdx) {
+  const course = getActiveCourse();
+  const mod = course.modules[mIdx];
+  return mod.sections.every(sec => isSectionCompleted(sec.id));
+}
+
 function getModuleState(mIdx) {
   const course = getActiveCourse();
   const mod = course.modules[mIdx];
 
   if (isModuleCompleted(mod.id)) return "completed";
-  if (mIdx === 0) return "available";
+  if (mIdx === 0) return "active";
 
   const prevMod = course.modules[mIdx - 1];
-  return isModuleCompleted(prevMod.id) ? "available" : "locked";
+  if (isModuleCompleted(prevMod.id)) return "active";
+
+  return "locked";
 }
 
-/**
- * Returns true if all sections in a module have been completed.
- */
-function canTakeModuleAssessment(mIdx) {
-  const course = getActiveCourse();
-  const mod = course.modules[mIdx];
-  return mod.sections.every(s => isSectionCompleted(s.id));
-}
-
-/**
- * Returns true if all modules have been completed, unlocking Capstone Exam.
- */
 function canTakeFinalExam() {
   const course = getActiveCourse();
-  return course.modules.every(m => isModuleCompleted(m.id));
+  return course.modules.every(mod => isModuleCompleted(mod.id));
 }
 
 
@@ -198,28 +235,51 @@ function canTakeFinalExam() {
  * REGION 3: VIEW NAVIGATION & ROUTING
  * ========================================================================= */
 
-/**
- * Primary single-page-application view switcher.
- */
 function navigateTo(viewId) {
   state.currentView = viewId;
-  document.querySelectorAll(".view-screen").forEach(el => el.classList.remove("active"));
+  saveState();
 
-  const target = document.getElementById("view-" + viewId);
+  const views = [
+    "hub",
+    "dashboard",
+    "content",
+    "module-assessment",
+    "exam",
+    "certificate"
+  ];
+
+  views.forEach(v => {
+    const el = document.getElementById(`view-${v}`);
+    if (el) el.classList.remove("active");
+  });
+
+  const target = document.getElementById(`view-${viewId}`);
   if (target) {
     target.classList.add("active");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  // Clear any active video intervals when switching screens
-  clearAllVideoTimers();
-
-  if (viewId === "hub") renderHub();
-  else if (viewId === "dashboard") renderDashboard();
-  else if (viewId === "content") renderSectionContent();
-  else if (viewId === "module-assessment") renderModuleAssessment();
-  else if (viewId === "exam") renderExamScreen();
-  else if (viewId === "certificate") renderCertificate();
+  // Render view-specific content
+  switch (viewId) {
+    case "hub":
+      renderHub();
+      break;
+    case "dashboard":
+      renderDashboard();
+      break;
+    case "content":
+      renderSectionContent();
+      break;
+    case "module-assessment":
+      renderModuleAssessment();
+      break;
+    case "exam":
+      renderExamScreen();
+      break;
+    case "certificate":
+      renderCertificate();
+      break;
+  }
 }
 
 
@@ -228,26 +288,34 @@ function navigateTo(viewId) {
  * ========================================================================= */
 
 function renderHub() {
-  const container = document.getElementById("coursesContainer");
+  const container = document.getElementById("courseCardsGrid") || document.getElementById("coursesContainer");
   if (!container) return;
 
   container.innerHTML = LITDOM_DATA.courses.map(course => `
     <div class="course-card" id="course-card-${course.id}">
-      <div style="font-size: 2.2rem; margin-bottom: 12px;">${course.icon}</div>
+      <div style="color: var(--gold); margin-bottom: 14px;">
+        ${svgIcon(course.icon || 'quill', 34)}
+      </div>
       <span class="path-tag active-tag" style="margin-bottom: 12px; display: inline-block;">${course.category}</span>
       <h3 style="margin-bottom: 8px;">${course.title}</h3>
       <p style="color: var(--muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px;">
         ${course.description}
       </p>
       
-      <div style="font-size: 0.82rem; color: var(--champagne); margin-bottom: 20px; display: flex; gap: 16px; flex-wrap: wrap;">
-        <span>📚 ${course.modules.length} Modules</span>
-        <span>⏱️ ${course.duration}</span>
-        <span>🎖️ Certified</span>
+      <div style="font-size: 0.82rem; color: var(--champagne); margin-bottom: 20px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
+        <span style="display: inline-flex; align-items: center; gap: 6px;">
+          ${svgIcon('book', 14)} ${course.modules.length} Modules
+        </span>
+        <span style="display: inline-flex; align-items: center; gap: 6px;">
+          ${svgIcon('clock', 14)} ${course.duration}
+        </span>
+        <span style="display: inline-flex; align-items: center; gap: 6px;">
+          ${svgIcon('award', 14)} Certified
+        </span>
       </div>
 
       <button class="btn btn-gold" style="width: 100%;" onclick="openPathModal('${course.id}')">
-        Start Learning &rarr;
+        ${svgIcon('play', 13)} Start Learning &rarr;
       </button>
     </div>
   `).join("");
@@ -257,9 +325,9 @@ function openPathModal(courseId) {
   state.selectedCourseId = courseId || (LITDOM_DATA.courses[0] && LITDOM_DATA.courses[0].id) || "editor-academy";
   const course = getActiveCourse();
 
-  const titleEl = document.getElementById("pathModalTitle");
+  const titleEl = document.getElementById("pathModalTitle") || document.getElementById("modalCourseTitle");
   const descEl = document.getElementById("pathModalDesc");
-  if (titleEl) titleEl.textContent = `${course.title}: Select Your Learning Pathway`;
+  if (titleEl) titleEl.textContent = course.title;
   if (descEl) descEl.textContent = `Choose your study mode for ${course.title}. You may switch or reset at any time.`;
 
   const modal = document.getElementById("pathModal");
@@ -279,7 +347,7 @@ function closePathModal() {
 
 function selectPath(pathType) {
   closePathModal();
-  showToast(`Selected ${pathType === "oneway" ? "Sequential Mastery" : "Practical Apprenticeship"} Pathway`, "✨");
+  showToast(`Selected ${pathType === "oneway" ? "Sequential Mastery" : "Practical Apprenticeship"} Pathway`, "sparkle");
   navigateTo("dashboard");
 }
 
@@ -333,7 +401,7 @@ function renderDashboard() {
       <div class="module-group ${modState}" id="module-group-${mod.id}">
         <div class="module-header-row">
           <div class="module-badge ${modState}">
-            ${isModDone ? "✓" : mod.num}
+            ${isModDone ? svgIcon('check', 14) : mod.num}
           </div>
           <div>
             <div style="font-size: 0.76rem; text-transform: uppercase; color: var(--gold); letter-spacing: 0.08em; font-weight: 700;">
@@ -352,29 +420,25 @@ function renderDashboard() {
             const hasEx = sec.content.some(b => b.type === "interactive_exercise" || b.type === "exercise");
 
             return `
-              <div class="section-node ${secState}" id="sec-node-${sec.id}">
+              <div class="section-node ${secState}" id="sec-node-${sec.id}" onclick="openSection(${mIdx}, ${sIdx})" style="cursor: pointer;">
                 <div class="node-status-icon">
-                  ${isSecDone ? "✓" : secState === "available" ? "▶" : "🔒"}
+                  ${isSecDone ? svgIcon('check', 14) : svgIcon('play', 12)}
                 </div>
                 <div class="node-text">
                   <h5>${sec.title}</h5>
                   <div class="node-meta">
-                    <span>⏱️ ${sec.duration}</span>
-                    ${hasVideo ? "<span>🎬 Video</span>" : ""}
-                    ${hasEx ? "<span>✏️ Exercise</span>" : ""}
-                    ${isSecDone ? "<span style='color: #10b981; font-weight: 700;'>✓ Mastered</span>" : ""}
+                    <span style="display: inline-flex; align-items: center; gap: 5px;">
+                      ${svgIcon('clock', 12)} ${sec.duration}
+                    </span>
+                    ${hasVideo ? `<span style="display: inline-flex; align-items: center; gap: 5px;">${svgIcon('video', 12)} Video</span>` : ""}
+                    ${hasEx ? `<span style="display: inline-flex; align-items: center; gap: 5px;">${svgIcon('pencil', 12)} Exercise</span>` : ""}
+                    ${isSecDone ? `<span style="color: #10b981; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">${svgIcon('check', 12)} Mastered</span>` : ""}
                   </div>
                 </div>
                 <div>
-                  ${
-                    secState !== "locked"
-                      ? `<button class="btn ${isSecDone ? 'btn-outline' : 'btn-gold'} node-action-btn" onclick="openSection(${mIdx}, ${sIdx})">
-                           ${isSecDone ? "Review" : "Start"}
-                         </button>`
-                      : `<button class="btn btn-outline node-action-btn" disabled style="opacity: 0.4; cursor: not-allowed;">
-                           Locked
-                         </button>`
-                  }
+                  <button class="btn ${isSecDone ? 'btn-outline' : 'btn-gold'} node-action-btn" onclick="event.stopPropagation(); openSection(${mIdx}, ${sIdx})">
+                    ${svgIcon('play', 12)} ${isSecDone ? "Review Lesson" : "Start Lesson"}
+                  </button>
                 </div>
               </div>
             `;
@@ -383,7 +447,7 @@ function renderDashboard() {
           <!-- Module Assessment Node -->
           <div class="section-node ${isModDone ? 'completed' : canTestModule ? 'available' : 'locked'}" style="background: rgba(212, 175, 55, 0.04); border-color: rgba(212, 175, 55, 0.3);">
             <div class="node-status-icon" style="border-color: var(--gold); color: var(--gold);">
-              ${isModDone ? "★" : canTestModule ? "📝" : "🔒"}
+              ${isModDone ? svgIcon('star', 14) : canTestModule ? svgIcon('scroll', 14) : svgIcon('lock', 14)}
             </div>
             <div class="node-text">
               <h5 style="color: var(--champagne);">Module ${mod.num} Comprehensive Assessment</h5>
@@ -428,10 +492,12 @@ function renderDashboard() {
         ${
           examUnlocked
             ? `<button class="btn btn-gold" onclick="navigateTo('exam')">
-                 ${state.examState.passed ? "View Credential ★" : "Take Capstone Exam &rarr;"}
+                 ${state.examState.passed ? "View Credential" : "Take Capstone Exam &rarr;"}
                </button>`
             : `<button class="btn btn-outline" disabled style="opacity: 0.4; cursor: not-allowed;">
-                 🔒 Complete All 5 Modules
+                 <span style="display: inline-flex; align-items: center; gap: 6px;">
+                   ${svgIcon('lock', 13)} Complete All 5 Modules
+                 </span>
                </button>`
         }
       </div>
@@ -441,6 +507,22 @@ function renderDashboard() {
   mapContainer.innerHTML = mapHtml;
 }
 
+function resumeCurrentLesson() {
+  const course = getActiveCourse();
+  for (let mIdx = 0; mIdx < course.modules.length; mIdx++) {
+    const mod = course.modules[mIdx];
+    for (let sIdx = 0; sIdx < mod.sections.length; sIdx++) {
+      const sec = mod.sections[sIdx];
+      if (!isSectionCompleted(sec.id)) {
+        openSection(mIdx, sIdx);
+        return;
+      }
+    }
+  }
+  // If all completed, open first section for review
+  openSection(0, 0);
+}
+
 function openSection(mIdx, sIdx) {
   state.activeModuleIndex = mIdx;
   state.activeSectionIndex = sIdx;
@@ -448,63 +530,35 @@ function openSection(mIdx, sIdx) {
   navigateTo("content");
 }
 
-function openModuleAssessment(mIdx) {
-  state.activeAssessmentModIndex = mIdx;
-  saveState();
-  navigateTo("module-assessment");
-}
-
 
 /* =========================================================================
- * REGION 6: VIEW C - SECTION CONTENT & VIDEO TIMER ENGINE
+ * REGION 6: VIEW C - SECTION CONTENT, EDITABLE VIDEO TIMERS & PLAYERS
  * ========================================================================= */
 
-// Global registry of running video timers
+// Dictionary holding active timers for each video
 const videoTimers = {};
 
-function clearAllVideoTimers() {
-  Object.keys(videoTimers).forEach(vidId => {
-    if (videoTimers[vidId].interval) {
-      clearInterval(videoTimers[vidId].interval);
-    }
-  });
-}
-
-/**
- * Renders the full content flow for the active section, including:
- * - Header with section level & progress
- * - Dynamic media blocks (text, video with countdown timer, audio, examples)
- * - Interactive Editorial Exercises (turns emerald green)
- * - Section Knowledge Test (1 Question, 3 Options)
- * - Section Mastery Checklist & "Mark as Complete" gate
- */
 function renderSectionContent() {
   const course = getActiveCourse();
   const mod = course.modules[state.activeModuleIndex];
   const sec = mod.sections[state.activeSectionIndex];
+  const isCompleted = isSectionCompleted(sec.id);
 
-  // Breadcrumbs & Header
+  // Update header text
   const modLabel = document.getElementById("contentModuleLabel");
-  const titleEl = document.getElementById("contentSectionTitle");
-  const descEl = document.getElementById("contentSectionDesc");
-  const bcEl = document.getElementById("contentBreadcrumb");
+  const secTitle = document.getElementById("contentSectionTitle");
+  const secDesc = document.getElementById("contentSectionDesc");
+  const breadcrumb = document.getElementById("contentBreadcrumb");
 
   if (modLabel) modLabel.textContent = `Module ${mod.num} • Section ${state.activeSectionIndex + 1}`;
-  if (titleEl) titleEl.textContent = sec.title;
-  if (descEl) descEl.textContent = `Estimated Time: ${sec.duration} • Litdom Master Curriculum`;
-  if (bcEl) bcEl.textContent = sec.title;
+  if (secTitle) secTitle.textContent = sec.title;
+  if (secDesc) secDesc.textContent = sec.summary;
+  if (breadcrumb) breadcrumb.textContent = sec.title;
 
-  const isCompleted = isSectionCompleted(sec.id);
-  const pBar = document.getElementById("sectionProgressBar");
-  const pTxt = document.getElementById("sectionProgressPct");
-  if (pBar) pBar.style.width = isCompleted ? "100%" : "40%";
-  if (pTxt) pTxt.textContent = isCompleted ? "100% Mastered" : "In Progress";
-
-  // Flow Container
   const flowContainer = document.getElementById("contentBlocksFlow");
   if (!flowContainer) return;
 
-  // Render Blocks
+  // Render all media and editorial content blocks
   let blocksHtml = sec.content.map(block => {
     switch (block.type) {
       case "text":
@@ -520,22 +574,39 @@ function renderSectionContent() {
       case "video": {
         const vidId = block.id || `${sec.id}-vid`;
         const isWatched = !!state.completedVideos[vidId];
-        const duration = block.durationSeconds || 20;
+        const custom = (state.customVideoSettings && state.customVideoSettings[vidId]) || {};
+        const duration = custom.durationSeconds || block.durationSeconds || 20;
+        const videoUrl = custom.videoUrl !== undefined ? custom.videoUrl : (block.videoUrl || "");
 
-        return `
-          <div class="video-card-container" id="video-card-${vidId}">
-            <div style="padding: 16px 20px 0;">
-              <span class="editorial-badge ${isWatched ? 'solved' : ''}">
-                ${isWatched ? '✓ VIDEO VERIFIED' : '🎬 LECTURE REQUIREMENT'}
-              </span>
-              <h4 style="margin-top: 4px; font-size: 1.15rem;">${block.title}</h4>
-              <p style="font-size: 0.85rem; color: var(--muted); margin: 4px 0 14px;">${block.caption}</p>
+        // Determine media player type
+        let viewportHtml = "";
+        const isDirectVideo = videoUrl && (videoUrl.endsWith(".mp4") || videoUrl.endsWith(".webm") || videoUrl.startsWith("blob:") || videoUrl.includes("commondatastorage.googleapis.com"));
+        const isEmbed = videoUrl && (videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be") || videoUrl.includes("vimeo.com"));
+
+        if (isDirectVideo) {
+          viewportHtml = `
+            <div style="position: relative; width: 100%; height: 280px; background: #000; border-radius: 6px; overflow: hidden;">
+              <video id="vid-media-el-${vidId}" src="${videoUrl}" controls playsinline style="width: 100%; height: 100%; object-fit: contain;"></video>
             </div>
-
-            <!-- Video Player Viewport -->
+          `;
+        } else if (isEmbed) {
+          let embedSrc = videoUrl;
+          if (videoUrl.includes("watch?v=")) {
+            embedSrc = videoUrl.replace("watch?v=", "embed/");
+          } else if (videoUrl.includes("youtu.be/")) {
+            embedSrc = videoUrl.replace("youtu.be/", "www.youtube.com/embed/");
+          }
+          viewportHtml = `
+            <div style="position: relative; width: 100%; height: 280px; background: #000; border-radius: 6px; overflow: hidden;">
+              <iframe src="${embedSrc}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%; height: 100%;"></iframe>
+            </div>
+          `;
+        } else {
+          // Luxury simulated masterclass player
+          viewportHtml = `
             <div class="video-player-viewport">
-              <button class="video-play-overlay-btn" id="vid-play-btn-${vidId}" onclick="toggleVideoPlayback('${vidId}', ${duration})">
-                ${isWatched ? '↻' : '▶'}
+              <button class="video-play-overlay-btn" id="vid-play-btn-${vidId}" onclick="toggleVideoPlayback('${vidId}', ${duration})" title="Play Lecture">
+                ${isWatched ? svgIcon('replay', 24) : svgIcon('play', 24)}
               </button>
               <div style="font-size: 0.92rem; color: var(--champagne); margin-top: 12px; font-weight: 600;">
                 ${block.instructor || "Dean Julian Sterling"}
@@ -543,16 +614,92 @@ function renderSectionContent() {
               <div style="font-size: 0.78rem; color: var(--muted); margin-top: 2px;">
                 ${block.badge || "Litdom Studio Master Lecture"}
               </div>
+              ${videoUrl ? `<div style="font-size: 0.75rem; color: var(--gold); margin-top: 6px;">Source: ${videoUrl}</div>` : ''}
             </div>
+          `;
+        }
+
+        return `
+          <div class="video-card-container" id="video-card-${vidId}">
+            <!-- Card Header with Edit Drawer Button -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 18px 20px 0; flex-wrap: wrap;">
+              <div>
+                <span class="editorial-badge ${isWatched ? 'solved' : ''}">
+                  <span style="display: inline-flex; align-items: center; gap: 5px;">
+                    ${isWatched ? `${svgIcon('check', 13)} VIDEO VERIFIED` : `${svgIcon('video', 13)} LECTURE REQUIREMENT`}
+                  </span>
+                </span>
+                <h4 style="margin-top: 6px; font-size: 1.15rem;">${block.title}</h4>
+                <p style="font-size: 0.85rem; color: var(--muted); margin: 4px 0 10px;">${block.caption}</p>
+              </div>
+
+              <button class="btn btn-outline" style="font-size: 0.76rem; padding: 6px 12px; margin-bottom: 8px;" onclick="toggleVideoEditor('${vidId}')" title="Configure custom watch timer and media URL">
+                ${svgIcon('sliders', 13)} Edit Timer & Video
+              </button>
+            </div>
+
+            <!-- Video Configuration Drawer (Editable by Instructor) -->
+            <div class="video-config-drawer" id="vid-config-${vidId}" style="display: none;">
+              <div class="video-config-title">
+                ${svgIcon('sliders', 14)} Video Settings & Timer Configuration
+              </div>
+              <p class="video-config-hint">
+                Set how long learners must watch before the section unlocks, and optionally paste your own video URL (MP4, YouTube, or Vimeo).
+              </p>
+
+              <div class="video-config-grid">
+                <div class="video-config-field" style="flex: 1; min-width: 240px;">
+                  <label>Watch Timer Duration (Seconds):</label>
+                  <div style="display: flex; gap: 8px; align-items: center;">
+                    <input type="number" class="video-input-field" id="vid-input-duration-${vidId}" value="${duration}" min="5" max="7200" oninput="updateDurationHelper('${vidId}')" style="width: 110px;">
+                    <span id="vid-duration-helper-${vidId}" style="font-size: 0.85rem; color: var(--gold); font-weight: 700;">
+                      ${formatSeconds(duration)}
+                    </span>
+                  </div>
+
+                  <!-- Quick Presets -->
+                  <div style="display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap;">
+                    <span style="font-size: 0.72rem; color: var(--muted); align-self: center;">Presets:</span>
+                    <button type="button" class="preset-btn" onclick="applyDurationPreset('${vidId}', 10)">10s</button>
+                    <button type="button" class="preset-btn" onclick="applyDurationPreset('${vidId}', 30)">30s</button>
+                    <button type="button" class="preset-btn" onclick="applyDurationPreset('${vidId}', 60)">1 min</button>
+                    <button type="button" class="preset-btn" onclick="applyDurationPreset('${vidId}', 180)">3 min</button>
+                    <button type="button" class="preset-btn" onclick="applyDurationPreset('${vidId}', 300)">5 min</button>
+                  </div>
+                </div>
+
+                <div class="video-config-field" style="flex: 2; min-width: 260px;">
+                  <label>Custom Video / Embed URL (Optional):</label>
+                  <input type="text" class="video-input-field" id="vid-input-url-${vidId}" value="${videoUrl}" placeholder="https://example.com/video.mp4 or YouTube URL">
+                  <span style="font-size: 0.72rem; color: var(--muted); margin-top: 4px;">
+                    Leave blank to use the built-in Masterclass simulator.
+                  </span>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 10px; margin-top: 14px; justify-content: flex-end;">
+                <button class="btn btn-outline" style="font-size: 0.78rem; padding: 6px 14px;" onclick="resetVideoSettings('${vidId}', ${block.durationSeconds || 20})">
+                  Reset Default
+                </button>
+                <button class="btn btn-gold" style="font-size: 0.78rem; padding: 6px 16px;" onclick="saveVideoSettings('${vidId}')">
+                  ${svgIcon('check', 13)} Save & Apply
+                </button>
+              </div>
+            </div>
+
+            <!-- Video Player Viewport -->
+            ${viewportHtml}
 
             <!-- Video Live Timer Strip -->
             <div class="video-timer-strip">
-              <div style="display: flex; align-items: center; gap: 10px;">
-                <button class="btn btn-outline" style="font-size: 0.78rem; padding: 4px 12px;" onclick="toggleVideoPlayback('${vidId}', ${duration})">
-                  <span id="vid-ctrl-text-${vidId}">Play</span>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <button class="btn btn-outline" style="font-size: 0.76rem; padding: 5px 14px;" onclick="toggleVideoPlayback('${vidId}', ${duration})">
+                  <span id="vid-ctrl-text-${vidId}" style="display: inline-flex; align-items: center; gap: 6px;">
+                    ${svgIcon('play', 12)} Play
+                  </span>
                 </button>
-                <button class="btn btn-outline" style="font-size: 0.72rem; padding: 4px 8px; color: var(--gold);" title="Fast-forward preview for instructors" onclick="fastForwardVideo('${vidId}')">
-                  ⚡ Fast-Forward (Preview)
+                <button class="btn btn-outline" style="font-size: 0.72rem; padding: 5px 10px; color: var(--gold);" title="Fast-forward preview for instructors" onclick="fastForwardVideo('${vidId}')">
+                  ${svgIcon('zap', 12)} Fast-Forward
                 </button>
               </div>
 
@@ -563,7 +710,9 @@ function renderSectionContent() {
 
               <!-- Live Timer Badge -->
               <div class="video-countdown-pill ${isWatched ? 'completed' : ''}" id="vid-badge-${vidId}">
-                ${isWatched ? '✓ Lecture Watched' : `⏱️ 00:${duration < 10 ? '0' + duration : duration} remaining`}
+                <span style="display: inline-flex; align-items: center; gap: 5px;">
+                  ${isWatched ? `${svgIcon('check', 13)} Lecture Watched` : `${svgIcon('clock', 13)} ${formatSeconds(duration)} remaining`}
+                </span>
               </div>
             </div>
           </div>
@@ -578,7 +727,9 @@ function renderSectionContent() {
         return `
           <div class="interactive-editorial-card ${isSolved ? 'solved' : ''}" id="exercise-card-${exId}">
             <div class="editorial-badge ${isSolved ? 'solved' : ''}" id="ex-badge-${exId}">
-              ${isSolved ? '✓ EDITORIAL EXERCISE CLEARED' : `✏️ ${block.category || 'LINE EDITING CRUCIBLE'}`}
+              <span style="display: inline-flex; align-items: center; gap: 5px;">
+                ${isSolved ? `${svgIcon('check', 13)} EDITORIAL EXERCISE CLEARED` : `${svgIcon('pencil', 13)} ${block.category || 'LINE EDITING CRUCIBLE'}`}
+              </span>
             </div>
             
             <h4 style="margin-top: 6px; font-size: 1.15rem; color: var(--ivory);">${block.title}</h4>
@@ -604,11 +755,11 @@ function renderSectionContent() {
               `).join("")}
             </div>
 
-            <!-- Feedback Box (Shows vibrant green on correct choice!) -->
+            <!-- Feedback Box (Turns Emerald Green on Correct Answer!) -->
             <div class="editorial-feedback-box ${isSolved ? 'show success' : ''}" id="ex-feedback-${exId}">
               ${
                 isSolved
-                  ? `<strong>✓ Masterful Edit!</strong> You correctly resolved this craft challenge.`
+                  ? `<div style="display: flex; align-items: center; gap: 6px; color: #34d399; font-weight: 700;">${svgIcon('check', 14)} Masterful Edit! You correctly resolved this craft challenge.</div>`
                   : ""
               }
             </div>
@@ -619,11 +770,13 @@ function renderSectionContent() {
       case "audio":
         return `
           <div class="content-block-card">
-            <h4>🎧 ${block.title}</h4>
+            <h4 style="display: flex; align-items: center; gap: 8px;">
+              ${svgIcon('headphones', 16)} ${block.title}
+            </h4>
             <p style="font-size: 0.88rem; color: var(--muted); margin: 6px 0 14px;">${block.caption}</p>
             <div style="background: #111116; border: 1px solid var(--charcoal-border); border-radius: var(--radius-sm); padding: 14px; display: flex; align-items: center; gap: 16px;">
-              <button class="btn btn-gold" style="border-radius: 50%; width: 44px; height: 44px; padding: 0; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;" onclick="toggleAudioDemo(this)">
-                ▶
+              <button class="btn btn-gold" style="border-radius: 50%; width: 44px; height: 44px; padding: 0; display: flex; align-items: center; justify-content: center;" onclick="toggleAudioDemo(this)">
+                ${svgIcon('play', 14)}
               </button>
               <div style="flex-grow: 1;">
                 <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--muted); margin-bottom: 4px;">
@@ -641,18 +794,20 @@ function renderSectionContent() {
       case "example":
         return `
           <div class="example-block-card">
-            <h4>🔍 ${block.title}</h4>
+            <h4 style="display: flex; align-items: center; gap: 8px;">
+              ${svgIcon('search', 16)} ${block.title}
+            </h4>
             <div class="example-compare-grid">
               <div class="example-pane before">
                 <span style="font-size: 0.75rem; font-weight: 700; color: #ff6b6b; text-transform: uppercase;">Raw Draft</span>
                 <p style="font-size: 0.9rem; color: var(--ivory); margin-top: 6px; font-style: italic;">"${block.before}"</p>
               </div>
               <div class="example-pane after">
-                <span style="font-size: 0.75rem; font-weight: 700; color: #10b981; text-transform: uppercase;">Editorially Diagnosed</span>
+                <span style="font-size: 0.75rem; font-weight: 700; color: #10b981; text-transform: uppercase;">Polished Version</span>
                 <p style="font-size: 0.9rem; color: #a7f3d0; margin-top: 6px; font-weight: 500;">"${block.after}"</p>
               </div>
             </div>
-            <p style="font-size: 0.82rem; color: var(--muted); margin-top: 12px;"><strong>Diagnostic Note:</strong> ${block.explanation}</p>
+            <p style="font-size: 0.85rem; color: var(--muted); margin-top: 10px;">${block.explanation}</p>
           </div>
         `;
 
@@ -673,8 +828,8 @@ function renderSectionContent() {
   blocksHtml += `
     <div class="quiz-container" id="sectionQuizContainer">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <span class="path-tag active-tag" style="background: rgba(212, 175, 55, 0.15);">
-          🎯 SECTION KNOWLEDGE VERIFICATION
+        <span class="path-tag active-tag" style="background: rgba(212, 175, 55, 0.15); display: inline-flex; align-items: center; gap: 6px;">
+          ${svgIcon('target', 13)} SECTION KNOWLEDGE VERIFICATION
         </span>
         <span style="font-size: 0.8rem; color: var(--muted);">1 Question • Required</span>
       </div>
@@ -694,8 +849,8 @@ function renderSectionContent() {
 
       <div id="sectionFeedbackArea" style="display: ${isTestPassed ? 'block' : 'none'};">
         <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; border-radius: var(--radius-sm); padding: 14px 18px; color: #d1fae5;">
-          <div style="color: #34d399; font-weight: 700; margin-bottom: 4px; font-size: 0.98rem;">
-            ✓ Knowledge Check Cleared!
+          <div style="color: #34d399; font-weight: 700; margin-bottom: 4px; font-size: 0.98rem; display: flex; align-items: center; gap: 6px;">
+            ${svgIcon('check', 14)} Knowledge Check Cleared!
           </div>
           <p style="font-size: 0.88rem; color: #a7f3d0;">${test.explanation}</p>
         </div>
@@ -713,42 +868,128 @@ function renderSectionContent() {
   if (oldBanner) oldBanner.style.display = "none";
 }
 
+/* -------------------------------------------------------------------------
+ * Video Customization Handlers (Editable Timers & Media Sources)
+ * ------------------------------------------------------------------------- */
+
+function toggleVideoEditor(vidId) {
+  const drawer = document.getElementById(`vid-config-${vidId}`);
+  if (!drawer) return;
+  if (drawer.style.display === "none" || !drawer.style.display) {
+    drawer.style.display = "block";
+    drawer.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  } else {
+    drawer.style.display = "none";
+  }
+}
+
+function applyDurationPreset(vidId, seconds) {
+  const input = document.getElementById(`vid-input-duration-${vidId}`);
+  const helper = document.getElementById(`vid-duration-helper-${vidId}`);
+  if (input) input.value = seconds;
+  if (helper) helper.textContent = formatSeconds(seconds);
+}
+
+function updateDurationHelper(vidId) {
+  const input = document.getElementById(`vid-input-duration-${vidId}`);
+  const helper = document.getElementById(`vid-duration-helper-${vidId}`);
+  if (input && helper) {
+    helper.textContent = formatSeconds(input.value);
+  }
+}
+
+function saveVideoSettings(vidId) {
+  const durationInput = document.getElementById(`vid-input-duration-${vidId}`);
+  const urlInput = document.getElementById(`vid-input-url-${vidId}`);
+
+  let newDuration = parseInt(durationInput ? durationInput.value : 20, 10);
+  if (isNaN(newDuration) || newDuration < 5) newDuration = 5;
+  if (newDuration > 7200) newDuration = 7200; // max 2 hours
+
+  const newUrl = urlInput ? urlInput.value.trim() : "";
+
+  if (!state.customVideoSettings) state.customVideoSettings = {};
+  state.customVideoSettings[vidId] = {
+    durationSeconds: newDuration,
+    videoUrl: newUrl
+  };
+
+  // Clear current running interval for this video so new duration takes effect
+  if (videoTimers[vidId]) {
+    if (videoTimers[vidId].interval) clearInterval(videoTimers[vidId].interval);
+    delete videoTimers[vidId];
+  }
+
+  saveState();
+  renderSectionContent();
+  showToast(`Watch timer updated to ${newDuration}s (${formatSeconds(newDuration)})`, "check");
+}
+
+function resetVideoSettings(vidId, defaultDuration) {
+  if (state.customVideoSettings && state.customVideoSettings[vidId]) {
+    delete state.customVideoSettings[vidId];
+    saveState();
+  }
+  if (videoTimers[vidId]) {
+    if (videoTimers[vidId].interval) clearInterval(videoTimers[vidId].interval);
+    delete videoTimers[vidId];
+  }
+  renderSectionContent();
+  showToast(`Restored default timer (${defaultDuration}s)`, "replay");
+}
+
 /**
  * Handles play/pause and countdown ticking for a video.
  */
-function toggleVideoPlayback(vidId, totalSeconds) {
+function toggleVideoPlayback(vidId, defaultSeconds) {
+  const custom = (state.customVideoSettings && state.customVideoSettings[vidId]) || {};
+  const duration = custom.durationSeconds || defaultSeconds || 20;
+
   if (!videoTimers[vidId]) {
     videoTimers[vidId] = {
-      remaining: totalSeconds,
-      total: totalSeconds,
+      remaining: duration,
+      total: duration,
       isPlaying: false,
       interval: null
     };
   }
 
   const timerObj = videoTimers[vidId];
+  const videoMedia = document.getElementById(`vid-media-el-${vidId}`);
 
   if (timerObj.isPlaying) {
     // Pause
     clearInterval(timerObj.interval);
     timerObj.isPlaying = false;
+    if (videoMedia && !videoMedia.paused) {
+      try { videoMedia.pause(); } catch(e) {}
+    }
     updateVideoUI(vidId, false);
-    showToast("Video paused.", "⏸️");
+    showToast("Video paused.", "pause");
   } else {
     // Start or Resume
     timerObj.isPlaying = true;
-    showToast(`Video playing... Watch timer active (${timerObj.remaining}s remaining)`, "🎬");
+    if (videoMedia && videoMedia.paused) {
+      try { videoMedia.play(); } catch(e) {}
+    }
+    showToast(`Video playing... Watch timer active (${formatSeconds(timerObj.remaining)} remaining)`, "video");
     updateVideoUI(vidId, true);
 
     timerObj.interval = setInterval(() => {
       timerObj.remaining--;
 
-      const pct = Math.round(((timerObj.total - timerObj.remaining) / timerObj.total) * 100);
+      const pct = Math.min(100, Math.round(((timerObj.total - timerObj.remaining) / timerObj.total) * 100));
       const fillEl = document.getElementById(`vid-progress-${vidId}`);
       const badgeEl = document.getElementById(`vid-badge-${vidId}`);
 
       if (fillEl) fillEl.style.width = pct + "%";
-      if (badgeEl) badgeEl.textContent = `⏱️ 00:${timerObj.remaining < 10 ? '0' + timerObj.remaining : timerObj.remaining} remaining`;
+      if (badgeEl) {
+        badgeEl.innerHTML = `
+          <span style="display: inline-flex; align-items: center; gap: 5px;">
+            ${svgIcon('clock', 13)} ${formatSeconds(timerObj.remaining)} remaining
+          </span>
+        `;
+      }
 
       if (timerObj.remaining <= 0) {
         // FINISHED!
@@ -763,13 +1004,15 @@ function toggleVideoPlayback(vidId, totalSeconds) {
         }
         if (badgeEl) {
           badgeEl.className = "video-countdown-pill completed";
-          badgeEl.textContent = "✓ Lecture Watched & Verified";
+          badgeEl.innerHTML = `
+            <span style="display: inline-flex; align-items: center; gap: 5px;">
+              ${svgIcon('check', 13)} Lecture Watched & Verified
+            </span>
+          `;
         }
 
         updateVideoUI(vidId, false);
-        showToast("✓ Video lecture completed! Video requirement satisfied.", "🎉");
-
-        // Refresh section checklist
+        showToast("Video lecture completed! Video requirement satisfied.", "check");
         refreshSectionChecklist();
       }
     }, 1000);
@@ -794,18 +1037,28 @@ function fastForwardVideo(vidId) {
   }
   if (badgeEl) {
     badgeEl.className = "video-countdown-pill completed";
-    badgeEl.textContent = "✓ Lecture Watched & Verified";
+    badgeEl.innerHTML = `
+      <span style="display: inline-flex; align-items: center; gap: 5px;">
+        ${svgIcon('check', 13)} Lecture Watched & Verified
+      </span>
+    `;
   }
 
-  showToast("Video verified! Lecture requirement fulfilled.", "⚡");
+  showToast("Video verified! Lecture requirement fulfilled.", "check");
   refreshSectionChecklist();
 }
 
 function updateVideoUI(vidId, isPlaying) {
   const btn = document.getElementById(`vid-play-btn-${vidId}`);
   const ctrlText = document.getElementById(`vid-ctrl-text-${vidId}`);
-  if (btn) btn.textContent = isPlaying ? "❚❚" : "▶";
-  if (ctrlText) ctrlText.textContent = isPlaying ? "Pause" : "Play";
+  if (btn) btn.innerHTML = isPlaying ? svgIcon('pause', 24) : svgIcon('play', 24);
+  if (ctrlText) {
+    ctrlText.innerHTML = `
+      <span style="display: inline-flex; align-items: center; gap: 6px;">
+        ${isPlaying ? svgIcon('pause', 12) : svgIcon('play', 12)} ${isPlaying ? "Pause" : "Play"}
+      </span>
+    `;
+  }
 }
 
 
@@ -813,32 +1066,28 @@ function updateVideoUI(vidId, isPlaying) {
  * REGION 7: INTERACTIVE EDITORIAL LABS (EMERALD GREEN SUCCESS ENGINE)
  * ========================================================================= */
 
-/**
- * Evaluates an option chosen by the student in an editorial exercise.
- * Upon choosing the correct option, turns the button and card glowing EMERALD GREEN!
- */
-function evaluateExerciseOption(exId, optionIdx) {
+function evaluateExerciseOption(exId, chosenIdx) {
   const course = getActiveCourse();
   const sec = course.modules[state.activeModuleIndex].sections[state.activeSectionIndex];
   const block = sec.content.find(b => (b.id || `${sec.id}-ex`) === exId);
+
   if (!block || !block.options) return;
 
-  const chosenOpt = block.options[optionIdx];
+  const chosenOpt = block.options[chosenIdx];
   const cardEl = document.getElementById(`exercise-card-${exId}`);
   const badgeEl = document.getElementById(`ex-badge-${exId}`);
-  const feedbackEl = document.getElementById(`ex-feedback-${exId}`);
   const draftEl = document.getElementById(`ex-draft-${exId}`);
+  const feedbackEl = document.getElementById(`ex-feedback-${exId}`);
+  const allOptionBtns = cardEl ? cardEl.querySelectorAll(".editorial-choice-btn") : [];
+  const selectedBtn = document.getElementById(`ex-${exId}-opt-${chosenIdx}`);
 
-  // Clear previous option styles
-  block.options.forEach((_, idx) => {
-    const btn = document.getElementById(`ex-${exId}-opt-${idx}`);
-    if (btn) btn.classList.remove("correct-choice", "wrong-choice");
+  // Reset previously applied choice classes
+  allOptionBtns.forEach(btn => {
+    btn.classList.remove("selected", "correct-choice", "wrong-choice");
   });
 
-  const selectedBtn = document.getElementById(`ex-${exId}-opt-${optionIdx}`);
-
   if (chosenOpt.correct) {
-    // 🌟 CORRECT ANSWER -> TURN EMERALD GREEN!
+    // CORRECT ANSWER -> TURN EMERALD GREEN!
     state.completedExercises[exId] = true;
     saveState();
 
@@ -846,13 +1095,17 @@ function evaluateExerciseOption(exId, optionIdx) {
     if (cardEl) cardEl.classList.add("solved");
     if (badgeEl) {
       badgeEl.classList.add("solved");
-      badgeEl.textContent = "✓ EDITORIAL EXERCISE CLEARED";
+      badgeEl.innerHTML = `
+        <span style="display: inline-flex; align-items: center; gap: 5px;">
+          ${svgIcon('check', 13)} EDITORIAL EXERCISE CLEARED
+        </span>
+      `;
     }
 
     if (draftEl && chosenOpt.polishedText) {
       draftEl.innerHTML = `
-        <div style="font-size: 0.74rem; text-transform: uppercase; color: #10b981; letter-spacing: 0.08em; font-family: sans-serif; margin-bottom: 6px;">
-          ✓ Masterfully Polished Sentence:
+        <div style="font-size: 0.74rem; text-transform: uppercase; color: #10b981; letter-spacing: 0.08em; font-family: sans-serif; margin-bottom: 6px; display: flex; align-items: center; gap: 5px;">
+          ${svgIcon('check', 12)} Masterfully Polished Sentence:
         </div>
         <div style="color: #a7f3d0; font-weight: 500;">"${chosenOpt.polishedText}"</div>
       `;
@@ -861,14 +1114,14 @@ function evaluateExerciseOption(exId, optionIdx) {
     if (feedbackEl) {
       feedbackEl.className = "editorial-feedback-box show success";
       feedbackEl.innerHTML = `
-        <div style="font-weight: 700; color: #34d399; margin-bottom: 4px; font-size: 0.98rem;">
-          ✓ Masterful Editorial Diagnosis!
+        <div style="font-weight: 700; color: #34d399; margin-bottom: 4px; font-size: 0.98rem; display: flex; align-items: center; gap: 6px;">
+          ${svgIcon('check', 14)} Masterful Editorial Diagnosis!
         </div>
         <div>${chosenOpt.feedback}</div>
       `;
     }
 
-    showToast("Masterful edit! Exercise solved and verified in green.", "✨");
+    showToast("Masterful edit! Exercise solved and verified in green.", "sparkle");
     refreshSectionChecklist();
   } else {
     // INCORRECT OPTION
@@ -876,15 +1129,15 @@ function evaluateExerciseOption(exId, optionIdx) {
     if (feedbackEl) {
       feedbackEl.className = "editorial-feedback-box show error";
       feedbackEl.innerHTML = `
-        <div style="font-weight: 700; color: #f87171; margin-bottom: 4px; font-size: 0.95rem;">
-          ✕ Craft Diagnosis Note
+        <div style="font-weight: 700; color: #f87171; margin-bottom: 4px; font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
+          ${svgIcon('cross', 14)} Craft Diagnosis Note
         </div>
         <div>${chosenOpt.feedback}</div>
         <div style="margin-top: 6px; font-size: 0.82rem; color: var(--muted);">Review the editorial principle and select the elevated alternative.</div>
       `;
     }
 
-    showToast("Re-evaluate the craft diagnosis and try again.", "⚠️");
+    showToast("Re-evaluate the craft diagnosis and try again.", "alert");
   }
 }
 
@@ -893,9 +1146,6 @@ function evaluateExerciseOption(exId, optionIdx) {
  * REGION 8: SECTION KNOWLEDGE CHECKS & "MARK AS COMPLETE" GATE
  * ========================================================================= */
 
-/**
- * Handles section quiz submission (1 question, 3 options).
- */
 function handleSectionAnswer(selectedIdx) {
   const course = getActiveCourse();
   const sec = course.modules[state.activeModuleIndex].sections[state.activeSectionIndex];
@@ -921,15 +1171,15 @@ function handleSectionAnswer(selectedIdx) {
       feedback.style.display = "block";
       feedback.innerHTML = `
         <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; border-radius: var(--radius-sm); padding: 14px 18px; color: #d1fae5;">
-          <div style="color: #34d399; font-weight: 700; margin-bottom: 4px; font-size: 1rem;">
-            ✓ Correct Answer! Knowledge Check Cleared
+          <div style="color: #34d399; font-weight: 700; margin-bottom: 4px; font-size: 1rem; display: flex; align-items: center; gap: 6px;">
+            ${svgIcon('check', 14)} Correct Answer! Knowledge Check Cleared
           </div>
           <p style="font-size: 0.88rem; color: #a7f3d0;">${test.explanation}</p>
         </div>
       `;
     }
 
-    showToast("Knowledge check passed! Requirement satisfied.", "✓");
+    showToast("Knowledge check passed! Requirement satisfied.", "check");
     refreshSectionChecklist();
   } else {
     // INCORRECT!
@@ -940,8 +1190,8 @@ function handleSectionAnswer(selectedIdx) {
       feedback.style.display = "block";
       feedback.innerHTML = `
         <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; border-radius: var(--radius-sm); padding: 14px 18px; color: #fee2e2;">
-          <div style="color: #f87171; font-weight: 700; margin-bottom: 4px; font-size: 0.95rem;">
-            ✕ Incorrect Answer
+          <div style="color: #f87171; font-weight: 700; margin-bottom: 4px; font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
+            ${svgIcon('cross', 14)} Incorrect Answer
           </div>
           <p style="font-size: 0.88rem; color: #fca5a5; margin-bottom: 8px;">
             Review the section material above and choose the correct answer.
@@ -950,7 +1200,7 @@ function handleSectionAnswer(selectedIdx) {
       `;
     }
 
-    showToast("Incorrect. Re-read the section material and try again.", "⚠️");
+    showToast("Incorrect. Re-read the section material and try again.", "alert");
   }
 }
 
@@ -1022,7 +1272,9 @@ function renderSectionChecklistHtml(sec) {
             ? `
               <div class="checklist-row ${reqs.videosDone ? 'completed' : ''}">
                 <div style="display: flex; align-items: center; gap: 10px;">
-                  <span style="font-size: 1.1rem;">${reqs.videosDone ? '✓' : '🎬'}</span>
+                  <span style="color: ${reqs.videosDone ? '#10b981' : 'var(--gold)'}; display: inline-flex; align-items: center;">
+                    ${reqs.videosDone ? svgIcon('check', 16) : svgIcon('video', 16)}
+                  </span>
                   <span style="font-size: 0.9rem; color: var(--ivory);">Masterclass Video Lecture (Watch Timer Enforced)</span>
                 </div>
                 <span class="checklist-status-badge">
@@ -1038,7 +1290,9 @@ function renderSectionChecklistHtml(sec) {
             ? `
               <div class="checklist-row ${reqs.exDone ? 'completed' : ''}">
                 <div style="display: flex; align-items: center; gap: 10px;">
-                  <span style="font-size: 1.1rem;">${reqs.exDone ? '✓' : '✏️'}</span>
+                  <span style="color: ${reqs.exDone ? '#10b981' : 'var(--gold)'}; display: inline-flex; align-items: center;">
+                    ${reqs.exDone ? svgIcon('check', 16) : svgIcon('pencil', 16)}
+                  </span>
                   <span style="font-size: 0.9rem; color: var(--ivory);">Interactive Editorial Exercise (Solve Correctly)</span>
                 </div>
                 <span class="checklist-status-badge">
@@ -1051,7 +1305,9 @@ function renderSectionChecklistHtml(sec) {
 
         <div class="checklist-row ${reqs.testDone ? 'completed' : ''}">
           <div style="display: flex; align-items: center; gap: 10px;">
-            <span style="font-size: 1.1rem;">${reqs.testDone ? '✓' : '🎯'}</span>
+            <span style="color: ${reqs.testDone ? '#10b981' : 'var(--gold)'}; display: inline-flex; align-items: center;">
+              ${reqs.testDone ? svgIcon('check', 16) : svgIcon('target', 16)}
+            </span>
             <span style="font-size: 0.9rem; color: var(--ivory);">Section Knowledge Verification (1 Question)</span>
           </div>
           <span class="checklist-status-badge">
@@ -1066,9 +1322,9 @@ function renderSectionChecklistHtml(sec) {
               onclick="${isReady ? 'markSectionCompleteAndAdvance()' : 'explainPendingRequirements()'}">
         ${
           isCompleted
-            ? "✓ Level Completed • Continue to Next &rarr;"
+            ? "Level Completed • Continue to Next &rarr;"
             : isReady
-            ? "✓ Mark Level as Complete & Advance &rarr;"
+            ? "Mark Level as Complete & Advance &rarr;"
             : `Mark Level as Complete (${completedItems}/${totalItems} Satisfied)`
         }
       </button>
@@ -1098,13 +1354,11 @@ function markSectionCompleteAndAdvance() {
   const currentMod = course.modules[state.activeModuleIndex];
   const currentSec = currentMod.sections[state.activeSectionIndex];
 
-  // Mark section as completed in state
   state.completedSections[currentSec.id] = true;
   saveState();
 
-  showToast("🎉 Congratulations! Section cleared and unlocked on the roadmap.", "🏆");
+  showToast("Section cleared and unlocked on the roadmap.", "trophy");
 
-  // Advance to next section or module assessment
   if (state.activeSectionIndex < currentMod.sections.length - 1) {
     state.activeSectionIndex++;
     saveState();
@@ -1112,16 +1366,13 @@ function markSectionCompleteAndAdvance() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   } else {
     // All sections in this module cleared -> Advance to Module Assessment!
-    showToast(`All sections cleared! Opening Module ${currentMod.num} Assessment.`, "📜");
+    showToast(`All sections cleared! Opening Module ${currentMod.num} Assessment.`, "scroll");
     state.activeAssessmentModIndex = state.activeModuleIndex;
     saveState();
     navigateTo("module-assessment");
   }
 }
 
-/**
- * Alerts the user to which requirements are still missing.
- */
 function explainPendingRequirements() {
   const course = getActiveCourse();
   const sec = course.modules[state.activeModuleIndex].sections[state.activeSectionIndex];
@@ -1132,7 +1383,7 @@ function explainPendingRequirements() {
   if (reqs.exCount > 0 && !reqs.exDone) missing.push("Solve the interactive editorial exercise");
   if (!reqs.testDone) missing.push("Answer the section knowledge question correctly");
 
-  showToast(`Please complete requirements before moving on: ${missing.join(" • ")}`, "⚠️");
+  showToast(`Please complete requirements before moving on: ${missing.join(" • ")}`, "alert");
 }
 
 
@@ -1148,33 +1399,29 @@ function renderModuleAssessment() {
   const descEl = document.getElementById("modAssessmentDesc");
   const passEl = document.getElementById("modAssessmentPassingLabel");
   const outcomeEl = document.getElementById("modAssessmentOutcomeLabel");
-  const bcEl = document.getElementById("moduleAssessmentBreadcrumb");
 
   if (titleEl) titleEl.textContent = `Module ${mod.num} Comprehensive Assessment`;
-  if (descEl) descEl.textContent = `Validate foundational mastery across all sections in Module ${mod.num}: "${mod.title}".`;
-  if (passEl) passEl.textContent = `${mod.passingScore} of 5 (${(mod.passingScore/5)*100}%)`;
-  if (outcomeEl) outcomeEl.textContent = state.activeAssessmentModIndex < course.modules.length - 1
-    ? `Unlocks Module ${mod.num + 1}`
-    : `Unlocks Final Capstone Examination`;
-  if (bcEl) bcEl.textContent = `Module ${mod.num} Assessment`;
+  if (descEl) descEl.textContent = `Validate your mastery across all sections in "${mod.title}". Achieving 4 of 5 (80%) unlocks the next module.`;
+  if (passEl) passEl.textContent = `${mod.passingScore} of ${mod.assessment.questions.length} (80%)`;
+  if (outcomeEl) outcomeEl.textContent = mod.num === 5 ? "Final Exam Unlock" : `Module ${mod.num + 1} Access`;
 
-  const container = document.getElementById("moduleAssessmentQuestionsContainer");
+  const qContainer = document.getElementById("moduleAssessmentQuestionsContainer");
   const resultBox = document.getElementById("modAssessmentResultBox");
   const submitWrapper = document.getElementById("modAssessmentSubmitWrapper");
 
   if (resultBox) resultBox.style.display = "none";
   if (submitWrapper) submitWrapper.style.display = "block";
 
-  if (!container) return;
+  if (!qContainer) return;
 
-  container.innerHTML = mod.assessment.map((q, qIdx) => `
-    <div class="exam-question-item" id="mod-q-item-${qIdx}">
-      <span class="exam-q-number">Question ${qIdx + 1} of 5</span>
-      <h4 class="exam-q-text">${q.question}</h4>
-      <div class="exam-options-grid">
+  qContainer.innerHTML = mod.assessment.questions.map((q, idx) => `
+    <div class="assessment-question-card" id="mod-q-card-${idx}">
+      <span class="q-number-pill">Question ${idx + 1} of 5</span>
+      <h4 style="color: var(--champagne); font-size: 1.05rem; margin-top: 6px;">${q.q}</h4>
+      <div class="exam-options-grid" style="margin-top: 14px;">
         ${q.options.map((opt, optIdx) => `
-          <label class="exam-opt-card" id="mod-q-${qIdx}-opt-${optIdx}">
-            <input type="radio" name="mod_assessment_q_${qIdx}" value="${optIdx}">
+          <label class="exam-opt-card" id="mod-q-${idx}-opt-${optIdx}">
+            <input type="radio" name="mod_assessment_q_${idx}" value="${optIdx}">
             <span>${opt}</span>
           </label>
         `).join("")}
@@ -1186,32 +1433,32 @@ function renderModuleAssessment() {
 function submitModuleAssessment() {
   const course = getActiveCourse();
   const mod = course.modules[state.activeAssessmentModIndex];
-  const questions = mod.assessment;
-
+  const assessment = mod.assessment;
   let score = 0;
-  let unanswered = false;
+  let allAnswered = true;
 
-  questions.forEach((q, qIdx) => {
-    const selected = document.querySelector(`input[name="mod_assessment_q_${qIdx}"]:checked`);
+  assessment.questions.forEach((q, idx) => {
+    const selected = document.querySelector(`input[name="mod_assessment_q_${idx}"]:checked`);
     if (!selected) {
-      unanswered = true;
-    } else if (parseInt(selected.value, 10) === q.correctIndex) {
+      allAnswered = false;
+    } else if (parseInt(selected.value, 10) === q.answer) {
       score++;
     }
   });
 
-  if (unanswered) {
-    showToast("Please answer all 5 questions before submitting.", "⚠️");
+  if (!allAnswered) {
+    showToast("Please answer all 5 questions before submitting.", "alert");
     return;
   }
 
   const passed = score >= mod.passingScore;
+  state.moduleScores[mod.id] = score;
+
   const resultBox = document.getElementById("modAssessmentResultBox");
   const submitWrapper = document.getElementById("modAssessmentSubmitWrapper");
 
   if (passed) {
     state.completedModules[mod.id] = true;
-    state.moduleScores[mod.id] = score;
     saveState();
 
     if (submitWrapper) submitWrapper.style.display = "none";
@@ -1221,7 +1468,9 @@ function submitModuleAssessment() {
     if (resultBox) {
       resultBox.style.display = "block";
       resultBox.innerHTML = `
-        <div style="font-size: 2.8rem; margin-bottom: 10px;">🌟</div>
+        <div style="margin-bottom: 14px; color: var(--gold); display: flex; justify-content: center;">
+          ${svgIcon('trophy', 48)}
+        </div>
         <h2 style="color: #34d399; font-size: 1.5rem;">Module ${mod.num} Assessment Passed!</h2>
         <div class="score-banner" style="color: #10b981; font-size: 2rem; font-weight: 800; margin: 12px 0;">
           Score: ${score} / 5 (${(score/5)*100}%)
@@ -1246,12 +1495,14 @@ function submitModuleAssessment() {
       `;
     }
 
-    showToast(`Module ${mod.num} cleared with ${score}/5!`, "🏆");
+    showToast(`Module ${mod.num} cleared with ${score}/5!`, "trophy");
   } else {
     if (resultBox) {
       resultBox.style.display = "block";
       resultBox.innerHTML = `
-        <div style="font-size: 2.5rem; margin-bottom: 10px;">⚠️</div>
+        <div style="margin-bottom: 14px; color: #ff8b8b; display: flex; justify-content: center;">
+          ${svgIcon('alert', 48)}
+        </div>
         <h2 style="color: #ff8b8b; font-size: 1.4rem;">Assessment Not Yet Passed</h2>
         <div class="score-banner" style="color: #ff8b8b; font-size: 1.8rem; font-weight: 800; margin: 12px 0;">
           Score: ${score} / 5 (Required: ${mod.passingScore} / 5)
@@ -1265,7 +1516,7 @@ function submitModuleAssessment() {
       `;
     }
 
-    showToast(`Score: ${score}/5. Required: ${mod.passingScore}/5.`, "⚠️");
+    showToast(`Score: ${score}/5. Required: ${mod.passingScore}/5.`, "alert");
   }
 }
 
@@ -1284,7 +1535,7 @@ function proceedToNextModule() {
 function renderExamScreen() {
   const course = getActiveCourse();
   if (!canTakeFinalExam()) {
-    showToast("Final Exam locked. Complete all 5 modules first.", "🔒");
+    showToast("Final Exam locked. Complete all 5 modules first.", "lock");
     navigateTo("dashboard");
     return;
   }
@@ -1336,7 +1587,7 @@ function submitFinalExam() {
   });
 
   if (unansweredIndices.length > 0) {
-    showToast(`You have ${unansweredIndices.length} unanswered question(s). Complete all 50.`, "⚠️");
+    showToast(`You have ${unansweredIndices.length} unanswered question(s). Complete all 50.`, "alert");
     const firstUnanswered = document.getElementById(`final-q-item-${unansweredIndices[0] - 1}`);
     if (firstUnanswered) {
       firstUnanswered.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -1360,7 +1611,9 @@ function submitFinalExam() {
     if (resultBox) {
       resultBox.style.display = "block";
       resultBox.innerHTML = `
-        <div style="font-size: 3rem; margin-bottom: 12px;">🎓</div>
+        <div style="margin-bottom: 16px; color: var(--gold); display: flex; justify-content: center;">
+          ${svgIcon('graduation', 56)}
+        </div>
         <h2 style="color: #34d399; font-size: 1.8rem;">Board Examination Cleared!</h2>
         <div class="score-banner" style="color: #10b981; font-size: 2.2rem; font-weight: 800; margin: 14px 0;">
           Score: ${score} / 50 (${Math.round((score/50)*100)}%)
@@ -1368,18 +1621,20 @@ function submitFinalExam() {
         <p style="color: var(--ivory); font-size: 1rem; max-width: 550px; margin: 0 auto 24px;">
           By order of the Editorial Directorate of Litdom Academy, having satisfied all examination standards, you are hereby conferred the credential of Master Editorial Fellow.
         </p>
-        <button class="btn btn-gold" style="padding: 14px 28px; font-size: 1.05rem;" onclick="navigateTo('certificate')">
+        <button class="btn btn-gold" style="padding: 12px 24px; font-size: 1rem;" onclick="navigateTo('certificate')">
           View Master Certificate &rarr;
         </button>
       `;
     }
 
-    showToast("Master Certification Achieved! 🎓", "🏆");
+    showToast("Master Certification Achieved!", "trophy");
   } else {
     if (resultBox) {
       resultBox.style.display = "block";
       resultBox.innerHTML = `
-        <div style="font-size: 3rem; margin-bottom: 12px;">⚖️</div>
+        <div style="margin-bottom: 16px; color: #ff8b8b; display: flex; justify-content: center;">
+          ${svgIcon('scales', 56)}
+        </div>
         <h2 style="color: #ff8b8b; font-size: 1.6rem;">Examination Not Passed</h2>
         <div class="score-banner" style="color: #ff8b8b; font-size: 2rem; font-weight: 800; margin: 14px 0;">
           Score: ${score} / 50 (Passing: ${exam.passingScore} / 50)
@@ -1393,28 +1648,24 @@ function submitFinalExam() {
       `;
     }
 
-    showToast(`Score: ${score}/50. Required: 45/50.`, "⚠️");
+    showToast(`Score: ${score}/50. Required: 45/50.`, "alert");
   }
 }
 
 function renderCertificate() {
   if (!state.examState.passed) {
-    showToast("Certificate locked. Complete and pass the Board Exam first.", "🔒");
+    showToast("Certificate locked. Complete and pass the Board Exam first.", "lock");
     navigateTo("dashboard");
     return;
   }
 
   const nameEl = document.getElementById("certLearnerName");
   const dateEl = document.getElementById("certDateIssued");
-  const idEl = document.getElementById("certCredentialId");
+  const idEl = document.getElementById("certCredentialId") || document.getElementById("certVerificationCode");
 
   if (nameEl) nameEl.textContent = state.studentName || "Eleanor Vance";
   if (dateEl) dateEl.textContent = state.examState.timestamp || "October 2026";
-  if (idEl) idEl.textContent = "LITDOM-" + Math.abs(hashCode(state.studentName + "cert")).toString(36).toUpperCase().padStart(8, "0");
-}
-
-function downloadCertificate() {
-  window.print();
+  if (idEl) idEl.textContent = "LITDOM-" + Math.abs(hashCode((state.studentName || "scholar") + "cert")).toString(36).toUpperCase().padStart(8, "0");
 }
 
 function hashCode(str) {
@@ -1428,32 +1679,80 @@ function hashCode(str) {
 
 
 /* =========================================================================
- * REGION 11: UTILITIES, AUDIO SIMULATOR & TOAST NOTIFICATIONS
+ * REGION 11: UTILITIES, AUDIO SIMULATOR & SVG TOAST NOTIFICATIONS
  * ========================================================================= */
 
 function toggleAudioDemo(btn) {
-  if (btn.textContent.trim() === "▶") {
-    btn.textContent = "❚❚";
-    showToast("Audio masterclass playing...", "🔊");
+  const isPlaying = btn.getAttribute("data-playing") === "true";
+  if (!isPlaying) {
+    btn.setAttribute("data-playing", "true");
+    btn.innerHTML = svgIcon('pause', 14);
+    showToast("Audio masterclass playing...", "sound");
   } else {
-    btn.textContent = "▶";
-    showToast("Audio paused.", "⏸️");
+    btn.setAttribute("data-playing", "false");
+    btn.innerHTML = svgIcon('play', 14);
+    showToast("Audio paused.", "pause");
   }
 }
 
-function showToast(msg, icon = "✨") {
+function showToast(msg, iconKey = "sparkle") {
   const el = document.getElementById("toastMsg");
   const txt = document.getElementById("toastText");
   const icn = document.getElementById("toastIcon");
   if (!el || !txt) return;
 
   txt.textContent = msg;
-  if (icn) icn.textContent = icon;
+  if (icn) {
+    let key = iconKey;
+    if (key === "trophy" || key === "reward") key = "trophy";
+    else if (key === "video" || key === "lecture") key = "video";
+    else if (key === "check" || key === "solved") key = "check";
+    else if (key === "alert" || key === "warning") key = "alert";
+    else if (key === "zap" || key === "fast") key = "zap";
+    else if (key === "scroll" || key === "exam") key = "scroll";
+    else if (key === "lock") key = "lock";
+    else if (key === "sound" || key === "audio") key = "sound";
+    else if (key === "pause") key = "pause";
+    else if (key === "graduation" || key === "certificate") key = "graduation";
+    icn.innerHTML = svgIcon(key, 18);
+  }
   el.classList.add("show");
   clearTimeout(window.__toastTimer);
   window.__toastTimer = setTimeout(() => el.classList.remove("show"), 3400);
 }
 
+
+/* =========================================================================
+ * REGION 12: MODAL HANDLERS & EXPLICIT ACTION HOOKS
+ * ========================================================================= */
+
+function changeStudentNamePrompt() {
+  const current = state.studentName || "Eleanor Vance";
+  const newName = prompt("Enter your name for the Litdom Master Certificate:", current);
+  if (newName && newName.trim()) {
+    state.studentName = newName.trim();
+    saveState();
+    updateNavUser();
+    if (state.currentView === "certificate") {
+      renderCertificate();
+    }
+    showToast(`Student name updated to ${state.studentName}`, "check");
+  }
+}
+
+function resetCourseProgressPrompt() {
+  resetProgress();
+}
+
+function advanceToNextSection() {
+  markSectionCompleteAndAdvance();
+}
+
+function bypassCooldownForTesting() {
+  const box = document.getElementById("examCooldownBox");
+  if (box) box.style.display = "none";
+  showToast("Cooldown bypassed for testing.", "zap");
+}
 
 /* =========================================================================
  * INITIALIZATION ON DOM LOAD
@@ -1469,29 +1768,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Ensure first screen loads
+  // Initial routing
   navigateTo(state.currentView || "hub");
 });
-
-// Expose globally
-if (typeof window !== "undefined") {
-  window.navigateTo = navigateTo;
-  window.openPathModal = openPathModal;
-  window.closePathModal = closePathModal;
-  window.selectPath = selectPath;
-  window.openSection = openSection;
-  window.openModuleAssessment = openModuleAssessment;
-  window.resetProgress = resetProgress;
-  window.toggleVideoPlayback = toggleVideoPlayback;
-  window.fastForwardVideo = fastForwardVideo;
-  window.evaluateExerciseOption = evaluateExerciseOption;
-  window.handleSectionAnswer = handleSectionAnswer;
-  window.markSectionCompleteAndAdvance = markSectionCompleteAndAdvance;
-  window.explainPendingRequirements = explainPendingRequirements;
-  window.submitModuleAssessment = submitModuleAssessment;
-  window.proceedToNextModule = proceedToNextModule;
-  window.submitFinalExam = submitFinalExam;
-  window.downloadCertificate = downloadCertificate;
-  window.toggleAudioDemo = toggleAudioDemo;
-  window.showToast = showToast;
-}

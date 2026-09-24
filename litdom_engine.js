@@ -695,9 +695,8 @@ function renderSectionContent() {
       case "video": {
         const vidId = block.id || `${sec.id}-vid`;
         const isWatched = !!state.completedVideos[vidId] || isPartDone;
-        const custom = (state.customVideoSettings && state.customVideoSettings[vidId]) || {};
-        const duration = custom.durationSeconds || block.durationSeconds || 20;
-        const videoUrl = custom.videoUrl !== undefined ? custom.videoUrl : (block.videoUrl || "");
+        const duration = block.durationSeconds || 30;
+        const videoUrl = block.videoUrl || "";
 
         // Determine media player type
         let viewportHtml = "";
@@ -706,8 +705,8 @@ function renderSectionContent() {
 
         if (isDirectVideo) {
           viewportHtml = `
-            <div style="position: relative; width: 100%; height: 280px; background: #000; border-radius: 6px; overflow: hidden;">
-              <video id="vid-media-el-${vidId}" src="${videoUrl}" controls playsinline style="width: 100%; height: 100%; object-fit: contain;"></video>
+            <div style="position: relative; width: 100%; height: 320px; background: #000; border-radius: 8px; overflow: hidden;">
+              <video id="vid-media-el-${vidId}" src="${videoUrl}" controls playsinline style="width: 100%; height: 100%; object-fit: contain;" onplay="handleMediaElementPlay('${vidId}', ${duration})" onended="handleMediaElementEnded('${vidId}')"></video>
             </div>
           `;
         } else if (isEmbed) {
@@ -717,9 +716,13 @@ function renderSectionContent() {
           } else if (videoUrl.includes("youtu.be/")) {
             embedSrc = videoUrl.replace("youtu.be/", "www.youtube.com/embed/");
           }
+          // Ensure autoplay/controls parameters
+          if (!embedSrc.includes("?")) {
+            embedSrc += "?rel=0&modestbranding=1";
+          }
           viewportHtml = `
-            <div style="position: relative; width: 100%; height: 280px; background: #000; border-radius: 6px; overflow: hidden;">
-              <iframe src="${embedSrc}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%; height: 100%;"></iframe>
+            <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; background: #000; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+              <iframe src="${embedSrc}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
             </div>
           `;
         } else {
@@ -735,7 +738,6 @@ function renderSectionContent() {
               <div style="font-size: 0.78rem; color: var(--muted); margin-top: 2px;">
                 ${block.badge || "Litdom Studio Master Lecture"}
               </div>
-              ${videoUrl ? `<div style="font-size: 0.75rem; color: var(--gold); margin-top: 6px;">Source: ${videoUrl}</div>` : ''}
             </div>
           `;
         }
@@ -756,55 +758,6 @@ function renderSectionContent() {
               <p style="font-size: 0.85rem; color: var(--muted); margin: 4px 0 10px;">${block.caption}</p>
             </div>
 
-            <!-- Video Configuration Drawer (Editable by Instructor) -->
-            <div class="video-config-drawer" id="vid-config-${vidId}" style="display: none;">
-              <div class="video-config-title">
-                ${svgIcon('sliders', 14)} Video Settings & Timer Configuration
-              </div>
-              <p class="video-config-hint">
-                Set how long learners must watch before the section unlocks, and optionally paste your own video URL (MP4, YouTube, or Vimeo).
-              </p>
-
-              <div class="video-config-grid">
-                <div class="video-config-field" style="flex: 1; min-width: 240px;">
-                  <label>Watch Timer Duration (Seconds):</label>
-                  <div style="display: flex; gap: 8px; align-items: center;">
-                    <input type="number" class="video-input-field" id="vid-input-duration-${vidId}" value="${duration}" min="5" max="7200" oninput="updateDurationHelper('${vidId}')" style="width: 110px;">
-                    <span id="vid-duration-helper-${vidId}" style="font-size: 0.85rem; color: var(--gold); font-weight: 700;">
-                      ${formatSeconds(duration)}
-                    </span>
-                  </div>
-
-                  <!-- Quick Presets -->
-                  <div style="display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap;">
-                    <span style="font-size: 0.72rem; color: var(--muted); align-self: center;">Presets:</span>
-                    <button type="button" class="preset-btn" onclick="applyDurationPreset('${vidId}', 10)">10s</button>
-                    <button type="button" class="preset-btn" onclick="applyDurationPreset('${vidId}', 30)">30s</button>
-                    <button type="button" class="preset-btn" onclick="applyDurationPreset('${vidId}', 60)">1 min</button>
-                    <button type="button" class="preset-btn" onclick="applyDurationPreset('${vidId}', 180)">3 min</button>
-                    <button type="button" class="preset-btn" onclick="applyDurationPreset('${vidId}', 300)">5 min</button>
-                  </div>
-                </div>
-
-                <div class="video-config-field" style="flex: 2; min-width: 260px;">
-                  <label>Custom Video / Embed URL (Optional):</label>
-                  <input type="text" class="video-input-field" id="vid-input-url-${vidId}" value="${videoUrl}" placeholder="https://example.com/video.mp4 or YouTube URL">
-                  <span style="font-size: 0.72rem; color: var(--muted); margin-top: 4px;">
-                    Leave blank to use the built-in Masterclass simulator.
-                  </span>
-                </div>
-              </div>
-
-              <div style="display: flex; gap: 10px; margin-top: 14px; justify-content: flex-end; flex-wrap: wrap;">
-                <button class="btn btn-outline" style="font-size: 0.78rem; padding: 6px 14px;" onclick="resetVideoSettings('${vidId}', ${block.durationSeconds || 20})">
-                  Reset Default
-                </button>
-                <button class="btn btn-gold" style="font-size: 0.78rem; padding: 6px 16px;" onclick="saveVideoSettings('${vidId}')">
-                  ${svgIcon('check', 13)} Save & Apply
-                </button>
-              </div>
-            </div>
-
             <!-- Video Player Viewport -->
             ${viewportHtml}
 
@@ -817,27 +770,27 @@ function renderSectionContent() {
                 </div>
                 <div class="video-countdown-pill ${isWatched ? 'completed' : ''}" id="vid-badge-${vidId}">
                   <span style="display: inline-flex; align-items: center; gap: 5px;">
-                    ${isWatched ? `${svgIcon('check', 13)} Lecture Watched` : `${svgIcon('clock', 13)} ${formatSeconds(duration)} remaining`}
+                    ${isWatched ? `${svgIcon('check', 13)} Lecture Watched` : `${svgIcon('clock', 13)} ${formatSeconds(duration)} requirement`}
                   </span>
                 </div>
               </div>
 
-              <!-- Row 2: Play, Fast-Forward, Settings Buttons -->
+              <!-- Row 2: Playback Actions -->
               <div class="video-buttons-row">
                 <div class="video-buttons-left">
                   <button class="btn btn-outline video-action-btn" onclick="toggleVideoPlayback('${vidId}', ${duration})">
                     <span id="vid-ctrl-text-${vidId}" style="display: inline-flex; align-items: center; gap: 6px;">
-                      ${svgIcon('play', 12)} Play
+                      ${svgIcon('play', 12)} Play Lecture
                     </span>
                   </button>
-                  <button class="btn btn-outline video-action-btn" style="color: var(--gold);" title="Fast-forward preview for instructors" onclick="fastForwardVideo('${vidId}')">
+                  <button class="btn btn-outline video-action-btn" style="color: var(--gold);" title="Fast-forward lecture" onclick="fastForwardVideo('${vidId}')">
                     ${svgIcon('zap', 12)} Fast-Forward
                   </button>
                 </div>
                 <div class="video-buttons-right">
-                  <button class="btn btn-outline video-action-btn" onclick="toggleVideoEditor('${vidId}')" title="Configure custom watch timer and media URL">
-                    ${svgIcon('sliders', 12)} Timer Settings
-                  </button>
+                  <span style="font-size: 0.78rem; color: var(--muted); display: inline-flex; align-items: center; gap: 5px;">
+                    ${svgIcon('video', 13)} ${block.badge || 'Instructor Masterclass'}
+                  </span>
                 </div>
               </div>
             </div>

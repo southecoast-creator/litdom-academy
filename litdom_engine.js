@@ -156,14 +156,25 @@ function showToast(msg, icon = "✨") {
 
 /* --- Modal Controls --- */
 function openPathModal(courseId) {
-  state.selectedCourseId = courseId;
+  state.selectedCourseId = courseId || (LITDOM_DATA.courses[0] && LITDOM_DATA.courses[0].id) || "editor-academy";
+  const course = getActiveCourse();
+  const titleEl = document.getElementById("modalCourseTitle");
+  if (titleEl && course) {
+    titleEl.textContent = course.title;
+  }
   const modal = document.getElementById("pathModal");
-  if (modal) modal.classList.add("open");
+  if (modal) {
+    modal.classList.add("active");
+    modal.classList.add("open");
+  }
 }
 
 function closePathModal() {
   const modal = document.getElementById("pathModal");
-  if (modal) modal.classList.remove("open");
+  if (modal) {
+    modal.classList.remove("active");
+    modal.classList.remove("open");
+  }
 }
 
 function selectPath(path) {
@@ -178,7 +189,7 @@ function renderHub() {
   if (!container) return;
 
   container.innerHTML = LITDOM_DATA.courses.map(c => `
-    <div class="course-card" onclick="openPathModal('${c.id}')">
+    <div class="course-card" onclick="openPathModal('${c.id}')" style="cursor: pointer;">
       <div class="course-card-top">
         <span class="course-badge">${c.level}</span>
         <div style="font-size: 2.2rem; margin: 12px 0 8px;">${c.icon}</div>
@@ -190,7 +201,7 @@ function renderHub() {
           <span class="meta-pill">⏱️ ${c.duration}</span>
           <span class="meta-pill">📚 ${c.modules.length} Modules</span>
         </div>
-        <button class="btn btn-gold" style="width: 100%; margin-top: 10px;">
+        <button type="button" class="btn btn-gold" style="width: 100%; margin-top: 10px; cursor: pointer;" onclick="event.stopPropagation(); openPathModal('${c.id}');">
           Start Learning &rarr;
         </button>
       </div>
@@ -199,7 +210,7 @@ function renderHub() {
 }
 
 function openCourse(courseId) {
-  state.selectedCourseId = courseId;
+  state.selectedCourseId = courseId || (LITDOM_DATA.courses[0] && LITDOM_DATA.courses[0].id) || "editor-academy";
   saveState();
   navigateTo("dashboard");
 }
@@ -994,9 +1005,17 @@ window.updateStudentName = updateStudentName;
 window.openPathModal = openPathModal;
 window.closePathModal = closePathModal;
 window.selectPath = selectPath;
+window.openCourse = openCourse;
 
 /* --- Initialization --- */
 document.addEventListener("DOMContentLoaded", () => {
   loadState();
   renderHub();
+
+  const modal = document.getElementById("pathModal");
+  if (modal) {
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closePathModal();
+    });
+  }
 });

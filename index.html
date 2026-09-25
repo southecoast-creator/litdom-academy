@@ -2521,6 +2521,54 @@
         font-size: 0.94rem;
       }
     }
+  
+    /* Section Knowledge Certification & Multi-Media Content Enhancements */
+    .section-assessment-card {
+      background: #121218;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-top: 36px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    }
+    .assessment-q-card {
+      background: #181820;
+      border: 1px solid var(--charcoal-border);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+    .assessment-opt-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 14px;
+      border: 1px solid var(--charcoal-border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: rgba(255, 255, 255, 0.015);
+    }
+    .assessment-opt-label:hover {
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.06);
+    }
+    .assessment-result-banner {
+      border-radius: var(--radius-md);
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 24px;
+      animation: viewFadeIn 0.3s ease;
+    }
+    .assessment-result-banner.passed {
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid #10b981;
+    }
+    .assessment-result-banner.failed {
+      background: rgba(239, 68, 68, 0.14);
+      border: 1px solid #ef4444;
+    }
+
   </style>
 </head>
 <body>

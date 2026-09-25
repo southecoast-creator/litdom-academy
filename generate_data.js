@@ -1,4 +1,7 @@
-/* =========================================================================
+const fs = require('fs');
+
+// We will construct the complete, pristine LITDOM_DATA
+const dataScript = `/* =========================================================================
  * LITDOM ACADEMY - CURRICULUM ARCHITECTURE & COURSE DATA
  * =========================================================================
  *
@@ -50,7 +53,7 @@ const LITDOM_DATA = {
                 {
                   type: "text",
                   title: "The Guardian of the Reader's Attention",
-                  content: "<p>An editor is neither a glorified proofreader nor an authoritarian censor. The true editor acts as the author's most dedicated champion, an empathetic surrogate for the eventual reader, and an objective diagnostician of prose.</p><div class=\"callout-quote\">\"The best editors leave no fingerprints. They amplify the author's singular voice while quietly removing the obstructions that stand between the sentence and the reader's heart.\"</div><p>While the author is consumed with the creative act of birthing characters and themes into existence, the editor steps back to examine structure, cadence, semantic precision, and narrative momentum.</p>"
+                  content: "<p>An editor is neither a glorified proofreader nor an authoritarian censor. The true editor acts as the author's most dedicated champion, an empathetic surrogate for the eventual reader, and an objective diagnostician of prose.</p><div class=\\"callout-quote\\">\\"The best editors leave no fingerprints. They amplify the author's singular voice while quietly removing the obstructions that stand between the sentence and the reader's heart.\\"</div><p>While the author is consumed with the creative act of birthing characters and themes into existence, the editor steps back to examine structure, cadence, semantic precision, and narrative momentum.</p>"
                 },
                 {
                   type: "video",
@@ -297,7 +300,7 @@ const LITDOM_DATA = {
                 {
                   type: "text",
                   title: "Editorial Humility vs. Stylistic Imperialism",
-                  content: "<p>The novice editor enters a manuscript with a red pen and a subconscious desire to rewrite every sentence in their own likeness. The master editor enters with deep reverence for idiosyncratic voice.</p><div class=\"callout-quote\">\"Never change a sentence simply because you would have phrased it differently. Change it only if it violates clarity, breaks narrative promise, or betrays the author's own aesthetic vision.\"</div>"
+                  content: "<p>The novice editor enters a manuscript with a red pen and a subconscious desire to rewrite every sentence in their own likeness. The master editor enters with deep reverence for idiosyncratic voice.</p><div class=\\"callout-quote\\">\\"Never change a sentence simply because you would have phrased it differently. Change it only if it violates clarity, breaks narrative promise, or betrays the author's own aesthetic vision.\\"</div>"
                 },
                 {
                   type: "example",
@@ -490,7 +493,7 @@ const LITDOM_DATA = {
                 {
                   type: "text",
                   title: "Macro to Micro: The Editorial Funnel",
-                  content: "<p>Editing is not a single undifferentiated process. It is a hierarchical pipeline moving from grand architecture down to microscopic typographical alignment. Applying line polish to a scene that will be cut in a structural rewrite is wasted energy.</p><div class=\"callout-quote\">\"Never polish the brass knobs on a door that is about to be demolished in the developmental overhaul.\"</div>"
+                  content: "<p>Editing is not a single undifferentiated process. It is a hierarchical pipeline moving from grand architecture down to microscopic typographical alignment. Applying line polish to a scene that will be cut in a structural rewrite is wasted energy.</p><div class=\\"callout-quote\\">\\"Never polish the brass knobs on a door that is about to be demolished in the developmental overhaul.\\"</div>"
                 },
                 {
                   type: "video",
@@ -735,7 +738,7 @@ const LITDOM_DATA = {
                   type: "example",
                   title: "Line Edit vs. Copyedit in Action",
                   before: "Raw Draft: 'The well known author said, that he would rather die, then write badly.'",
-                  after: "Copyedit: 'The well-known author said that he would rather die than write badly.'\nLine Edit: 'He swore he would rather perish than commit a clumsy sentence.'",
+                  after: "Copyedit: 'The well-known author said that he would rather die than write badly.'\\nLine Edit: 'He swore he would rather perish than commit a clumsy sentence.'",
                   explanation: "The copyedit fixes the hyphen, comma splice, and 'then/than' error. The line edit elevates cadence and emotional punch."
                 },
                 {
@@ -922,7 +925,7 @@ const LITDOM_DATA = {
                 {
                   type: "text",
                   title: "The Manuscript as an Organ of the Author",
-                  content: "<p>Writers do not hand you a neutral stack of paper; they hand you their exposed nervous system. Even experienced authors experience deep vulnerability upon receiving developmental feedback.</p><div class=\"callout-quote\">\"A critique that crushes the author's spirit will never produce a great revision. The editor's primary psychological goal is to make the author eager to sit down at the desk again.\"</div>"
+                  content: "<p>Writers do not hand you a neutral stack of paper; they hand you their exposed nervous system. Even experienced authors experience deep vulnerability upon receiving developmental feedback.</p><div class=\\"callout-quote\\">\\"A critique that crushes the author's spirit will never produce a great revision. The editor's primary psychological goal is to make the author eager to sit down at the desk again.\\"</div>"
                 },
                 {
                   type: "example",
@@ -1143,7 +1146,7 @@ const LITDOM_DATA = {
                 {
                   type: "text",
                   title: "The Author's Ultimate Sovereignty",
-                  content: "<p>Unless a manuscript contains defamatory libel, factual fraud, or hate speech, the author owns the copyright and holds ultimate artistic veto. The editor's job is not to enforce surrender, but to ensure that whatever choice the author makes is executed with maximum craft clarity.</p><div class=\"callout-quote\">\"If an author rejects your solution, do not fight for your specific idea. Dig deeper to discover the underlying problem you both agree exists, and let the author invent their own solution.\"</div>"
+                  content: "<p>Unless a manuscript contains defamatory libel, factual fraud, or hate speech, the author owns the copyright and holds ultimate artistic veto. The editor's job is not to enforce surrender, but to ensure that whatever choice the author makes is executed with maximum craft clarity.</p><div class=\\"callout-quote\\">\\"If an author rejects your solution, do not fight for your specific idea. Dig deeper to discover the underlying problem you both agree exists, and let the author invent their own solution.\\"</div>"
                 },
                 {
                   type: "interactive_exercise",
@@ -1442,7 +1445,7 @@ const LITDOM_DATA = {
                 {
                   type: "text",
                   title: "Honoring Cultural Nuance & Lived Experience",
-                  content: "<p>Authors frequently write from specific cultural, regional, or linguistic traditions that may diverge from the editor's personal background. The ethical editor does not sanitize cultural idioms to match mainstream hegemony.</p><div class=\"callout-quote\">\"Never mistake cultural difference for linguistic error. An editor's role is to ensure the author's cultural world resonates with truth, not to dilute it for comfort.\"</div>"
+                  content: "<p>Authors frequently write from specific cultural, regional, or linguistic traditions that may diverge from the editor's personal background. The ethical editor does not sanitize cultural idioms to match mainstream hegemony.</p><div class=\\"callout-quote\\">\\"Never mistake cultural difference for linguistic error. An editor's role is to ensure the author's cultural world resonates with truth, not to dilute it for comfort.\\"</div>"
                 },
                 {
                   type: "audio",
@@ -1456,7 +1459,7 @@ const LITDOM_DATA = {
                 {
                   type: "example",
                   title: "Cultural Nuance vs. Mechanical Correction",
-                  before: "Manuscript: 'She sucked her teeth and made a tsk sound, giving him side-eye.'\nEditor Note: 'This is informal slang; change to 'She made a vocalization of annoyance.''",
+                  before: "Manuscript: 'She sucked her teeth and made a tsk sound, giving him side-eye.'\\nEditor Note: 'This is informal slang; change to 'She made a vocalization of annoyance.''",
                   after: "Masterclass Editorial Choice: Retain the rich, culturally specific gesture intact without flattening intervention.",
                   explanation: "Sanitizing vibrant cultural mannerisms strips the prose of visceral character reality."
                 }
@@ -1720,7 +1723,7 @@ const LITDOM_DATA = {
                 {
                   type: "text",
                   title: "The Golden Rule of the First Read: Hands Off",
-                  content: "<p>The biggest beginner mistake is opening a manuscript and immediately making red-pen corrections on page 1. You cannot judge a scene's necessity or understand a character's pacing until you have experienced the entire story as a reader.</p><div class=\"callout-quote\">\"The first read is sacred. It is the only time you will ever experience the manuscript with virgin innocence. Never hold a pen during the first blind read.\"</div>"
+                  content: "<p>The biggest beginner mistake is opening a manuscript and immediately making red-pen corrections on page 1. You cannot judge a scene's necessity or understand a character's pacing until you have experienced the entire story as a reader.</p><div class=\\"callout-quote\\">\\"The first read is sacred. It is the only time you will ever experience the manuscript with virgin innocence. Never hold a pen during the first blind read.\\"</div>"
                 },
                 {
                   type: "video",
@@ -1856,7 +1859,7 @@ const LITDOM_DATA = {
                 {
                   type: "example",
                   title: "Style Sheet Entry Example",
-                  before: "In Chapter 3: 'Castle Stormwatch'\nIn Chapter 12: 'Storm-watch Fortress'\nIn Chapter 24: 'Stormwatch keep'",
+                  before: "In Chapter 3: 'Castle Stormwatch'\\nIn Chapter 12: 'Storm-watch Fortress'\\nIn Chapter 24: 'Stormwatch keep'",
                   after: "Style Sheet Master Record: 'Stormwatch Castle' (single word, capitalized, Castle capitalized when following specific name).",
                   explanation: "Documenting the canonical spelling prevents contradictory variations from slipping into the printed volume."
                 },
@@ -2180,7 +2183,7 @@ const LITDOM_DATA = {
           { q: "What is 'passive voice'?", options: ["Polite dialogue between characters", "A grammatical structure where the subject receives the action rather than performing it", "Writing about quiet subjects", "Using past tense verbs"], answer: 1 },
           { q: "Which sentence uses the active voice?", options: ["The chalice was stolen by the rogue.", "The rogue stole the ancient chalice.", "The chalice had been seen being stolen.", "There was a theft of the chalice by the rogue."], answer: 1 },
           { q: "What does 'show, don't tell' encourage writers to do?", options: ["Include illustrations on every page", "Dramatize emotion through concrete sensory actions rather than abstract declarations", "Avoid describing physical settings", "Only write screenplays"], answer: 1 },
-          { q: "Transforming 'tell' to 'show': 'John was nervous' becomes:", options: ["'John felt extremely nervous inside.'", "'John\'s knuckles whitened as he shredded the paper cup into ribbons.'", "'John told everyone he was nervous.'", "'John was in a state of high anxiety.'"], answer: 1 },
+          { q: "Transforming 'tell' to 'show': 'John was nervous' becomes:", options: ["'John felt extremely nervous inside.'", "'John\\'s knuckles whitened as he shredded the paper cup into ribbons.'", "'John told everyone he was nervous.'", "'John was in a state of high anxiety.'"], answer: 1 },
           { q: "What is a 'deus ex machina'?", options: ["A sci-fi robot character", "An unearned, contrived resolution dropped into a plot without prior setup", "A Latin stylistic device", "The climax of a romance novel"], answer: 1 },
           { q: "How does an editor prevent a deus ex machina resolution?", options: ["Ensure the protagonist resolves the crisis using tools, skills, or choices set up earlier", "Make the ending even more random", "Add more characters at the end", "Change the villain's identity in the epilogue"], answer: 0 },
           { q: "What is an Oxford (serial) comma?", options: ["A comma used only in Oxford University texts", "The comma placed immediately before the coordinating conjunction in a series of three or more items", "A comma used after a question mark", "A decorative punctuation mark"], answer: 1 },
@@ -2196,8 +2199,7 @@ const LITDOM_DATA = {
           { q: "What is an editor's responsibility regarding factual verification in fiction?", options: ["Ignore all factual errors because it's fiction", "Check historical dates, geographical realities, and technical procedures to prevent immersion breaks", "Rewrite the history books to match the story", "Report the author to historians"], answer: 1 },
           { q: "What is the hallmark of masterclass editorial commentary?", options: ["Vague feedback like 'This doesn't work'", "Specific diagnoses explaining why something fails and concrete pathways to elevate it", "Punishing harsh criticism", "Praising everything unconditionally"], answer: 1 },
           { q: "Why must an editor maintain emotional neutrality during author revisions?", options: ["Because authors are business clients, not enemies or pupils", "To avoid being involved in the project", "Because emotions waste billable time", "Because contracts prohibit emotion"], answer: 0 },
-          { q: "What is the ultimate definition of editorial mastery at Litdom Academy?", options: ["Making every book read like it was written by the editor", "Clarifying and amplifying the author's authentic voice while leaving an invisible fingerprint", "Finding the maximum number of errors per page", "Winning literary prizes for editing"], answer: 1 },
-          { q: "What is the overarching ethical commitment of a Litdom Academy Master Editor?", options: ["To prioritize commercial sales above all else", "To preserve the integrity of the written word, champion authorial agency, and serve the reader's clarity", "To replace human authors with automated software", "To enforce identical sentence lengths across all chapters"], answer: 1 }
+          { q: "What is the ultimate definition of editorial mastery at Litdom Academy?", options: ["Making every book read like it was written by the editor", "Clarifying and amplifying the author's authentic voice while leaving an invisible fingerprint", "Finding the maximum number of errors per page", "Winning literary prizes for editing"], answer: 1 }
         ]
       }
     }
@@ -2211,3 +2213,8 @@ if (typeof window !== "undefined") {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = { LITDOM_DATA };
 }
+`;
+
+fs.writeFileSync('litdom_data.js', dataScript);
+fs.writeFileSync('app/src/main/assets/litdom_data.js', dataScript);
+console.log('Successfully wrote updated litdom_data.js to root and app/src/main/assets!');

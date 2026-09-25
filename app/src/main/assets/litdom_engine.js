@@ -1,36 +1,22 @@
 /* =========================================================================
- * LITDOM ACADEMY - COMPREHENSIVE PROGRESSION & INTERACTION ENGINE
+ * LITDOM ACADEMY - UNIFIED APPLICATION & CURRICULUM ENGINE
  * =========================================================================
- * 
- * WELCOME DEAR DEVELOPER / INSTRUCTOR!
- * This engine powers the entire learner journey across Litdom Academy.
- * The code is organized into 11 clearly designated regions below so you
- * can easily find, modify, add, remove, or duplicate any feature.
- * 
- * -------------------------------------------------------------------------
- * TABLE OF CONTENTS / CODE REGIONS:
- * -------------------------------------------------------------------------
- *   REGION 0: SVG ICON SYSTEM (ZERO EMOJIS, PURE VECTOR GRAPHICS)
- *   REGION 1: STATE MANAGEMENT & DATA PERSISTENCE
- *   REGION 2: CURRICULUM HELPERS (DYNAMIC SCALING FOR ANY COURSES/MODULES)
- *   REGION 3: VIEW NAVIGATION & ROUTING
- *   REGION 4: VIEW A - COURSE HUB & PATHWAY MODAL
- *   REGION 5: VIEW B - VISUAL ROADMAP JOURNEY MAP (DYNAMIC MODULES/SECTIONS)
- *   REGION 6: VIEW C - SECTION CONTENT, EDITABLE VIDEO TIMERS & PLAYERS
- *   REGION 7: INTERACTIVE EDITORIAL LABS (EMERALD GREEN SUCCESS ENGINE)
- *   REGION 8: SECTION KNOWLEDGE CHECKS & "MARK AS COMPLETE" GATE
- *   REGION 9: VIEW D - MODULE ASSESSMENTS (5-QUESTION EVALUATION)
- *   REGION 10: VIEW E - FINAL CAPSTONE EXAM & CERTIFICATION
- *   REGION 11: UTILITIES, AUDIO SIMULATOR & SVG TOAST NOTIFICATIONS
+ * Complete data-driven execution engine powering:
+ * - Dynamic Course Hub & Pathway Selection
+ * - Modular Journey Map / Roadmap with Strict Clearance Progression
+ * - Flexible Multi-Media Section Content Renderer (Text, Real Video, Real Audio,
+ *   Canva Embeds, Images, Documents, Downloads, Interactive Crucibles, Examples)
+ * - 5-Question Section Assessments (Passing: 3/5)
+ * - 5-Question Module Assessments (Passing: 4/5)
+ * - 50-Question Capstone Board Examination (Passing: 45/50)
+ * - Master Credential Certification (Locked until all modules & exam passed)
  * ========================================================================= */
 
-
-/* =========================================================================
- * REGION 0: SVG ICON SYSTEM (ZERO EMOJIS, PURE VECTOR GRAPHICS)
- * ========================================================================= */
+/* -------------------------------------------------------------------------
+ * SVG ICON REPOSITORY (Clean, crisp Material & Editorial Symbols)
+ * ------------------------------------------------------------------------- */
 const LITDOM_ICONS = {
   quill: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>`,
-  pencil: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>`,
   book: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 2v20"/></svg>`,
   award: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>`,
   clock: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
@@ -46,27 +32,22 @@ const LITDOM_ICONS = {
   search: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>`,
   target: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
   alert: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>`,
-  cross: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
-  scroll: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1z"/><path d="M4 5v14a2 2 0 0 0 2 2h2"/><path d="M9 7h6"/><path d="M9 11h6"/></svg>`,
-  scales: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>`,
+  pencil: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>`,
+  download: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>`,
+  presentation: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg>`,
+  image: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>`,
+  file: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>`,
+  graduation: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>`,
   trophy: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>`,
   sparkle: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="currentColor"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z"/></svg>`,
-  graduation: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>`,
-  sliders: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="12" y2="3"/><line x1="1" x2="7" y1="14" y2="14"/><line x1="9" x2="15" y1="8" y2="8"/><line x1="17" x2="23" y1="16" y2="16"/></svg>`,
-  sound: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>`
+  scales: `<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>`
 };
 
-/**
- * Returns an SVG icon string with customizable size.
- */
 function svgIcon(name, size = 18) {
-  let template = LITDOM_ICONS[name] || LITDOM_ICONS["sparkle"];
+  const template = LITDOM_ICONS[name] || LITDOM_ICONS["sparkle"];
   return template.replace(/\{size\}/g, size);
 }
 
-/**
- * Formats integer seconds into MM:SS string.
- */
 function formatSeconds(sec) {
   const s = Math.max(0, parseInt(sec, 10) || 0);
   const m = Math.floor(s / 60);
@@ -74,11 +55,10 @@ function formatSeconds(sec) {
   return `${m < 10 ? '0' + m : m}:${remS < 10 ? '0' + remS : remS}`;
 }
 
-
-/* =========================================================================
- * REGION 1: STATE MANAGEMENT & DATA PERSISTENCE
- * ========================================================================= */
-const STORAGE_KEY = "litdom_academy_progression_v3";
+/* -------------------------------------------------------------------------
+ * STATE PERSISTENCE (LocalStorage)
+ * ------------------------------------------------------------------------- */
+const STORAGE_KEY = "litdom_academy_progression_v5";
 
 let state = {
   currentView: "hub",
@@ -87,13 +67,10 @@ let state = {
   activeSectionIndex: 0,
   activeAssessmentModIndex: 0,
   studentName: "Eleanor Vance",
-  completedSections: {},     // Map of sectionId -> boolean
-  completedModules: {},      // Map of moduleId -> boolean
-  completedVideos: {},       // Map of videoId -> boolean (Watched to end)
-  completedExercises: {},    // Map of exerciseId -> boolean (Solved correctly)
-  sectionTestPassed: {},     // Map of sectionId -> boolean (1-question test passed)
-  moduleScores: {},          // Map of moduleId -> score (out of 5)
-  customVideoSettings: {},   // Map of videoId -> { durationSeconds: number, videoUrl: string }
+  completedSections: {}, // Map of sectionId -> boolean (passed 3/5 assessment)
+  sectionScores: {},     // Map of sectionId -> number (e.g. 4 for 4/5)
+  completedModules: {},  // Map of moduleId -> boolean (passed 4/5 assessment)
+  moduleScores: {},      // Map of moduleId -> number (e.g. 5 for 5/5)
   examState: {
     passed: false,
     score: 0,
@@ -101,16 +78,12 @@ let state = {
   }
 };
 
-/**
- * Loads saved state from localStorage or initializes default values.
- */
 function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
       state = Object.assign(state, parsed);
-      if (!state.customVideoSettings) state.customVideoSettings = {};
     }
   } catch (e) {
     console.warn("Storage load error:", e);
@@ -118,9 +91,6 @@ function loadState() {
   updateNavUser();
 }
 
-/**
- * Persists the current state object to browser localStorage.
- */
 function saveState() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -130,47 +100,38 @@ function saveState() {
   updateNavUser();
 }
 
-/**
- * Updates learner avatar and name in the top navigation bar.
- */
-function updateNavUser() {
-  const nameEl = document.getElementById("navLearnerName");
-  const avatarEl = document.getElementById("navAvatar");
-  if (nameEl) nameEl.textContent = state.studentName || "Scholar";
-  if (avatarEl) avatarEl.textContent = (state.studentName || "E").charAt(0).toUpperCase();
-}
-
-/**
- * Prompts user to confirm resetting all progression, clearing storage.
- */
 function resetProgress() {
-  if (confirm("Reset all course progression, quiz attempts, video timers, and exam scores?")) {
+  if (confirm("Reset all course progression, quiz attempts, and exam scores?")) {
     state.completedSections = {};
+    state.sectionScores = {};
     state.completedModules = {};
-    state.completedVideos = {};
-    state.completedExercises = {};
-    state.sectionTestPassed = {};
     state.moduleScores = {};
-    state.customVideoSettings = {};
     state.examState = {
       passed: false,
       score: 0,
       timestamp: null
     };
     saveState();
-    showToast("All curriculum progress and timers have been reset.", "replay");
+    showToast("All curriculum progress has been reset.", "replay");
     navigateTo("hub");
   }
 }
 
+function updateNavUser() {
+  const nameEl = document.getElementById("navUserName");
+  if (nameEl) nameEl.textContent = state.studentName || "Eleanor Vance";
+}
 
-/* =========================================================================
- * REGION 2: CURRICULUM HELPERS (DYNAMIC SCALING FOR ANY COURSES/MODULES)
- * ========================================================================= */
-
+/* -------------------------------------------------------------------------
+ * CURRICULUM ACCESSORS & PROGRESSION LOGIC
+ * ------------------------------------------------------------------------- */
 function getActiveCourse() {
-  const course = LITDOM_DATA.courses.find(c => c.id === state.selectedCourseId);
-  return course || LITDOM_DATA.courses[0];
+  const courses = (typeof LITDOM_DATA !== "undefined" && LITDOM_DATA.courses) ? LITDOM_DATA.courses : [];
+  return courses.find(c => c.id === state.selectedCourseId) || courses[0] || {
+    id: "editor-academy",
+    title: "Editor Academy",
+    modules: []
+  };
 }
 
 function isSectionCompleted(secId) {
@@ -183,21 +144,23 @@ function isModuleCompleted(modId) {
 
 function getSectionState(mIdx, sIdx) {
   const course = getActiveCourse();
+  if (!course.modules || !course.modules[mIdx]) return "locked";
   const mod = course.modules[mIdx];
   const sec = mod.sections[sIdx];
+  if (!sec) return "locked";
 
   if (isSectionCompleted(sec.id)) return "completed";
 
-  // First section of first module is available immediately
+  // First section of first module is available by default
   if (mIdx === 0 && sIdx === 0) return "available";
 
-  // If previous section in same module is completed, this section is available
+  // Within the same module: previous section must be completed
   if (sIdx > 0) {
     const prevSec = mod.sections[sIdx - 1];
     return isSectionCompleted(prevSec.id) ? "available" : "locked";
   }
 
-  // If first section of a subsequent module, previous module assessment must be passed
+  // First section of subsequent module: previous module assessment must be passed
   if (mIdx > 0 && sIdx === 0) {
     const prevMod = course.modules[mIdx - 1];
     return isModuleCompleted(prevMod.id) ? "available" : "locked";
@@ -208,33 +171,31 @@ function getSectionState(mIdx, sIdx) {
 
 function canTakeModuleAssessment(mIdx) {
   const course = getActiveCourse();
+  if (!course.modules || !course.modules[mIdx]) return false;
   const mod = course.modules[mIdx];
   return mod.sections.every(sec => isSectionCompleted(sec.id));
 }
 
 function getModuleState(mIdx) {
   const course = getActiveCourse();
+  if (!course.modules || !course.modules[mIdx]) return "locked";
   const mod = course.modules[mIdx];
-
   if (isModuleCompleted(mod.id)) return "completed";
   if (mIdx === 0) return "active";
-
   const prevMod = course.modules[mIdx - 1];
   if (isModuleCompleted(prevMod.id)) return "active";
-
   return "locked";
 }
 
 function canTakeFinalExam() {
   const course = getActiveCourse();
+  if (!course.modules || course.modules.length === 0) return false;
   return course.modules.every(mod => isModuleCompleted(mod.id));
 }
 
-
-/* =========================================================================
- * REGION 3: VIEW NAVIGATION & ROUTING
- * ========================================================================= */
-
+/* -------------------------------------------------------------------------
+ * NAVIGATION & VIEW ROUTING
+ * ------------------------------------------------------------------------- */
 function navigateTo(viewId) {
   state.currentView = viewId;
   saveState();
@@ -250,16 +211,19 @@ function navigateTo(viewId) {
 
   views.forEach(v => {
     const el = document.getElementById(`view-${v}`);
-    if (el) el.classList.remove("active");
+    if (el) {
+      if (v === viewId) {
+        el.classList.add("active");
+        el.style.display = "block";
+      } else {
+        el.classList.remove("active");
+        el.style.display = "none";
+      }
+    }
   });
 
-  const target = document.getElementById(`view-${viewId}`);
-  if (target) {
-    target.classList.add("active");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
+  window.scrollTo({ top: 0, behavior: "smooth" });
 
-  // Render view-specific content
   switch (viewId) {
     case "hub":
       renderHub();
@@ -282,17 +246,71 @@ function navigateTo(viewId) {
   }
 }
 
+function openCourse(courseId) {
+  state.selectedCourseId = courseId;
+  saveState();
+  navigateTo("dashboard");
+}
 
-/* =========================================================================
- * REGION 4: VIEW A - COURSE HUB & PATHWAY MODAL
- * ========================================================================= */
+function openSection(mIdx, sIdx) {
+  const secState = getSectionState(mIdx, sIdx);
+  if (secState === "locked") {
+    showToast("This section is locked. Complete the preceding section and pass its assessment to unlock.", "lock");
+    return;
+  }
+  state.activeModuleIndex = mIdx;
+  state.activeSectionIndex = sIdx;
+  saveState();
+  navigateTo("content");
+}
 
+function openModuleAssessment(mIdx) {
+  if (!canTakeModuleAssessment(mIdx)) {
+    showToast("Complete all sections in this module before taking the comprehensive assessment.", "lock");
+    return;
+  }
+  state.activeAssessmentModIndex = mIdx;
+  saveState();
+  navigateTo("module-assessment");
+}
+
+function resumeCurrentLesson() {
+  const course = getActiveCourse();
+  for (let m = 0; m < course.modules.length; m++) {
+    const mod = course.modules[m];
+    for (let s = 0; s < mod.sections.length; s++) {
+      const sec = mod.sections[s];
+      if (!isSectionCompleted(sec.id) && getSectionState(m, s) === "available") {
+        openSection(m, s);
+        return;
+      }
+    }
+    if (!isModuleCompleted(mod.id) && canTakeModuleAssessment(m)) {
+      openModuleAssessment(m);
+      return;
+    }
+  }
+  if (canTakeFinalExam() && !state.examState.passed) {
+    navigateTo("exam");
+    return;
+  }
+  if (state.examState.passed) {
+    navigateTo("certificate");
+    return;
+  }
+  openSection(0, 0);
+}
+
+/* -------------------------------------------------------------------------
+ * VIEW 1: COURSE HUB
+ * ------------------------------------------------------------------------- */
 function renderHub() {
   const container = document.getElementById("courseCardsGrid") || document.getElementById("coursesContainer");
   if (!container) return;
 
-  container.innerHTML = LITDOM_DATA.courses.map(course => `
-    <div class="course-card" id="course-card-${course.id}">
+  const courses = (typeof LITDOM_DATA !== "undefined" && LITDOM_DATA.courses) ? LITDOM_DATA.courses : [];
+  container.innerHTML = courses.map(course => `
+    <div class="course-card" id="course-card-${course.id}" onclick="openCourse('${course.id}')" style="cursor: pointer;">
       <div style="color: var(--gold); margin-bottom: 14px;">
         ${svgIcon(course.icon || 'quill', 34)}
       </div>
@@ -310,82 +328,60 @@ function renderHub() {
           ${svgIcon('clock', 14)} ${course.duration}
         </span>
         <span style="display: inline-flex; align-items: center; gap: 6px;">
-          ${svgIcon('award', 14)} Certified
+          ${svgIcon('award', 14)} ${course.level}
         </span>
       </div>
 
-      <button class="btn btn-gold" style="width: 100%;" onclick="openPathModal('${course.id}')">
-        ${svgIcon('play', 13)} Start Learning &rarr;
-      </button>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <button class="btn btn-gold" onclick="event.stopPropagation(); openCourse('${course.id}')" style="flex-grow: 1;">
+          Enter Academy &rarr;
+        </button>
+      </div>
     </div>
   `).join("");
 }
 
-function openPathModal(courseId) {
-  state.selectedCourseId = courseId || (LITDOM_DATA.courses[0] && LITDOM_DATA.courses[0].id) || "editor-academy";
-  const course = getActiveCourse();
-
-  const titleEl = document.getElementById("pathModalTitle") || document.getElementById("modalCourseTitle");
-  const descEl = document.getElementById("pathModalDesc");
-  if (titleEl) titleEl.textContent = course.title;
-  if (descEl) descEl.textContent = `Choose your study mode for ${course.title}. You may switch or reset at any time.`;
-
-  const modal = document.getElementById("pathModal");
-  if (modal) {
-    modal.classList.add("active");
-    modal.classList.add("open");
-  }
-}
-
-function closePathModal() {
-  const modal = document.getElementById("pathModal");
-  if (modal) {
-    modal.classList.remove("active");
-    modal.classList.remove("open");
-  }
-}
-
-function selectPath(pathType) {
-  closePathModal();
-  showToast(`Selected ${pathType === "oneway" ? "Sequential Mastery" : "Practical Apprenticeship"} Pathway`, "sparkle");
-  navigateTo("dashboard");
-}
-
-
-/* =========================================================================
- * REGION 5: VIEW B - VISUAL ROADMAP JOURNEY MAP (DYNAMIC MODULES/SECTIONS)
- * ========================================================================= */
-
+/* -------------------------------------------------------------------------
+ * VIEW 2: COURSE DASHBOARD & ROADMAP
+ * ------------------------------------------------------------------------- */
 function renderDashboard() {
   const course = getActiveCourse();
 
-  // Update Header Banner
+  // Update header text
+  const bcCourse = document.getElementById("dashBreadcrumbCourse");
+  const catEl = document.getElementById("dashCourseCategory");
   const titleEl = document.getElementById("dashCourseTitle");
   const descEl = document.getElementById("dashCourseDesc");
+
+  if (bcCourse) bcCourse.textContent = course.title;
+  if (catEl) catEl.textContent = course.category || "Editorial Arts";
   if (titleEl) titleEl.textContent = course.title;
   if (descEl) descEl.textContent = course.description;
 
-  // Calculate Overall Progress
-  let totalSections = 0;
-  let clearedSections = 0;
-  let clearedModules = 0;
+  // Calculate Progress across all sections and modules
+  let totalItems = 0;
+  let completedItems = 0;
+  let clearedModulesCount = 0;
 
   course.modules.forEach(m => {
-    totalSections += m.sections.length;
+    totalItems += m.sections.length + 1; // sections + module assessment
     m.sections.forEach(s => {
-      if (isSectionCompleted(s.id)) clearedSections++;
+      if (isSectionCompleted(s.id)) completedItems++;
     });
-    if (isModuleCompleted(m.id)) clearedModules++;
+    if (isModuleCompleted(m.id)) {
+      completedItems++;
+      clearedModulesCount++;
+    }
   });
 
-  const pct = totalSections > 0 ? Math.round((clearedSections / totalSections) * 100) : 0;
+  const progressPct = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
   const pBar = document.getElementById("dashProgressBar");
   const pPct = document.getElementById("dashProgressPct");
-  const counter = document.getElementById("dashStepsCounter");
+  const counterEl = document.getElementById("dashStepsCounter");
 
-  if (pBar) pBar.style.width = pct + "%";
-  if (pPct) pPct.textContent = pct + "%";
-  if (counter) counter.textContent = `${clearedModules} of ${course.modules.length} Modules Cleared (${clearedSections}/${totalSections} Sections)`;
+  if (pBar) pBar.style.width = `${progressPct}%`;
+  if (pPct) pPct.textContent = `${progressPct}%`;
+  if (counterEl) counterEl.textContent = `${clearedModulesCount} of ${course.modules.length} Modules Cleared`;
 
   // Render Dynamic Journey Map
   const mapContainer = document.getElementById("journeyMapContainer");
@@ -416,13 +412,19 @@ function renderDashboard() {
           ${mod.sections.map((sec, sIdx) => {
             const secState = getSectionState(mIdx, sIdx);
             const isSecDone = isSectionCompleted(sec.id);
+            const secScore = state.sectionScores[sec.id];
+            
+            // Dynamic media badge indicators based on that section's content array
             const hasVideo = sec.content.some(b => b.type === "video");
+            const hasAudio = sec.content.some(b => b.type === "audio");
+            const hasCanva = sec.content.some(b => b.type === "canva" || b.type === "presentation");
             const hasEx = sec.content.some(b => b.type === "interactive_exercise" || b.type === "exercise");
+            const hasDoc = sec.content.some(b => b.type === "document" || b.type === "pdf" || b.type === "resource");
 
             return `
-              <div class="section-node ${secState}" id="sec-node-${sec.id}" onclick="openSection(${mIdx}, ${sIdx})" style="cursor: pointer;">
+              <div class="section-node ${secState}" id="sec-node-${sec.id}" onclick="openSection(${mIdx}, ${sIdx})" style="cursor: ${secState === 'locked' ? 'not-allowed' : 'pointer'};">
                 <div class="node-status-icon">
-                  ${isSecDone ? svgIcon('check', 14) : svgIcon('play', 12)}
+                  ${isSecDone ? svgIcon('check', 14) : secState === 'locked' ? svgIcon('lock', 12) : svgIcon('play', 12)}
                 </div>
                 <div class="node-text">
                   <h5>${sec.title}</h5>
@@ -431,13 +433,18 @@ function renderDashboard() {
                       ${svgIcon('clock', 12)} ${sec.duration}
                     </span>
                     ${hasVideo ? `<span style="display: inline-flex; align-items: center; gap: 5px;">${svgIcon('video', 12)} Video</span>` : ""}
+                    ${hasAudio ? `<span style="display: inline-flex; align-items: center; gap: 5px;">${svgIcon('headphones', 12)} Audio</span>` : ""}
+                    ${hasCanva ? `<span style="display: inline-flex; align-items: center; gap: 5px;">${svgIcon('presentation', 12)} Canva</span>` : ""}
                     ${hasEx ? `<span style="display: inline-flex; align-items: center; gap: 5px;">${svgIcon('pencil', 12)} Exercise</span>` : ""}
-                    ${isSecDone ? `<span style="color: #10b981; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">${svgIcon('check', 12)} Mastered</span>` : ""}
+                    ${hasDoc ? `<span style="display: inline-flex; align-items: center; gap: 5px;">${svgIcon('file', 12)} Document</span>` : ""}
+                    ${isSecDone ? `<span style="color: #10b981; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">${svgIcon('check', 12)} Passed (${secScore !== undefined ? secScore : 5}/5)</span>` : ""}
                   </div>
                 </div>
                 <div>
-                  <button class="btn ${isSecDone ? 'btn-outline' : 'btn-gold'} node-action-btn" onclick="event.stopPropagation(); openSection(${mIdx}, ${sIdx})">
-                    ${svgIcon('play', 12)} ${isSecDone ? "Review Lesson" : "Start Lesson"}
+                  <button class="btn ${isSecDone ? 'btn-outline' : secState === 'locked' ? 'btn-outline' : 'btn-gold'} node-action-btn" 
+                          onclick="event.stopPropagation(); openSection(${mIdx}, ${sIdx})" 
+                          ${secState === 'locked' ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : ''}>
+                    ${isSecDone ? "Review Lesson" : secState === 'locked' ? svgIcon('lock', 12) + " Locked" : svgIcon('play', 12) + " Start Lesson"}
                   </button>
                 </div>
               </div>
@@ -447,20 +454,20 @@ function renderDashboard() {
           <!-- Module Assessment Node -->
           <div class="section-node ${isModDone ? 'completed' : canTestModule ? 'available' : 'locked'}" style="background: rgba(212, 175, 55, 0.04); border-color: rgba(212, 175, 55, 0.3);">
             <div class="node-status-icon" style="border-color: var(--gold); color: var(--gold);">
-              ${isModDone ? svgIcon('star', 14) : canTestModule ? svgIcon('scroll', 14) : svgIcon('lock', 14)}
+              ${isModDone ? svgIcon('star', 14) : canTestModule ? svgIcon('award', 14) : svgIcon('lock', 14)}
             </div>
             <div class="node-text">
               <h5 style="color: var(--champagne);">Module ${mod.num} Comprehensive Assessment</h5>
               <div class="node-meta">
                 <span>5 Questions • 80% Passing (4/5)</span>
-                ${modScore !== undefined ? `<span style="color: #10b981; font-weight: 700;">Score: ${modScore}/5</span>` : ""}
+                ${modScore !== undefined ? `<span style="color: #10b981; font-weight: 700;">Score: ${modScore}/5 Passed</span>` : ""}
               </div>
             </div>
             <div>
               ${
                 canTestModule
                   ? `<button class="btn btn-gold node-action-btn" onclick="openModuleAssessment(${mIdx})">
-                       ${isModDone ? "Retake" : "Take Exam"}
+                       ${isModDone ? "Retake Exam" : "Take Exam &rarr;"}
                      </button>`
                   : `<button class="btn btn-outline node-action-btn" disabled style="opacity: 0.4; cursor: not-allowed;">
                        Complete Sections First
@@ -476,27 +483,27 @@ function renderDashboard() {
   // Final Exam Milestone Card
   const examUnlocked = canTakeFinalExam();
   mapHtml += `
-    <div class="exam-milestone-card" id="finalExamMilestone">
+    <div class="exam-milestone-card" id="finalExamMilestone" style="background: linear-gradient(135deg, rgba(212, 175, 55, 0.12), rgba(20, 20, 26, 0.95)); border: 1px solid var(--gold); border-radius: var(--radius-lg); padding: 28px; margin-top: 24px; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;">
       <div>
-        <div style="font-size: 0.78rem; text-transform: uppercase; color: var(--gold); letter-spacing: 0.1em; font-weight: 700;">
-          CAPSTONE MILESTONE
+        <div style="font-size: 0.78rem; text-transform: uppercase; color: var(--gold); letter-spacing: 0.1em; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+          ${svgIcon('graduation', 16)} CAPSTONE BOARD CERTIFICATION
         </div>
-        <h3 style="color: var(--champagne); font-size: 1.35rem; margin-top: 4px;">
+        <h3 style="color: var(--champagne); font-size: 1.35rem; margin-top: 6px;">
           The Editorial Board Final Examination
         </h3>
-        <p style="color: var(--ivory); font-size: 0.9rem; max-width: 520px; margin-top: 6px;">
-          A rigorous 50-question board certification covering all 5 modules. Requires 90% (45/50) to earn the Litdom Master Editor Credential.
+        <p style="color: var(--ivory); font-size: 0.9rem; max-width: 540px; margin-top: 6px; line-height: 1.6;">
+          A rigorous 50-question board certification covering all ${course.modules.length} modules. Requires 90% (45/50) to earn the Litdom Master Editor Credential.
         </p>
       </div>
       <div>
         ${
           examUnlocked
-            ? `<button class="btn btn-gold" onclick="navigateTo('exam')">
-                 ${state.examState.passed ? "View Credential" : "Take Capstone Exam &rarr;"}
+            ? `<button class="btn btn-gold" onclick="navigateTo('exam')" style="font-size: 0.95rem; padding: 12px 24px;">
+                 ${state.examState.passed ? "View Credential &rarr;" : "Take Capstone Exam &rarr;"}
                </button>`
-            : `<button class="btn btn-outline" disabled style="opacity: 0.4; cursor: not-allowed;">
+            : `<button class="btn btn-outline" disabled style="opacity: 0.4; cursor: not-allowed; font-size: 0.9rem; padding: 10px 20px;">
                  <span style="display: inline-flex; align-items: center; gap: 6px;">
-                   ${svgIcon('lock', 13)} Complete All 5 Modules
+                   ${svgIcon('lock', 13)} Complete All ${course.modules.length} Modules First
                  </span>
                </button>`
         }
@@ -507,246 +514,229 @@ function renderDashboard() {
   mapContainer.innerHTML = mapHtml;
 }
 
-function resumeCurrentLesson() {
-  const course = getActiveCourse();
-  for (let mIdx = 0; mIdx < course.modules.length; mIdx++) {
-    const mod = course.modules[mIdx];
-    for (let sIdx = 0; sIdx < mod.sections.length; sIdx++) {
-      const sec = mod.sections[sIdx];
-      if (!isSectionCompleted(sec.id)) {
-        openSection(mIdx, sIdx);
-        return;
-      }
-    }
-  }
-  // If all completed, open first section for review
-  openSection(0, 0);
-}
-
-function openSection(mIdx, sIdx) {
-  state.activeModuleIndex = mIdx;
-  state.activeSectionIndex = sIdx;
-  saveState();
-  navigateTo("content");
-}
-
-
-/* =========================================================================
- * REGION 6: VIEW C - SECTION CONTENT, EDITABLE VIDEO TIMERS & PLAYERS
- * ========================================================================= */
-
-// Dictionary holding active timers for each video
-const videoTimers = {};
-
+/* -------------------------------------------------------------------------
+ * VIEW 3: SECTION CONTENT & 5-QUESTION ASSESSMENT
+ * ------------------------------------------------------------------------- */
 function renderSectionContent() {
   const course = getActiveCourse();
+  if (!course.modules || !course.modules[state.activeModuleIndex]) return;
   const mod = course.modules[state.activeModuleIndex];
   const sec = mod.sections[state.activeSectionIndex];
+  if (!sec) return;
+
   const isCompleted = isSectionCompleted(sec.id);
+  const secScore = state.sectionScores[sec.id];
 
   // Update header text
   const modLabel = document.getElementById("contentModuleLabel");
   const secTitle = document.getElementById("contentSectionTitle");
   const secDesc = document.getElementById("contentSectionDesc");
   const breadcrumb = document.getElementById("contentBreadcrumb");
+  const pBar = document.getElementById("sectionProgressBar");
+  const pPct = document.getElementById("sectionProgressPct");
 
   if (modLabel) modLabel.textContent = `Module ${mod.num} • Section ${state.activeSectionIndex + 1}`;
   if (secTitle) secTitle.textContent = sec.title;
-  if (secDesc) secDesc.textContent = sec.summary;
+  if (secDesc) secDesc.textContent = sec.summary || "";
   if (breadcrumb) breadcrumb.textContent = sec.title;
+  if (pBar) pBar.style.width = isCompleted ? "100%" : "60%";
+  if (pPct) pPct.textContent = isCompleted ? `100% Cleared (Score: ${secScore !== undefined ? secScore : 5}/5)` : "In Progress";
 
   const flowContainer = document.getElementById("contentBlocksFlow");
   if (!flowContainer) return;
 
-  // Render all media and editorial content blocks
-  let blocksHtml = sec.content.map(block => {
+  // Render all curriculum blocks in EXACT order provided in sec.content
+  let blocksHtml = sec.content.map((block, bIdx) => {
     switch (block.type) {
       case "text":
         return `
-          <div class="content-block-card">
-            <h4>${block.title}</h4>
-            <div style="font-size: 0.95rem; line-height: 1.8; color: var(--ivory); margin-top: 10px;">
+          <div class="content-block-card" id="block-${bIdx}">
+            <div class="block-badge-bar" style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+              <span class="path-tag" style="background: rgba(212, 175, 55, 0.1); border-color: rgba(212, 175, 55, 0.25); color: var(--gold); font-size: 0.74rem;">
+                ${svgIcon('book', 12)} READING & EDITORIAL THEORY
+              </span>
+            </div>
+            <h4 style="font-size: 1.25rem; color: var(--champagne); margin-bottom: 10px;">${block.title}</h4>
+            <div style="font-size: 0.98rem; line-height: 1.85; color: var(--ivory);">
               ${block.content}
             </div>
           </div>
         `;
 
       case "video": {
-        const vidId = block.id || `${sec.id}-vid`;
-        const isWatched = !!state.completedVideos[vidId];
-        const custom = (state.customVideoSettings && state.customVideoSettings[vidId]) || {};
-        const duration = custom.durationSeconds || block.durationSeconds || 20;
-        const videoUrl = custom.videoUrl !== undefined ? custom.videoUrl : (block.videoUrl || "");
+        const videoSrc = block.src || block.videoUrl || "";
+        let playerHtml = "";
 
-        // Determine media player type
-        let viewportHtml = "";
-        const isDirectVideo = videoUrl && (videoUrl.endsWith(".mp4") || videoUrl.endsWith(".webm") || videoUrl.startsWith("blob:") || videoUrl.includes("commondatastorage.googleapis.com"));
-        const isEmbed = videoUrl && (videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be") || videoUrl.includes("vimeo.com"));
-
-        if (isDirectVideo) {
-          viewportHtml = `
-            <div style="position: relative; width: 100%; height: 280px; background: #000; border-radius: 6px; overflow: hidden;">
-              <video id="vid-media-el-${vidId}" src="${videoUrl}" controls playsinline style="width: 100%; height: 100%; object-fit: contain;"></video>
-            </div>
-          `;
-        } else if (isEmbed) {
-          let embedSrc = videoUrl;
-          if (videoUrl.includes("watch?v=")) {
-            embedSrc = videoUrl.replace("watch?v=", "embed/");
-          } else if (videoUrl.includes("youtu.be/")) {
-            embedSrc = videoUrl.replace("youtu.be/", "www.youtube.com/embed/");
-          }
-          viewportHtml = `
-            <div style="position: relative; width: 100%; height: 280px; background: #000; border-radius: 6px; overflow: hidden;">
-              <iframe src="${embedSrc}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%; height: 100%;"></iframe>
+        if (videoSrc.includes("youtube.com") || videoSrc.includes("youtu.be") || videoSrc.includes("vimeo.com")) {
+          let embedUrl = videoSrc;
+          if (videoSrc.includes("watch?v=")) embedUrl = videoSrc.replace("watch?v=", "embed/");
+          if (videoSrc.includes("youtu.be/")) embedUrl = videoSrc.replace("youtu.be/", "www.youtube.com/embed/");
+          playerHtml = `
+            <div style="position: relative; width: 100%; padding-top: 56.25%; background: #000; border-radius: 8px; overflow: hidden; margin: 14px 0; box-shadow: 0 6px 24px rgba(0,0,0,0.5);">
+              <iframe src="${embedUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top:0; left:0; width:100%; height:100%; border:none;"></iframe>
             </div>
           `;
         } else {
-          // Luxury simulated masterclass player
-          viewportHtml = `
-            <div class="video-player-viewport">
-              <button class="video-play-overlay-btn" id="vid-play-btn-${vidId}" onclick="toggleVideoPlayback('${vidId}', ${duration})" title="Play Lecture">
-                ${isWatched ? svgIcon('replay', 24) : svgIcon('play', 24)}
-              </button>
-              <div style="font-size: 0.92rem; color: var(--champagne); margin-top: 12px; font-weight: 600;">
-                ${block.instructor || "Dean Julian Sterling"}
-              </div>
-              <div style="font-size: 0.78rem; color: var(--muted); margin-top: 2px;">
-                ${block.badge || "Litdom Studio Master Lecture"}
-              </div>
-              ${videoUrl ? `<div style="font-size: 0.75rem; color: var(--gold); margin-top: 6px;">Source: ${videoUrl}</div>` : ''}
+          // Real HTML5 Video Player
+          playerHtml = `
+            <div style="position: relative; width: 100%; border-radius: 8px; overflow: hidden; background: #000; margin: 14px 0; box-shadow: 0 6px 24px rgba(0,0,0,0.5);">
+              <video controls playsinline preload="metadata" style="width: 100%; max-height: 480px; display: block; background: #000;">
+                <source src="${videoSrc}" type="video/mp4">
+                Your browser does not support HTML5 video playback.
+              </video>
             </div>
           `;
         }
 
         return `
-          <div class="video-card-container" id="video-card-${vidId}">
-            <!-- Card Header with Edit Drawer Button -->
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 18px 20px 0; flex-wrap: wrap;">
-              <div>
-                <span class="editorial-badge ${isWatched ? 'solved' : ''}">
-                  <span style="display: inline-flex; align-items: center; gap: 5px;">
-                    ${isWatched ? `${svgIcon('check', 13)} VIDEO VERIFIED` : `${svgIcon('video', 13)} LECTURE REQUIREMENT`}
-                  </span>
-                </span>
-                <h4 style="margin-top: 6px; font-size: 1.15rem;">${block.title}</h4>
-                <p style="font-size: 0.85rem; color: var(--muted); margin: 4px 0 10px;">${block.caption}</p>
-              </div>
-
-              <button class="btn btn-outline" style="font-size: 0.76rem; padding: 6px 12px; margin-bottom: 8px;" onclick="toggleVideoEditor('${vidId}')" title="Configure custom watch timer and media URL">
-                ${svgIcon('sliders', 13)} Edit Timer & Video
-              </button>
+          <div class="content-block-card" id="block-${bIdx}">
+            <div class="block-badge-bar" style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+              <span class="path-tag" style="background: rgba(212, 175, 55, 0.12); border-color: rgba(212, 175, 55, 0.3); color: var(--gold); font-size: 0.74rem;">
+                ${svgIcon('video', 12)} MASTERCLASS LECTURE
+              </span>
+              <span style="font-size: 0.78rem; color: var(--muted); display: inline-flex; align-items: center; gap: 5px;">
+                ${svgIcon('clock', 12)} ${block.duration || "HD"} • ${block.badge || "Faculty Lecture"}
+              </span>
             </div>
-
-            <!-- Video Configuration Drawer (Editable by Instructor) -->
-            <div class="video-config-drawer" id="vid-config-${vidId}" style="display: none;">
-              <div class="video-config-title">
-                ${svgIcon('sliders', 14)} Video Settings & Timer Configuration
-              </div>
-              <p class="video-config-hint">
-                Set how long learners must watch before the section unlocks, and optionally paste your own video URL (MP4, YouTube, or Vimeo).
-              </p>
-
-              <div class="video-config-grid">
-                <div class="video-config-field" style="flex: 1; min-width: 240px;">
-                  <label>Watch Timer Duration (Seconds):</label>
-                  <div style="display: flex; gap: 8px; align-items: center;">
-                    <input type="number" class="video-input-field" id="vid-input-duration-${vidId}" value="${duration}" min="5" max="7200" oninput="updateDurationHelper('${vidId}')" style="width: 110px;">
-                    <span id="vid-duration-helper-${vidId}" style="font-size: 0.85rem; color: var(--gold); font-weight: 700;">
-                      ${formatSeconds(duration)}
-                    </span>
-                  </div>
-
-                  <!-- Quick Presets -->
-                  <div style="display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap;">
-                    <span style="font-size: 0.72rem; color: var(--muted); align-self: center;">Presets:</span>
-                    <button type="button" class="preset-btn" onclick="applyDurationPreset('${vidId}', 10)">10s</button>
-                    <button type="button" class="preset-btn" onclick="applyDurationPreset('${vidId}', 30)">30s</button>
-                    <button type="button" class="preset-btn" onclick="applyDurationPreset('${vidId}', 60)">1 min</button>
-                    <button type="button" class="preset-btn" onclick="applyDurationPreset('${vidId}', 180)">3 min</button>
-                    <button type="button" class="preset-btn" onclick="applyDurationPreset('${vidId}', 300)">5 min</button>
-                  </div>
-                </div>
-
-                <div class="video-config-field" style="flex: 2; min-width: 260px;">
-                  <label>Custom Video / Embed URL (Optional):</label>
-                  <input type="text" class="video-input-field" id="vid-input-url-${vidId}" value="${videoUrl}" placeholder="https://example.com/video.mp4 or YouTube URL">
-                  <span style="font-size: 0.72rem; color: var(--muted); margin-top: 4px;">
-                    Leave blank to use the built-in Masterclass simulator.
-                  </span>
-                </div>
-              </div>
-
-              <div style="display: flex; gap: 10px; margin-top: 14px; justify-content: flex-end;">
-                <button class="btn btn-outline" style="font-size: 0.78rem; padding: 6px 14px;" onclick="resetVideoSettings('${vidId}', ${block.durationSeconds || 20})">
-                  Reset Default
-                </button>
-                <button class="btn btn-gold" style="font-size: 0.78rem; padding: 6px 16px;" onclick="saveVideoSettings('${vidId}')">
-                  ${svgIcon('check', 13)} Save & Apply
-                </button>
-              </div>
-            </div>
-
-            <!-- Video Player Viewport -->
-            ${viewportHtml}
-
-            <!-- Video Live Timer Strip -->
-            <div class="video-timer-strip">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <button class="btn btn-outline" style="font-size: 0.76rem; padding: 5px 14px;" onclick="toggleVideoPlayback('${vidId}', ${duration})">
-                  <span id="vid-ctrl-text-${vidId}" style="display: inline-flex; align-items: center; gap: 6px;">
-                    ${svgIcon('play', 12)} Play
-                  </span>
-                </button>
-                <button class="btn btn-outline" style="font-size: 0.72rem; padding: 5px 10px; color: var(--gold);" title="Fast-forward preview for instructors" onclick="fastForwardVideo('${vidId}')">
-                  ${svgIcon('zap', 12)} Fast-Forward
-                </button>
-              </div>
-
-              <!-- Progress bar -->
-              <div class="video-progress-bar-bg">
-                <div class="video-progress-bar-fill ${isWatched ? 'finished' : ''}" id="vid-progress-${vidId}" style="width: ${isWatched ? '100%' : '0%'};"></div>
-              </div>
-
-              <!-- Live Timer Badge -->
-              <div class="video-countdown-pill ${isWatched ? 'completed' : ''}" id="vid-badge-${vidId}">
-                <span style="display: inline-flex; align-items: center; gap: 5px;">
-                  ${isWatched ? `${svgIcon('check', 13)} Lecture Watched` : `${svgIcon('clock', 13)} ${formatSeconds(duration)} remaining`}
-                </span>
-              </div>
+            <h4 style="font-size: 1.2rem; color: var(--champagne);">${block.title}</h4>
+            <p style="font-size: 0.88rem; color: var(--muted); margin: 4px 0 12px;">${block.caption || ""}</p>
+            ${playerHtml}
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--champagne); margin-top: 6px;">
+              <span><strong>Instructor:</strong> ${block.instructor || "Litdom Faculty"}</span>
+              <span style="color: var(--muted);">Direct Studio Stream</span>
             </div>
           </div>
         `;
       }
 
-      case "interactive_exercise":
-      case "exercise": {
-        const exId = block.id || `${sec.id}-ex`;
-        const isSolved = !!state.completedExercises[exId];
-
+      case "audio": {
+        const audioSrc = block.src || block.audioUrl || "";
         return `
-          <div class="interactive-editorial-card ${isSolved ? 'solved' : ''}" id="exercise-card-${exId}">
-            <div class="editorial-badge ${isSolved ? 'solved' : ''}" id="ex-badge-${exId}">
-              <span style="display: inline-flex; align-items: center; gap: 5px;">
-                ${isSolved ? `${svgIcon('check', 13)} EDITORIAL EXERCISE CLEARED` : `${svgIcon('pencil', 13)} ${block.category || 'LINE EDITING CRUCIBLE'}`}
+          <div class="content-block-card" id="block-${bIdx}">
+            <div class="block-badge-bar" style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+              <span class="path-tag" style="background: rgba(212, 175, 55, 0.12); border-color: rgba(212, 175, 55, 0.3); color: var(--gold); font-size: 0.74rem;">
+                ${svgIcon('headphones', 12)} AUDIO MASTERCLASS
+              </span>
+              <span style="font-size: 0.78rem; color: var(--muted); display: inline-flex; align-items: center; gap: 5px;">
+                ${svgIcon('clock', 12)} ${block.duration || "Lecture"}
               </span>
             </div>
-            
-            <h4 style="margin-top: 6px; font-size: 1.15rem; color: var(--ivory);">${block.title}</h4>
-            <p style="font-size: 0.9rem; color: var(--muted); margin: 8px 0 12px; line-height: 1.6;">${block.instructions}</p>
+            <h4 style="font-size: 1.2rem; color: var(--champagne);">${block.title}</h4>
+            <p style="font-size: 0.88rem; color: var(--muted); margin: 4px 0 14px;">${block.caption || ""}</p>
+            <div style="background: #111116; border: 1px solid var(--charcoal-border); border-radius: var(--radius-md); padding: 18px; margin: 12px 0;">
+              <audio controls preload="metadata" style="width: 100%; border-radius: 6px;">
+                <source src="${audioSrc}" type="audio/mpeg">
+                Your browser does not support audio playback.
+              </audio>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--champagne);">
+              <strong>Narrated by:</strong> ${block.instructor || "Prof. Arthur Pendelton"}
+            </div>
+          </div>
+        `;
+      }
 
-            <!-- Raw Draft Sentence -->
+      case "canva":
+      case "presentation": {
+        const canvaUrl = block.src || block.embedUrl || "";
+        return `
+          <div class="content-block-card" id="block-${bIdx}">
+            <div class="block-badge-bar" style="margin-bottom: 10px;">
+              <span class="path-tag" style="background: rgba(212, 175, 55, 0.12); border-color: rgba(212, 175, 55, 0.3); color: var(--gold); font-size: 0.74rem;">
+                ${svgIcon('presentation', 12)} CANVA PRESENTATION
+              </span>
+            </div>
+            <h4 style="font-size: 1.2rem; color: var(--champagne);">${block.title}</h4>
+            <p style="font-size: 0.88rem; color: var(--muted); margin: 4px 0 14px;">${block.caption || ""}</p>
+            <div style="position: relative; width: 100%; padding-top: 56.25%; background: #000; border-radius: 8px; overflow: hidden; margin: 14px 0; box-shadow: 0 6px 24px rgba(0,0,0,0.5);">
+              <iframe src="${canvaUrl}" allowfullscreen="allowfullscreen" allow="fullscreen" style="position: absolute; top:0; left:0; width:100%; height:100%; border:none;"></iframe>
+            </div>
+          </div>
+        `;
+      }
+
+      case "image":
+        return `
+          <div class="content-block-card" id="block-${bIdx}">
+            <div class="block-badge-bar" style="margin-bottom: 10px;">
+              <span class="path-tag" style="background: rgba(212, 175, 55, 0.12); border-color: rgba(212, 175, 55, 0.3); color: var(--gold); font-size: 0.74rem;">
+                ${svgIcon('image', 12)} VISUAL REFERENCE
+              </span>
+            </div>
+            <h4 style="font-size: 1.2rem; color: var(--champagne);">${block.title}</h4>
+            <div style="margin: 14px 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--charcoal-border);">
+              <img src="${block.src}" alt="${block.alt || block.title}" style="width: 100%; max-height: 460px; object-fit: cover; display: block;">
+            </div>
+            ${block.caption ? `<p style="font-size: 0.85rem; color: var(--muted); font-style: italic;">${block.caption}</p>` : ""}
+          </div>
+        `;
+
+      case "document":
+      case "pdf":
+        return `
+          <div class="content-block-card" id="block-${bIdx}">
+            <div class="block-badge-bar" style="margin-bottom: 10px;">
+              <span class="path-tag" style="background: rgba(212, 175, 55, 0.12); border-color: rgba(212, 175, 55, 0.3); color: var(--gold); font-size: 0.74rem;">
+                ${svgIcon('file', 12)} CURRICULUM DOCUMENT
+              </span>
+            </div>
+            <div class="pdf-viewer-card">
+              <div class="pdf-info">
+                <div class="pdf-icon">PDF</div>
+                <div>
+                  <h4 style="margin: 0; font-size: 1.05rem; color: var(--ivory);">${block.title}</h4>
+                  <p style="margin: 4px 0 0; font-size: 0.82rem; color: var(--muted);">${block.caption || block.fileName || "Editorial Document"} • ${block.fileSize || "PDF"}</p>
+                </div>
+              </div>
+              <a href="${block.src || '#'}" download="${block.fileName || 'Litdom_Document.pdf'}" class="btn btn-outline" style="font-size: 0.85rem; text-decoration: none;">
+                ${svgIcon('download', 14)} Download PDF
+              </a>
+            </div>
+          </div>
+        `;
+
+      case "resource":
+      case "download":
+        return `
+          <div class="content-block-card" id="block-${bIdx}">
+            <div class="block-badge-bar" style="margin-bottom: 10px;">
+              <span class="path-tag" style="background: rgba(212, 175, 55, 0.12); border-color: rgba(212, 175, 55, 0.3); color: var(--gold); font-size: 0.74rem;">
+                ${svgIcon('download', 12)} EDITORIAL ASSET
+              </span>
+            </div>
+            <h4 style="font-size: 1.15rem; color: var(--champagne);">${block.title}</h4>
+            <p style="color: var(--muted); font-size: 0.88rem; margin: 6px 0 14px;">${block.description || ""}</p>
+            <a href="${block.downloadUrl || block.src || '#'}" download="${block.fileName || 'Litdom_Asset.pdf'}" class="btn btn-gold" style="font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
+              ${svgIcon('download', 14)} Download ${block.fileName || 'Asset'} (${block.fileSize || 'Ready'})
+            </a>
+          </div>
+        `;
+
+      case "interactive_exercise":
+      case "exercise": {
+        const exId = block.id || `ex-${sec.id}-${bIdx}`;
+        return `
+          <div class="interactive-editorial-card" id="exercise-card-${exId}">
+            <div class="block-badge-bar" style="margin-bottom: 8px;">
+              <span class="editorial-badge">
+                <span style="display: inline-flex; align-items: center; gap: 5px;">
+                  ${svgIcon('pencil', 13)} ${block.category || 'LINE EDITING CRUCIBLE'}
+                </span>
+              </span>
+            </div>
+            <h4 style="margin-top: 6px; font-size: 1.18rem; color: var(--ivory);">${block.title}</h4>
+            <p style="font-size: 0.9rem; color: var(--muted); margin: 8px 0 14px; line-height: 1.6;">${block.instructions}</p>
+            
             <div class="interactive-sentence-box" id="ex-draft-${exId}">
               <div style="font-size: 0.74rem; text-transform: uppercase; color: var(--gold); letter-spacing: 0.08em; font-family: sans-serif; margin-bottom: 6px;">
                 Raw Manuscript Draft:
               </div>
-              <div style="font-style: italic;">"${block.draft || 'The sentence was written hurriedly by the author.'}"</div>
+              <div style="font-style: italic; font-size: 1.02rem; line-height: 1.6;">"${block.draft}"</div>
             </div>
 
-            <!-- Multiple Choice Diagnosis Options -->
-            <div class="editorial-options-grid">
+            <div class="editorial-options-grid" style="margin-top: 14px;">
               ${(block.options || []).map((opt, optIdx) => `
-                <button class="editorial-choice-btn ${isSolved && opt.correct ? 'correct-choice' : ''}" 
+                <button class="editorial-choice-btn" 
                         id="ex-${exId}-opt-${optIdx}"
                         onclick="evaluateExerciseOption('${exId}', ${optIdx})">
                   <span style="font-weight: 700; color: var(--gold);">${String.fromCharCode(65 + optIdx)}.</span>
@@ -755,644 +745,370 @@ function renderSectionContent() {
               `).join("")}
             </div>
 
-            <!-- Feedback Box (Turns Emerald Green on Correct Answer!) -->
-            <div class="editorial-feedback-box ${isSolved ? 'show success' : ''}" id="ex-feedback-${exId}">
-              ${
-                isSolved
-                  ? `<div style="display: flex; align-items: center; gap: 6px; color: #34d399; font-weight: 700;">${svgIcon('check', 14)} Masterful Edit! You correctly resolved this craft challenge.</div>`
-                  : ""
-              }
-            </div>
+            <div class="editorial-feedback-box" id="ex-feedback-${exId}" style="display: none; margin-top: 14px;"></div>
           </div>
         `;
       }
 
-      case "audio":
-        return `
-          <div class="content-block-card">
-            <h4 style="display: flex; align-items: center; gap: 8px;">
-              ${svgIcon('headphones', 16)} ${block.title}
-            </h4>
-            <p style="font-size: 0.88rem; color: var(--muted); margin: 6px 0 14px;">${block.caption}</p>
-            <div style="background: #111116; border: 1px solid var(--charcoal-border); border-radius: var(--radius-sm); padding: 14px; display: flex; align-items: center; gap: 16px;">
-              <button class="btn btn-gold" style="border-radius: 50%; width: 44px; height: 44px; padding: 0; display: flex; align-items: center; justify-content: center;" onclick="toggleAudioDemo(this)">
-                ${svgIcon('play', 14)}
-              </button>
-              <div style="flex-grow: 1;">
-                <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--muted); margin-bottom: 4px;">
-                  <span>Litdom Audio Masterclass</span>
-                  <span>04:15</span>
-                </div>
-                <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
-                  <div style="width: 38%; height: 100%; background: var(--gold);"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-
       case "example":
         return `
-          <div class="example-block-card">
-            <h4 style="display: flex; align-items: center; gap: 8px;">
-              ${svgIcon('search', 16)} ${block.title}
-            </h4>
+          <div class="example-block-card" id="block-${bIdx}">
+            <div class="block-badge-bar" style="margin-bottom: 10px;">
+              <span class="path-tag" style="background: rgba(212, 175, 55, 0.12); border-color: rgba(212, 175, 55, 0.3); color: var(--gold); font-size: 0.74rem;">
+                ${svgIcon('search', 12)} COMPARATIVE CRAFT DIAGNOSIS
+              </span>
+            </div>
+            <h4 style="font-size: 1.15rem; color: var(--champagne); margin-bottom: 12px;">${block.title}</h4>
             <div class="example-compare-grid">
               <div class="example-pane before">
                 <span style="font-size: 0.75rem; font-weight: 700; color: #ff6b6b; text-transform: uppercase;">Raw Draft</span>
-                <p style="font-size: 0.9rem; color: var(--ivory); margin-top: 6px; font-style: italic;">"${block.before}"</p>
+                <p style="font-size: 0.92rem; color: var(--ivory); margin-top: 8px; font-style: italic; line-height: 1.6;">"${block.before}"</p>
               </div>
               <div class="example-pane after">
                 <span style="font-size: 0.75rem; font-weight: 700; color: #10b981; text-transform: uppercase;">Polished Version</span>
-                <p style="font-size: 0.9rem; color: #a7f3d0; margin-top: 6px; font-weight: 500;">"${block.after}"</p>
+                <p style="font-size: 0.92rem; color: #a7f3d0; margin-top: 8px; font-weight: 500; line-height: 1.6;">"${block.after}"</p>
               </div>
             </div>
-            <p style="font-size: 0.85rem; color: var(--muted); margin-top: 10px;">${block.explanation}</p>
+            <p style="font-size: 0.88rem; color: var(--muted); margin-top: 12px; line-height: 1.6;">${block.explanation}</p>
           </div>
         `;
 
       default:
         return `
-          <div class="content-block-card">
+          <div class="content-block-card" id="block-${bIdx}">
             <h4>${block.title || 'Curriculum Material'}</h4>
-            <p style="font-size: 0.88rem; color: var(--muted);">${block.caption || ''}</p>
+            <p>${block.caption || ''}</p>
           </div>
         `;
     }
   }).join("");
 
-  // Append Section Knowledge Test Card
-  const test = sec.test;
-  const isTestPassed = !!state.sectionTestPassed[sec.id] || isCompleted;
-
-  blocksHtml += `
-    <div class="quiz-container" id="sectionQuizContainer">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <span class="path-tag active-tag" style="background: rgba(212, 175, 55, 0.15); display: inline-flex; align-items: center; gap: 6px;">
-          ${svgIcon('target', 13)} SECTION KNOWLEDGE VERIFICATION
-        </span>
-        <span style="font-size: 0.8rem; color: var(--muted);">1 Question • Required</span>
-      </div>
-
-      <div class="quiz-question-text">${test.question}</div>
-
-      <div class="quiz-options" id="sectionOptionsList">
-        ${test.options.map((opt, optIdx) => `
-          <button class="quiz-option-btn ${isTestPassed && optIdx === test.correctAnswer ? 'correct' : ''}" 
-                  id="sec-opt-${optIdx}"
-                  onclick="handleSectionAnswer(${optIdx})">
-            <span style="font-weight: 700; color: var(--gold);">${String.fromCharCode(65 + optIdx)}.</span>
-            <span>${opt}</span>
-          </button>
-        `).join("")}
-      </div>
-
-      <div id="sectionFeedbackArea" style="display: ${isTestPassed ? 'block' : 'none'};">
-        <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; border-radius: var(--radius-sm); padding: 14px 18px; color: #d1fae5;">
-          <div style="color: #34d399; font-weight: 700; margin-bottom: 4px; font-size: 0.98rem; display: flex; align-items: center; gap: 6px;">
-            ${svgIcon('check', 14)} Knowledge Check Cleared!
-          </div>
-          <p style="font-size: 0.88rem; color: #a7f3d0;">${test.explanation}</p>
+  // SECTION ASSESSMENT COMPONENT (EXACTLY 5 QUESTIONS, PASSING: 3/5)
+  const assessment = sec.assessment || sec.test;
+  if (assessment && assessment.questions && assessment.questions.length > 0) {
+    const qList = assessment.questions;
+    blocksHtml += `
+      <div class="section-assessment-card" id="sectionAssessmentCard" style="background: #121218; border: 1px solid rgba(212, 175, 55, 0.35); border-radius: var(--radius-lg); padding: 28px; margin-top: 36px; box-shadow: 0 8px 30px rgba(0,0,0,0.4);">
+        <div style="margin-bottom: 18px;">
+          <span class="editorial-badge" style="background: rgba(212, 175, 55, 0.15); border-color: var(--gold); color: var(--gold);">
+            ${svgIcon('target', 14)} SECTION KNOWLEDGE CERTIFICATION
+          </span>
+          <h3 style="color: var(--champagne); font-size: 1.35rem; margin-top: 8px;">
+            ${assessment.title || "Section Mastery Assessment"}
+          </h3>
+          <p style="color: var(--muted); font-size: 0.92rem; margin-top: 4px;">
+            Demonstrate verified mastery of this lesson. You must score at least <strong>${assessment.passingScore || 3} of 5 (60%)</strong> to pass and unlock the next stage.
+          </p>
         </div>
-      </div>
-    </div>
-  `;
 
-  // Append Requirements Checklist & "Mark as Complete" Action Bar
-  blocksHtml += renderSectionChecklistHtml(sec);
+        ${
+          isCompleted
+            ? `
+              <div id="secAssessmentPreviouslyPassedBanner" style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; border-radius: var(--radius-md); padding: 18px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span style="color: #34d399;">${svgIcon('check', 24)}</span>
+                  <div>
+                    <div style="color: #34d399; font-weight: 700; font-size: 1.05rem;">Section Mastered & Verified!</div>
+                    <div style="color: #a7f3d0; font-size: 0.85rem;">You cleared this assessment with a score of ${secScore !== undefined ? secScore : 5}/5.</div>
+                  </div>
+                </div>
+                <button class="btn btn-outline" onclick="scrollToAssessmentForm()" style="font-size: 0.85rem;">
+                  Retake for Practice
+                </button>
+              </div>
+            `
+            : ""
+        }
+
+        <div id="secAssessmentResultBox" style="display: none;"></div>
+
+        <form id="sectionAssessmentForm" onsubmit="event.preventDefault(); submitSectionAssessment();">
+          ${qList.map((q, qIdx) => `
+            <div class="assessment-q-card" id="sec-q-card-${qIdx}" style="background: #181820; border: 1px solid var(--charcoal-border); border-radius: var(--radius-md); padding: 18px; margin-bottom: 18px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 0.74rem; font-weight: 700; text-transform: uppercase; color: var(--gold); letter-spacing: 0.08em;">
+                  Question ${qIdx + 1} of 5
+                </span>
+              </div>
+              <h4 style="font-size: 1.02rem; color: var(--ivory); line-height: 1.6; margin-bottom: 14px;">${q.q || q.question}</h4>
+              <div class="quiz-options" style="display: flex; flex-direction: column; gap: 8px;">
+                ${q.options.map((opt, optIdx) => `
+                  <label class="assessment-opt-label" id="sec-q-${qIdx}-opt-${optIdx}" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border: 1px solid var(--charcoal-border); border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s ease; background: rgba(255,255,255,0.015);">
+                    <input type="radio" name="sec_assessment_q_${qIdx}" value="${optIdx}" style="margin-top: 3px; accent-color: var(--gold);">
+                    <span style="font-size: 0.92rem; color: var(--ivory); line-height: 1.5;">${opt}</span>
+                  </label>
+                `).join("")}
+              </div>
+              <div class="q-explanation-box" id="sec-q-${qIdx}-exp" style="display: none; margin-top: 10px; padding: 10px 14px; border-radius: 6px; font-size: 0.86rem;"></div>
+            </div>
+          `).join("")}
+
+          <div id="secAssessmentSubmitWrapper" style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 12px;">
+            <button type="submit" class="btn btn-gold" id="btnSubmitSecAssessment" style="padding: 12px 28px; font-size: 0.95rem;">
+              Submit Section Assessment &rarr;
+            </button>
+          </div>
+        </form>
+      </div>
+    `;
+  }
 
   flowContainer.innerHTML = blocksHtml;
 
-  // Hide the old advance banner if it exists
+  // Hide legacy advance banner if present
   const oldBanner = document.getElementById("sectionCompleteBanner");
   if (oldBanner) oldBanner.style.display = "none";
 }
 
+function scrollToAssessmentForm() {
+  const card = document.getElementById("sectionAssessmentCard");
+  if (card) card.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 /* -------------------------------------------------------------------------
- * Video Customization Handlers (Editable Timers & Media Sources)
+ * SECTION ASSESSMENT EVALUATION (PASSING: 3/5)
  * ------------------------------------------------------------------------- */
-
-function toggleVideoEditor(vidId) {
-  const drawer = document.getElementById(`vid-config-${vidId}`);
-  if (!drawer) return;
-  if (drawer.style.display === "none" || !drawer.style.display) {
-    drawer.style.display = "block";
-    drawer.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  } else {
-    drawer.style.display = "none";
-  }
-}
-
-function applyDurationPreset(vidId, seconds) {
-  const input = document.getElementById(`vid-input-duration-${vidId}`);
-  const helper = document.getElementById(`vid-duration-helper-${vidId}`);
-  if (input) input.value = seconds;
-  if (helper) helper.textContent = formatSeconds(seconds);
-}
-
-function updateDurationHelper(vidId) {
-  const input = document.getElementById(`vid-input-duration-${vidId}`);
-  const helper = document.getElementById(`vid-duration-helper-${vidId}`);
-  if (input && helper) {
-    helper.textContent = formatSeconds(input.value);
-  }
-}
-
-function saveVideoSettings(vidId) {
-  const durationInput = document.getElementById(`vid-input-duration-${vidId}`);
-  const urlInput = document.getElementById(`vid-input-url-${vidId}`);
-
-  let newDuration = parseInt(durationInput ? durationInput.value : 20, 10);
-  if (isNaN(newDuration) || newDuration < 5) newDuration = 5;
-  if (newDuration > 7200) newDuration = 7200; // max 2 hours
-
-  const newUrl = urlInput ? urlInput.value.trim() : "";
-
-  if (!state.customVideoSettings) state.customVideoSettings = {};
-  state.customVideoSettings[vidId] = {
-    durationSeconds: newDuration,
-    videoUrl: newUrl
-  };
-
-  // Clear current running interval for this video so new duration takes effect
-  if (videoTimers[vidId]) {
-    if (videoTimers[vidId].interval) clearInterval(videoTimers[vidId].interval);
-    delete videoTimers[vidId];
-  }
-
-  saveState();
-  renderSectionContent();
-  showToast(`Watch timer updated to ${newDuration}s (${formatSeconds(newDuration)})`, "check");
-}
-
-function resetVideoSettings(vidId, defaultDuration) {
-  if (state.customVideoSettings && state.customVideoSettings[vidId]) {
-    delete state.customVideoSettings[vidId];
-    saveState();
-  }
-  if (videoTimers[vidId]) {
-    if (videoTimers[vidId].interval) clearInterval(videoTimers[vidId].interval);
-    delete videoTimers[vidId];
-  }
-  renderSectionContent();
-  showToast(`Restored default timer (${defaultDuration}s)`, "replay");
-}
-
-/**
- * Handles play/pause and countdown ticking for a video.
- */
-function toggleVideoPlayback(vidId, defaultSeconds) {
-  const custom = (state.customVideoSettings && state.customVideoSettings[vidId]) || {};
-  const duration = custom.durationSeconds || defaultSeconds || 20;
-
-  if (!videoTimers[vidId]) {
-    videoTimers[vidId] = {
-      remaining: duration,
-      total: duration,
-      isPlaying: false,
-      interval: null
-    };
-  }
-
-  const timerObj = videoTimers[vidId];
-  const videoMedia = document.getElementById(`vid-media-el-${vidId}`);
-
-  if (timerObj.isPlaying) {
-    // Pause
-    clearInterval(timerObj.interval);
-    timerObj.isPlaying = false;
-    if (videoMedia && !videoMedia.paused) {
-      try { videoMedia.pause(); } catch(e) {}
-    }
-    updateVideoUI(vidId, false);
-    showToast("Video paused.", "pause");
-  } else {
-    // Start or Resume
-    timerObj.isPlaying = true;
-    if (videoMedia && videoMedia.paused) {
-      try { videoMedia.play(); } catch(e) {}
-    }
-    showToast(`Video playing... Watch timer active (${formatSeconds(timerObj.remaining)} remaining)`, "video");
-    updateVideoUI(vidId, true);
-
-    timerObj.interval = setInterval(() => {
-      timerObj.remaining--;
-
-      const pct = Math.min(100, Math.round(((timerObj.total - timerObj.remaining) / timerObj.total) * 100));
-      const fillEl = document.getElementById(`vid-progress-${vidId}`);
-      const badgeEl = document.getElementById(`vid-badge-${vidId}`);
-
-      if (fillEl) fillEl.style.width = pct + "%";
-      if (badgeEl) {
-        badgeEl.innerHTML = `
-          <span style="display: inline-flex; align-items: center; gap: 5px;">
-            ${svgIcon('clock', 13)} ${formatSeconds(timerObj.remaining)} remaining
-          </span>
-        `;
-      }
-
-      if (timerObj.remaining <= 0) {
-        // FINISHED!
-        clearInterval(timerObj.interval);
-        timerObj.isPlaying = false;
-        state.completedVideos[vidId] = true;
-        saveState();
-
-        if (fillEl) {
-          fillEl.style.width = "100%";
-          fillEl.classList.add("finished");
-        }
-        if (badgeEl) {
-          badgeEl.className = "video-countdown-pill completed";
-          badgeEl.innerHTML = `
-            <span style="display: inline-flex; align-items: center; gap: 5px;">
-              ${svgIcon('check', 13)} Lecture Watched & Verified
-            </span>
-          `;
-        }
-
-        updateVideoUI(vidId, false);
-        showToast("Video lecture completed! Video requirement satisfied.", "check");
-        refreshSectionChecklist();
-      }
-    }, 1000);
-  }
-}
-
-/**
- * Allows instant completion of the video for testing or instructors.
- */
-function fastForwardVideo(vidId) {
-  if (videoTimers[vidId] && videoTimers[vidId].interval) {
-    clearInterval(videoTimers[vidId].interval);
-  }
-  state.completedVideos[vidId] = true;
-  saveState();
-
-  const fillEl = document.getElementById(`vid-progress-${vidId}`);
-  const badgeEl = document.getElementById(`vid-badge-${vidId}`);
-  if (fillEl) {
-    fillEl.style.width = "100%";
-    fillEl.classList.add("finished");
-  }
-  if (badgeEl) {
-    badgeEl.className = "video-countdown-pill completed";
-    badgeEl.innerHTML = `
-      <span style="display: inline-flex; align-items: center; gap: 5px;">
-        ${svgIcon('check', 13)} Lecture Watched & Verified
-      </span>
-    `;
-  }
-
-  showToast("Video verified! Lecture requirement fulfilled.", "check");
-  refreshSectionChecklist();
-}
-
-function updateVideoUI(vidId, isPlaying) {
-  const btn = document.getElementById(`vid-play-btn-${vidId}`);
-  const ctrlText = document.getElementById(`vid-ctrl-text-${vidId}`);
-  if (btn) btn.innerHTML = isPlaying ? svgIcon('pause', 24) : svgIcon('play', 24);
-  if (ctrlText) {
-    ctrlText.innerHTML = `
-      <span style="display: inline-flex; align-items: center; gap: 6px;">
-        ${isPlaying ? svgIcon('pause', 12) : svgIcon('play', 12)} ${isPlaying ? "Pause" : "Play"}
-      </span>
-    `;
-  }
-}
-
-
-/* =========================================================================
- * REGION 7: INTERACTIVE EDITORIAL LABS (EMERALD GREEN SUCCESS ENGINE)
- * ========================================================================= */
-
-function evaluateExerciseOption(exId, chosenIdx) {
+function submitSectionAssessment() {
   const course = getActiveCourse();
-  const sec = course.modules[state.activeModuleIndex].sections[state.activeSectionIndex];
-  const block = sec.content.find(b => (b.id || `${sec.id}-ex`) === exId);
+  const mod = course.modules[state.activeModuleIndex];
+  const sec = mod.sections[state.activeSectionIndex];
+  const assessment = sec.assessment || sec.test;
 
-  if (!block || !block.options) return;
+  if (!assessment || !assessment.questions) return;
 
-  const chosenOpt = block.options[chosenIdx];
-  const cardEl = document.getElementById(`exercise-card-${exId}`);
-  const badgeEl = document.getElementById(`ex-badge-${exId}`);
-  const draftEl = document.getElementById(`ex-draft-${exId}`);
-  const feedbackEl = document.getElementById(`ex-feedback-${exId}`);
-  const allOptionBtns = cardEl ? cardEl.querySelectorAll(".editorial-choice-btn") : [];
-  const selectedBtn = document.getElementById(`ex-${exId}-opt-${chosenIdx}`);
+  const questions = assessment.questions;
+  let score = 0;
+  let unansweredIndices = [];
 
-  // Reset previously applied choice classes
-  allOptionBtns.forEach(btn => {
-    btn.classList.remove("selected", "correct-choice", "wrong-choice");
+  questions.forEach((q, idx) => {
+    const selected = document.querySelector(`input[name="sec_assessment_q_${idx}"]:checked`);
+    if (!selected) {
+      unansweredIndices.push(idx + 1);
+    } else {
+      const val = parseInt(selected.value, 10);
+      const correctAns = (typeof q.answer === "number") ? q.answer : q.correctAnswer;
+      if (val === correctAns) {
+        score++;
+      }
+    }
   });
 
-  if (chosenOpt.correct) {
-    // CORRECT ANSWER -> TURN EMERALD GREEN!
-    state.completedExercises[exId] = true;
-    saveState();
-
-    if (selectedBtn) selectedBtn.classList.add("correct-choice");
-    if (cardEl) cardEl.classList.add("solved");
-    if (badgeEl) {
-      badgeEl.classList.add("solved");
-      badgeEl.innerHTML = `
-        <span style="display: inline-flex; align-items: center; gap: 5px;">
-          ${svgIcon('check', 13)} EDITORIAL EXERCISE CLEARED
-        </span>
-      `;
-    }
-
-    if (draftEl && chosenOpt.polishedText) {
-      draftEl.innerHTML = `
-        <div style="font-size: 0.74rem; text-transform: uppercase; color: #10b981; letter-spacing: 0.08em; font-family: sans-serif; margin-bottom: 6px; display: flex; align-items: center; gap: 5px;">
-          ${svgIcon('check', 12)} Masterfully Polished Sentence:
-        </div>
-        <div style="color: #a7f3d0; font-weight: 500;">"${chosenOpt.polishedText}"</div>
-      `;
-    }
-
-    if (feedbackEl) {
-      feedbackEl.className = "editorial-feedback-box show success";
-      feedbackEl.innerHTML = `
-        <div style="font-weight: 700; color: #34d399; margin-bottom: 4px; font-size: 0.98rem; display: flex; align-items: center; gap: 6px;">
-          ${svgIcon('check', 14)} Masterful Editorial Diagnosis!
-        </div>
-        <div>${chosenOpt.feedback}</div>
-      `;
-    }
-
-    showToast("Masterful edit! Exercise solved and verified in green.", "sparkle");
-    refreshSectionChecklist();
-  } else {
-    // INCORRECT OPTION
-    if (selectedBtn) selectedBtn.classList.add("wrong-choice");
-    if (feedbackEl) {
-      feedbackEl.className = "editorial-feedback-box show error";
-      feedbackEl.innerHTML = `
-        <div style="font-weight: 700; color: #f87171; margin-bottom: 4px; font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
-          ${svgIcon('cross', 14)} Craft Diagnosis Note
-        </div>
-        <div>${chosenOpt.feedback}</div>
-        <div style="margin-top: 6px; font-size: 0.82rem; color: var(--muted);">Review the editorial principle and select the elevated alternative.</div>
-      `;
-    }
-
-    showToast("Re-evaluate the craft diagnosis and try again.", "alert");
+  if (unansweredIndices.length > 0) {
+    showToast(`Please answer all 5 questions before submitting. Unanswered: #${unansweredIndices.join(", #")}`, "alert");
+    const firstUnanswered = document.getElementById(`sec-q-card-${unansweredIndices[0] - 1}`);
+    if (firstUnanswered) firstUnanswered.scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
   }
-}
 
+  const passingScore = assessment.passingScore || 3;
+  const passed = score >= passingScore;
 
-/* =========================================================================
- * REGION 8: SECTION KNOWLEDGE CHECKS & "MARK AS COMPLETE" GATE
- * ========================================================================= */
+  // Reveal explanations and color codes on questions
+  questions.forEach((q, idx) => {
+    const selected = document.querySelector(`input[name="sec_assessment_q_${idx}"]:checked`);
+    const val = parseInt(selected.value, 10);
+    const correctAns = (typeof q.answer === "number") ? q.answer : q.correctAnswer;
+    const isQCorrect = val === correctAns;
 
-function handleSectionAnswer(selectedIdx) {
-  const course = getActiveCourse();
-  const sec = course.modules[state.activeModuleIndex].sections[state.activeSectionIndex];
-  const test = sec.test;
-
-  const feedback = document.getElementById("sectionFeedbackArea");
-  const options = document.querySelectorAll("#sectionOptionsList .quiz-option-btn");
-
-  options.forEach((el, idx) => {
-    el.classList.remove("selected", "correct", "wrong");
-    if (idx === selectedIdx) el.classList.add("selected");
+    const expBox = document.getElementById(`sec-q-${idx}-exp`);
+    if (expBox) {
+      expBox.style.display = "block";
+      if (isQCorrect) {
+        expBox.style.background = "rgba(16, 185, 129, 0.12)";
+        expBox.style.border = "1px solid #10b981";
+        expBox.style.color = "#a7f3d0";
+        expBox.innerHTML = `<strong>Correct!</strong> ${q.explanation || ""}`;
+      } else {
+        expBox.style.background = "rgba(239, 68, 68, 0.12)";
+        expBox.style.border = "1px solid #ef4444";
+        expBox.style.color = "#fca5a5";
+        expBox.innerHTML = `<strong>Incorrect.</strong> ${q.explanation || ""}`;
+      }
+    }
   });
 
-  if (selectedIdx === test.correctAnswer) {
-    // CORRECT!
-    state.sectionTestPassed[sec.id] = true;
+  const resultBox = document.getElementById("secAssessmentResultBox");
+  const submitWrapper = document.getElementById("secAssessmentSubmitWrapper");
+
+  if (passed) {
+    state.completedSections[sec.id] = true;
+    state.sectionScores[sec.id] = score;
     saveState();
 
-    const selectedEl = document.getElementById(`sec-opt-${selectedIdx}`);
-    if (selectedEl) selectedEl.classList.add("correct");
-
-    if (feedback) {
-      feedback.style.display = "block";
-      feedback.innerHTML = `
-        <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; border-radius: var(--radius-sm); padding: 14px 18px; color: #d1fae5;">
-          <div style="color: #34d399; font-weight: 700; margin-bottom: 4px; font-size: 1rem; display: flex; align-items: center; gap: 6px;">
-            ${svgIcon('check', 14)} Correct Answer! Knowledge Check Cleared
+    if (submitWrapper) submitWrapper.style.display = "none";
+    if (resultBox) {
+      resultBox.style.display = "block";
+      
+      const isLastSecInMod = state.activeSectionIndex === mod.sections.length - 1;
+      
+      resultBox.innerHTML = `
+        <div class="assessment-result-banner passed" style="background: rgba(16, 185, 129, 0.14); border: 1px solid #10b981; border-radius: var(--radius-md); padding: 24px; text-align: center; margin-bottom: 24px;">
+          <div style="color: #34d399; margin-bottom: 10px;">
+            ${svgIcon('check', 44)}
           </div>
-          <p style="font-size: 0.88rem; color: #a7f3d0;">${test.explanation}</p>
-        </div>
-      `;
-    }
-
-    showToast("Knowledge check passed! Requirement satisfied.", "check");
-    refreshSectionChecklist();
-  } else {
-    // INCORRECT!
-    const selectedEl = document.getElementById(`sec-opt-${selectedIdx}`);
-    if (selectedEl) selectedEl.classList.add("wrong");
-
-    if (feedback) {
-      feedback.style.display = "block";
-      feedback.innerHTML = `
-        <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; border-radius: var(--radius-sm); padding: 14px 18px; color: #fee2e2;">
-          <div style="color: #f87171; font-weight: 700; margin-bottom: 4px; font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
-            ${svgIcon('cross', 14)} Incorrect Answer
+          <h3 style="color: #34d399; font-size: 1.45rem;">Section Assessment Passed!</h3>
+          <div style="font-size: 2rem; font-weight: 800; color: #10b981; margin: 8px 0;">
+            Score: ${score} / 5 (${(score/5)*100}%)
           </div>
-          <p style="font-size: 0.88rem; color: #fca5a5; margin-bottom: 8px;">
-            Review the section material above and choose the correct answer.
+          <p style="color: #d1fae5; font-size: 0.95rem; max-width: 480px; margin: 0 auto 20px;">
+            Outstanding craftsmanship! You have cleared this lesson's standards. The next phase of your journey is unlocked on your roadmap.
           </p>
+          <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+            ${
+              isLastSecInMod
+                ? `<button class="btn btn-gold" onclick="openModuleAssessment(${state.activeModuleIndex})">
+                     Take Module ${mod.num} Assessment &rarr;
+                   </button>`
+                : `<button class="btn btn-gold" onclick="advanceToNextSection()">
+                     Proceed to Next Section &rarr;
+                   </button>`
+            }
+            <button class="btn btn-outline" onclick="navigateTo('dashboard')">
+              Curriculum Roadmap
+            </button>
+          </div>
         </div>
       `;
+      resultBox.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-
-    showToast("Incorrect. Re-read the section material and try again.", "alert");
-  }
-}
-
-/**
- * Checks if all requirements for the given section are met.
- */
-function areSectionRequirementsMet(sec) {
-  // Check video requirements
-  const videoBlocks = sec.content.filter(b => b.type === "video");
-  const allVideosDone = videoBlocks.every(v => !!state.completedVideos[v.id || `${sec.id}-vid`]);
-
-  // Check interactive exercise requirements
-  const exBlocks = sec.content.filter(b => b.type === "interactive_exercise" || b.type === "exercise");
-  const allExDone = exBlocks.every(e => !!state.completedExercises[e.id || `${sec.id}-ex`]);
-
-  // Check section knowledge check
-  const testDone = !!state.sectionTestPassed[sec.id] || isSectionCompleted(sec.id);
-
-  return {
-    allMet: allVideosDone && allExDone && testDone,
-    videosDone: allVideosDone,
-    videoCount: videoBlocks.length,
-    exDone: allExDone,
-    exCount: exBlocks.length,
-    testDone: testDone
-  };
-}
-
-/**
- * Renders the Section Completion Checklist HTML block.
- */
-function renderSectionChecklistHtml(sec) {
-  const reqs = areSectionRequirementsMet(sec);
-  const isCompleted = isSectionCompleted(sec.id);
-
-  let totalItems = 1; // Section test is always 1
-  let completedItems = reqs.testDone ? 1 : 0;
-
-  if (reqs.videoCount > 0) {
-    totalItems += reqs.videoCount;
-    if (reqs.videosDone) completedItems += reqs.videoCount;
-  }
-  if (reqs.exCount > 0) {
-    totalItems += reqs.exCount;
-    if (reqs.exDone) completedItems += reqs.exCount;
-  }
-
-  const isReady = reqs.allMet || isCompleted;
-
-  return `
-    <div class="section-checklist-box" id="sectionChecklistCard">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <span style="font-size: 0.74rem; text-transform: uppercase; color: var(--gold); letter-spacing: 0.08em; font-weight: 700;">
-            LEVEL CLEARANCE PROTOCOL
-          </span>
-          <h4 style="color: var(--ivory); font-size: 1.15rem; margin-top: 2px;">
-            Required Section Milestones
-          </h4>
-        </div>
-        <div style="font-size: 0.85rem; font-weight: 700; color: ${isReady ? '#10b981' : 'var(--gold)'};">
-          ${completedItems} / ${totalItems} Satisfied
-        </div>
-      </div>
-
-      <div class="checklist-items-grid">
-        ${
-          reqs.videoCount > 0
-            ? `
-              <div class="checklist-row ${reqs.videosDone ? 'completed' : ''}">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                  <span style="color: ${reqs.videosDone ? '#10b981' : 'var(--gold)'}; display: inline-flex; align-items: center;">
-                    ${reqs.videosDone ? svgIcon('check', 16) : svgIcon('video', 16)}
-                  </span>
-                  <span style="font-size: 0.9rem; color: var(--ivory);">Masterclass Video Lecture (Watch Timer Enforced)</span>
-                </div>
-                <span class="checklist-status-badge">
-                  ${reqs.videosDone ? 'Watched' : 'Watch Required'}
-                </span>
-              </div>
-            `
-            : ''
-        }
-
-        ${
-          reqs.exCount > 0
-            ? `
-              <div class="checklist-row ${reqs.exDone ? 'completed' : ''}">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                  <span style="color: ${reqs.exDone ? '#10b981' : 'var(--gold)'}; display: inline-flex; align-items: center;">
-                    ${reqs.exDone ? svgIcon('check', 16) : svgIcon('pencil', 16)}
-                  </span>
-                  <span style="font-size: 0.9rem; color: var(--ivory);">Interactive Editorial Exercise (Solve Correctly)</span>
-                </div>
-                <span class="checklist-status-badge">
-                  ${reqs.exDone ? 'Cleared' : 'Pending Diagnosis'}
-                </span>
-              </div>
-            `
-            : ''
-        }
-
-        <div class="checklist-row ${reqs.testDone ? 'completed' : ''}">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <span style="color: ${reqs.testDone ? '#10b981' : 'var(--gold)'}; display: inline-flex; align-items: center;">
-              ${reqs.testDone ? svgIcon('check', 16) : svgIcon('target', 16)}
-            </span>
-            <span style="font-size: 0.9rem; color: var(--ivory);">Section Knowledge Verification (1 Question)</span>
+    showToast("Section Assessment Cleared!", "trophy");
+  } else {
+    // FAILED: Next section remains locked
+    if (resultBox) {
+      resultBox.style.display = "block";
+      resultBox.innerHTML = `
+        <div class="assessment-result-banner failed" style="background: rgba(239, 68, 68, 0.14); border: 1px solid #ef4444; border-radius: var(--radius-md); padding: 24px; text-align: center; margin-bottom: 24px;">
+          <div style="color: #ff6b6b; margin-bottom: 10px;">
+            ${svgIcon('scales', 44)}
           </div>
-          <span class="checklist-status-badge">
-            ${reqs.testDone ? 'Passed' : 'Pending Check'}
-          </span>
+          <h3 style="color: #ff8b8b; font-size: 1.4rem;">Assessment Not Passed</h3>
+          <div style="font-size: 2rem; font-weight: 800; color: #ff6b6b; margin: 8px 0;">
+            Score: ${score} / 5 (${(score/5)*100}%)
+          </div>
+          <p style="color: #fca5a5; font-size: 0.95rem; max-width: 500px; margin: 0 auto 20px;">
+            A passing score of at least <strong>3 out of 5</strong> is required to advance. Review the explanations above and retry the assessment.
+          </p>
+          <button class="btn btn-gold" onclick="retrySectionAssessment()">
+            Retry Assessment ↻
+          </button>
         </div>
-      </div>
-
-      <!-- Mark as Complete Button -->
-      <button class="btn-complete-level ${isReady ? 'ready' : 'locked'}" 
-              id="btnMarkSectionComplete"
-              onclick="${isReady ? 'markSectionCompleteAndAdvance()' : 'explainPendingRequirements()'}">
-        ${
-          isCompleted
-            ? "Level Completed • Continue to Next &rarr;"
-            : isReady
-            ? "Mark Level as Complete & Advance &rarr;"
-            : `Mark Level as Complete (${completedItems}/${totalItems} Satisfied)`
-        }
-      </button>
-    </div>
-  `;
+      `;
+      resultBox.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    showToast(`Score: ${score}/5. Passing score required: 3/5.`, "alert");
+  }
 }
 
-/**
- * Re-renders only the checklist widget so user sees live updates.
- */
-function refreshSectionChecklist() {
-  const course = getActiveCourse();
-  const sec = course.modules[state.activeModuleIndex].sections[state.activeSectionIndex];
-  const oldBox = document.getElementById("sectionChecklistCard");
-  if (!oldBox) return;
+function retrySectionAssessment() {
+  const form = document.getElementById("sectionAssessmentForm");
+  if (form) form.reset();
 
-  const temp = document.createElement("div");
-  temp.innerHTML = renderSectionChecklistHtml(sec);
-  oldBox.parentNode.replaceChild(temp.firstElementChild, oldBox);
+  const resultBox = document.getElementById("secAssessmentResultBox");
+  if (resultBox) {
+    resultBox.style.display = "none";
+    resultBox.innerHTML = "";
+  }
+
+  const submitWrapper = document.getElementById("secAssessmentSubmitWrapper");
+  if (submitWrapper) submitWrapper.style.display = "flex";
+
+  // Hide explanation boxes
+  const exps = document.querySelectorAll(".q-explanation-box");
+  exps.forEach(box => {
+    box.style.display = "none";
+    box.innerHTML = "";
+  });
+
+  const card = document.getElementById("sectionAssessmentCard");
+  if (card) card.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-/**
- * Called when learner clicks "Mark Level as Complete & Advance".
- */
-function markSectionCompleteAndAdvance() {
+function advanceToNextSection() {
   const course = getActiveCourse();
-  const currentMod = course.modules[state.activeModuleIndex];
-  const currentSec = currentMod.sections[state.activeSectionIndex];
+  const mod = course.modules[state.activeModuleIndex];
 
-  state.completedSections[currentSec.id] = true;
-  saveState();
-
-  showToast("Section cleared and unlocked on the roadmap.", "trophy");
-
-  if (state.activeSectionIndex < currentMod.sections.length - 1) {
+  if (state.activeSectionIndex < mod.sections.length - 1) {
     state.activeSectionIndex++;
     saveState();
     renderSectionContent();
     window.scrollTo({ top: 0, behavior: "smooth" });
   } else {
-    // All sections in this module cleared -> Advance to Module Assessment!
-    showToast(`All sections cleared! Opening Module ${currentMod.num} Assessment.`, "scroll");
-    state.activeAssessmentModIndex = state.activeModuleIndex;
-    saveState();
-    navigateTo("module-assessment");
+    // Finished last section of module -> open module assessment
+    openModuleAssessment(state.activeModuleIndex);
   }
 }
 
-function explainPendingRequirements() {
+/* -------------------------------------------------------------------------
+ * INTERACTIVE EXERCISE CRUCIBLE EVALUATOR
+ * ------------------------------------------------------------------------- */
+function evaluateExerciseOption(exId, selectedIdx) {
   const course = getActiveCourse();
-  const sec = course.modules[state.activeModuleIndex].sections[state.activeSectionIndex];
-  const reqs = areSectionRequirementsMet(sec);
+  const mod = course.modules[state.activeModuleIndex];
+  const sec = mod.sections[state.activeSectionIndex];
 
-  let missing = [];
-  if (reqs.videoCount > 0 && !reqs.videosDone) missing.push("Watch video lecture until timer completes");
-  if (reqs.exCount > 0 && !reqs.exDone) missing.push("Solve the interactive editorial exercise");
-  if (!reqs.testDone) missing.push("Answer the section knowledge question correctly");
+  // Find exercise block
+  let exBlock = null;
+  sec.content.forEach(b => {
+    if ((b.type === "interactive_exercise" || b.type === "exercise") && (b.id === exId || !exBlock)) {
+      exBlock = b;
+    }
+  });
 
-  showToast(`Please complete requirements before moving on: ${missing.join(" • ")}`, "alert");
+  if (!exBlock || !exBlock.options) return;
+
+  const option = exBlock.options[selectedIdx];
+  const feedbackBox = document.getElementById(`ex-feedback-${exId}`);
+  const card = document.getElementById(`exercise-card-${exId}`);
+
+  // Clear previous highlights on this exercise's buttons
+  const buttons = document.querySelectorAll(`[id^="ex-${exId}-opt-"]`);
+  buttons.forEach(btn => btn.classList.remove("correct-choice", "wrong-choice"));
+
+  const clickedBtn = document.getElementById(`ex-${exId}-opt-${selectedIdx}`);
+
+  if (option.correct) {
+    if (clickedBtn) clickedBtn.classList.add("correct-choice");
+    if (card) card.classList.add("solved");
+
+    if (feedbackBox) {
+      feedbackBox.style.display = "block";
+      feedbackBox.className = "editorial-feedback-box show success";
+      feedbackBox.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 8px; color: #34d399; font-weight: 700; font-size: 1rem; margin-bottom: 6px;">
+          ${svgIcon('check', 16)} Masterful Diagnosis!
+        </div>
+        <p style="color: #d1fae5; font-size: 0.9rem; line-height: 1.6;">${option.feedback}</p>
+        ${
+          option.polishedText
+            ? `<div style="margin-top: 10px; padding: 10px 14px; background: rgba(16, 185, 129, 0.15); border-left: 3px solid #10b981; border-radius: 4px; font-style: italic; color: #a7f3d0;">
+                 "${option.polishedText}"
+               </div>`
+            : ""
+        }
+      `;
+    }
+    showToast("Craft challenge resolved with excellence!", "check");
+  } else {
+    if (clickedBtn) clickedBtn.classList.add("wrong-choice");
+    if (feedbackBox) {
+      feedbackBox.style.display = "block";
+      feedbackBox.className = "editorial-feedback-box show fail";
+      feedbackBox.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 8px; color: #ff8b8b; font-weight: 700; font-size: 1rem; margin-bottom: 6px;">
+          ${svgIcon('alert', 16)} Editorial Revision Required
+        </div>
+        <p style="color: #fca5a5; font-size: 0.9rem; line-height: 1.6;">${option.feedback}</p>
+      `;
+    }
+  }
 }
 
-
-/* =========================================================================
- * REGION 9: VIEW D - MODULE ASSESSMENTS (5-QUESTION EVALUATION)
- * ========================================================================= */
-
+/* -------------------------------------------------------------------------
+ * VIEW 4: MODULE COMPREHENSIVE ASSESSMENT (PASSING: 4/5)
+ * ------------------------------------------------------------------------- */
 function renderModuleAssessment() {
   const course = getActiveCourse();
+  if (!course.modules || !course.modules[state.activeAssessmentModIndex]) return;
   const mod = course.modules[state.activeAssessmentModIndex];
 
   const titleEl = document.getElementById("modAssessmentTitle");
@@ -1401,9 +1117,9 @@ function renderModuleAssessment() {
   const outcomeEl = document.getElementById("modAssessmentOutcomeLabel");
 
   if (titleEl) titleEl.textContent = `Module ${mod.num} Comprehensive Assessment`;
-  if (descEl) descEl.textContent = `Validate your mastery across all sections in "${mod.title}". Achieving 4 of 5 (80%) unlocks the next module.`;
-  if (passEl) passEl.textContent = `${mod.passingScore} of ${mod.assessment.questions.length} (80%)`;
-  if (outcomeEl) outcomeEl.textContent = mod.num === 5 ? "Final Exam Unlock" : `Module ${mod.num + 1} Access`;
+  if (descEl) descEl.textContent = `Validate your mastery across all sections in "${mod.title}". Achieving ${mod.passingScore || 4} of 5 (80%) unlocks the next module.`;
+  if (passEl) passEl.textContent = `${mod.passingScore || 4} of 5 (80%)`;
+  if (outcomeEl) outcomeEl.textContent = mod.num === course.modules.length ? "Final Capstone Exam Unlock" : `Module ${mod.num + 1} Access`;
 
   const qContainer = document.getElementById("moduleAssessmentQuestionsContainer");
   const resultBox = document.getElementById("modAssessmentResultBox");
@@ -1412,12 +1128,12 @@ function renderModuleAssessment() {
   if (resultBox) resultBox.style.display = "none";
   if (submitWrapper) submitWrapper.style.display = "block";
 
-  if (!qContainer) return;
+  if (!qContainer || !mod.assessment || !mod.assessment.questions) return;
 
   qContainer.innerHTML = mod.assessment.questions.map((q, idx) => `
     <div class="assessment-question-card" id="mod-q-card-${idx}">
       <span class="q-number-pill">Question ${idx + 1} of 5</span>
-      <h4 style="color: var(--champagne); font-size: 1.05rem; margin-top: 6px;">${q.q}</h4>
+      <h4 style="color: var(--champagne); font-size: 1.05rem; margin-top: 6px; line-height: 1.6;">${q.q || q.question}</h4>
       <div class="exam-options-grid" style="margin-top: 14px;">
         ${q.options.map((opt, optIdx) => `
           <label class="exam-opt-card" id="mod-q-${idx}-opt-${optIdx}">
@@ -1434,6 +1150,8 @@ function submitModuleAssessment() {
   const course = getActiveCourse();
   const mod = course.modules[state.activeAssessmentModIndex];
   const assessment = mod.assessment;
+  if (!assessment || !assessment.questions) return;
+
   let score = 0;
   let allAnswered = true;
 
@@ -1441,8 +1159,10 @@ function submitModuleAssessment() {
     const selected = document.querySelector(`input[name="mod_assessment_q_${idx}"]:checked`);
     if (!selected) {
       allAnswered = false;
-    } else if (parseInt(selected.value, 10) === q.answer) {
-      score++;
+    } else {
+      const val = parseInt(selected.value, 10);
+      const correctAns = (typeof q.answer === "number") ? q.answer : q.correctAnswer;
+      if (val === correctAns) score++;
     }
   });
 
@@ -1451,7 +1171,8 @@ function submitModuleAssessment() {
     return;
   }
 
-  const passed = score >= mod.passingScore;
+  const passingScore = mod.passingScore || 4;
+  const passed = score >= passingScore;
   state.moduleScores[mod.id] = score;
 
   const resultBox = document.getElementById("modAssessmentResultBox");
@@ -1462,7 +1183,6 @@ function submitModuleAssessment() {
     saveState();
 
     if (submitWrapper) submitWrapper.style.display = "none";
-
     const isLastModule = state.activeAssessmentModIndex === course.modules.length - 1;
 
     if (resultBox) {
@@ -1478,64 +1198,59 @@ function submitModuleAssessment() {
         <p style="color: var(--ivory); font-size: 0.95rem; max-width: 500px; margin: 0 auto 24px;">
           ${
             isLastModule
-              ? "Magnificent achievement! You have mastered all 5 curriculum modules. The 50-Question Final Capstone Examination is now UNLOCKED on your roadmap."
+              ? "Magnificent achievement! You have mastered all curriculum modules. The 50-Question Final Capstone Examination is now UNLOCKED on your roadmap."
               : `Congratulations! You have demonstrated verified mastery of "${mod.title}". Module ${mod.num + 1} is now unlocked.`
           }
         </p>
         <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
-          <button class="btn btn-outline" onclick="navigateTo('dashboard')">
+          <button class="btn btn-gold" onclick="navigateTo('dashboard')">
             Curriculum Roadmap &rarr;
           </button>
           ${
             isLastModule
-              ? `<button class="btn btn-gold" onclick="navigateTo('exam')">Begin Final Capstone Exam (50 Questions) &rarr;</button>`
-              : `<button class="btn btn-gold" onclick="proceedToNextModule()">Proceed to Module ${mod.num + 1} &rarr;</button>`
+              ? `<button class="btn btn-outline" onclick="navigateTo('exam')">
+                   Take Capstone Exam &rarr;
+                 </button>`
+              : `<button class="btn btn-outline" onclick="openSection(${state.activeAssessmentModIndex + 1}, 0)">
+                   Begin Module ${mod.num + 1} &rarr;
+                 </button>`
           }
         </div>
       `;
+      resultBox.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-
-    showToast(`Module ${mod.num} cleared with ${score}/5!`, "trophy");
+    showToast(`Module ${mod.num} Assessment Cleared! (${score}/5)`, "trophy");
   } else {
     if (resultBox) {
       resultBox.style.display = "block";
       resultBox.innerHTML = `
         <div style="margin-bottom: 14px; color: #ff8b8b; display: flex; justify-content: center;">
-          ${svgIcon('alert', 48)}
+          ${svgIcon('scales', 48)}
         </div>
-        <h2 style="color: #ff8b8b; font-size: 1.4rem;">Assessment Not Yet Passed</h2>
-        <div class="score-banner" style="color: #ff8b8b; font-size: 1.8rem; font-weight: 800; margin: 12px 0;">
-          Score: ${score} / 5 (Required: ${mod.passingScore} / 5)
+        <h2 style="color: #ff8b8b; font-size: 1.45rem;">Module Assessment Not Passed</h2>
+        <div class="score-banner" style="color: #ff8b8b; font-size: 1.9rem; font-weight: 800; margin: 12px 0;">
+          Score: ${score} / 5 (${(score/5)*100}%)
         </div>
-        <p style="color: var(--muted); font-size: 0.92rem; max-width: 500px; margin: 0 auto 20px;">
-          To ensure uncompromising standards, you must achieve at least ${mod.passingScore}/5 to unlock the next module. Review the module sections and retry.
+        <p style="color: var(--muted); font-size: 0.92rem; max-width: 480px; margin: 0 auto 20px;">
+          Passing requires at least ${passingScore} of 5 (80%). Review the module lessons and retry the assessment.
         </p>
         <button class="btn btn-gold" onclick="renderModuleAssessment()">
-          Retry Assessment Now ↻
+          Retake Assessment Now ↻
         </button>
       `;
+      resultBox.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-
-    showToast(`Score: ${score}/5. Required: ${mod.passingScore}/5.`, "alert");
+    showToast(`Score: ${score}/5. Required: ${passingScore}/5 to pass.`, "alert");
   }
 }
 
-function proceedToNextModule() {
-  state.activeModuleIndex = state.activeAssessmentModIndex + 1;
-  state.activeSectionIndex = 0;
-  saveState();
-  navigateTo("content");
-}
-
-
-/* =========================================================================
- * REGION 10: VIEW E - FINAL CAPSTONE EXAM & CERTIFICATION
- * ========================================================================= */
-
+/* -------------------------------------------------------------------------
+ * VIEW 5: CAPSTONE BOARD EXAMINATION (50 QUESTIONS, PASSING: 45/50)
+ * ------------------------------------------------------------------------- */
 function renderExamScreen() {
   const course = getActiveCourse();
   if (!canTakeFinalExam()) {
-    showToast("Final Exam locked. Complete all 5 modules first.", "lock");
+    showToast("Final Capstone Exam is locked. Complete all modules first.", "lock");
     navigateTo("dashboard");
     return;
   }
@@ -1550,15 +1265,15 @@ function renderExamScreen() {
 
   const passLabel = document.getElementById("examPassingScoreLabel");
   const countLabel = document.getElementById("examQuestionsCountLabel");
-  if (passLabel) passLabel.textContent = `${exam.passingScore} of 50 (${(exam.passingScore/50)*100}%)`;
+  if (passLabel) passLabel.textContent = `${exam.passingScore} of ${exam.questions.length} (${Math.round((exam.passingScore/exam.questions.length)*100)}%)`;
   if (countLabel) countLabel.textContent = `${exam.questions.length} Rigorous Problems`;
 
   if (!questionsContainer) return;
 
   questionsContainer.innerHTML = exam.questions.map((q, idx) => `
     <div class="exam-question-item" id="final-q-item-${idx}">
-      <span class="exam-q-number">Problem ${idx + 1} of 50</span>
-      <h4 class="exam-q-text">${q.q}</h4>
+      <span class="exam-q-number">Problem ${idx + 1} of ${exam.questions.length}</span>
+      <h4 class="exam-q-text" style="line-height: 1.6;">${q.q}</h4>
       <div class="exam-options-grid">
         ${q.options.map((opt, optIdx) => `
           <label class="exam-opt-card" id="final-q-${idx}-opt-${optIdx}">
@@ -1581,13 +1296,15 @@ function submitFinalExam() {
     const selected = document.querySelector(`input[name="final_exam_q_${idx}"]:checked`);
     if (!selected) {
       unansweredIndices.push(idx + 1);
-    } else if (parseInt(selected.value, 10) === q.answer) {
-      score++;
+    } else {
+      const val = parseInt(selected.value, 10);
+      const correctAns = (typeof q.answer === "number") ? q.answer : q.correctAnswer;
+      if (val === correctAns) score++;
     }
   });
 
   if (unansweredIndices.length > 0) {
-    showToast(`You have ${unansweredIndices.length} unanswered question(s). Complete all 50.`, "alert");
+    showToast(`You have ${unansweredIndices.length} unanswered question(s). Complete all 50 before submitting.`, "alert");
     const firstUnanswered = document.getElementById(`final-q-item-${unansweredIndices[0] - 1}`);
     if (firstUnanswered) {
       firstUnanswered.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -1618,15 +1335,15 @@ function submitFinalExam() {
         <div class="score-banner" style="color: #10b981; font-size: 2.2rem; font-weight: 800; margin: 14px 0;">
           Score: ${score} / 50 (${Math.round((score/50)*100)}%)
         </div>
-        <p style="color: var(--ivory); font-size: 1rem; max-width: 550px; margin: 0 auto 24px;">
-          By order of the Editorial Directorate of Litdom Academy, having satisfied all examination standards, you are hereby conferred the credential of Master Editorial Fellow.
+        <p style="color: var(--ivory); font-size: 1rem; max-width: 550px; margin: 0 auto 24px; line-height: 1.6;">
+          By order of the Editorial Directorate of Litdom Academy, having satisfied all examination standards with distinction, you are hereby conferred the credential of Master Editorial Fellow.
         </p>
-        <button class="btn btn-gold" style="padding: 12px 24px; font-size: 1rem;" onclick="navigateTo('certificate')">
+        <button class="btn btn-gold" style="padding: 12px 28px; font-size: 1rem;" onclick="navigateTo('certificate')">
           View Master Certificate &rarr;
         </button>
       `;
+      resultBox.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-
     showToast("Master Certification Achieved!", "trophy");
   } else {
     if (resultBox) {
@@ -1637,24 +1354,27 @@ function submitFinalExam() {
         </div>
         <h2 style="color: #ff8b8b; font-size: 1.6rem;">Examination Not Passed</h2>
         <div class="score-banner" style="color: #ff8b8b; font-size: 2rem; font-weight: 800; margin: 14px 0;">
-          Score: ${score} / 50 (Passing: ${exam.passingScore} / 50)
+          Score: ${score} / 50 (Passing Requirement: ${exam.passingScore} / 50)
         </div>
-        <p style="color: var(--muted); font-size: 0.95rem; max-width: 550px; margin: 0 auto 20px;">
-          The Board requires 90% (45/50) for professional licensure. You scored ${score}/50. Review the curriculum modules and retake the examination.
+        <p style="color: var(--muted); font-size: 0.95rem; max-width: 550px; margin: 0 auto 20px; line-height: 1.6;">
+          The Board requires 90% (45/50) for professional credentialing. You scored ${score}/50. Review the curriculum modules and retake the examination.
         </p>
         <button class="btn btn-gold" onclick="renderExamScreen()">
           Retake Examination Now ↻
         </button>
       `;
+      resultBox.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-
     showToast(`Score: ${score}/50. Required: 45/50.`, "alert");
   }
 }
 
+/* -------------------------------------------------------------------------
+ * VIEW 6: MASTER CREDENTIAL CERTIFICATE
+ * ------------------------------------------------------------------------- */
 function renderCertificate() {
   if (!state.examState.passed) {
-    showToast("Certificate locked. Complete and pass the Board Exam first.", "lock");
+    showToast("Certificate locked. Complete all modules and pass the Board Exam first.", "lock");
     navigateTo("dashboard");
     return;
   }
@@ -1665,7 +1385,7 @@ function renderCertificate() {
 
   if (nameEl) nameEl.textContent = state.studentName || "Eleanor Vance";
   if (dateEl) dateEl.textContent = state.examState.timestamp || "October 2026";
-  if (idEl) idEl.textContent = "LITDOM-" + Math.abs(hashCode((state.studentName || "scholar") + "cert")).toString(36).toUpperCase().padStart(8, "0");
+  if (idEl) idEl.textContent = "LITDOM-" + Math.abs(hashCode((state.studentName || "scholar") + "master_editor")).toString(36).toUpperCase().padStart(8, "0");
 }
 
 function hashCode(str) {
@@ -1677,56 +1397,27 @@ function hashCode(str) {
   return hash;
 }
 
+/* -------------------------------------------------------------------------
+ * UTILITIES & TOAST NOTIFICATIONS
+ * ------------------------------------------------------------------------- */
+function showToast(message, iconName = "sparkle") {
+  const toast = document.getElementById("appToast");
+  const msgEl = document.getElementById("toastMsg");
+  const iconEl = document.getElementById("toastIcon");
 
-/* =========================================================================
- * REGION 11: UTILITIES, AUDIO SIMULATOR & SVG TOAST NOTIFICATIONS
- * ========================================================================= */
+  if (!toast || !msgEl) return;
 
-function toggleAudioDemo(btn) {
-  const isPlaying = btn.getAttribute("data-playing") === "true";
-  if (!isPlaying) {
-    btn.setAttribute("data-playing", "true");
-    btn.innerHTML = svgIcon('pause', 14);
-    showToast("Audio masterclass playing...", "sound");
-  } else {
-    btn.setAttribute("data-playing", "false");
-    btn.innerHTML = svgIcon('play', 14);
-    showToast("Audio paused.", "pause");
-  }
+  msgEl.textContent = message;
+  if (iconEl) iconEl.innerHTML = svgIcon(iconName, 18);
+
+  toast.classList.add("show");
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3500);
 }
 
-function showToast(msg, iconKey = "sparkle") {
-  const el = document.getElementById("toastMsg");
-  const txt = document.getElementById("toastText");
-  const icn = document.getElementById("toastIcon");
-  if (!el || !txt) return;
-
-  txt.textContent = msg;
-  if (icn) {
-    let key = iconKey;
-    if (key === "trophy" || key === "reward") key = "trophy";
-    else if (key === "video" || key === "lecture") key = "video";
-    else if (key === "check" || key === "solved") key = "check";
-    else if (key === "alert" || key === "warning") key = "alert";
-    else if (key === "zap" || key === "fast") key = "zap";
-    else if (key === "scroll" || key === "exam") key = "scroll";
-    else if (key === "lock") key = "lock";
-    else if (key === "sound" || key === "audio") key = "sound";
-    else if (key === "pause") key = "pause";
-    else if (key === "graduation" || key === "certificate") key = "graduation";
-    icn.innerHTML = svgIcon(key, 18);
-  }
-  el.classList.add("show");
-  clearTimeout(window.__toastTimer);
-  window.__toastTimer = setTimeout(() => el.classList.remove("show"), 3400);
-}
-
-
-/* =========================================================================
- * REGION 12: MODAL HANDLERS & EXPLICIT ACTION HOOKS
- * ========================================================================= */
-
-function changeStudentNamePrompt() {
+function promptStudentNameChange() {
   const current = state.studentName || "Eleanor Vance";
   const newName = prompt("Enter your name for the Litdom Master Certificate:", current);
   if (newName && newName.trim()) {
@@ -1744,20 +1435,10 @@ function resetCourseProgressPrompt() {
   resetProgress();
 }
 
-function advanceToNextSection() {
-  markSectionCompleteAndAdvance();
-}
-
-function bypassCooldownForTesting() {
-  const box = document.getElementById("examCooldownBox");
-  if (box) box.style.display = "none";
-  showToast("Cooldown bypassed for testing.", "zap");
-}
-
-/* =========================================================================
+/* -------------------------------------------------------------------------
  * INITIALIZATION ON DOM LOAD
- * ========================================================================= */
-document.addEventListener("DOMContentLoaded", () => {
+ * ------------------------------------------------------------------------- */
+if (typeof document !== "undefined") document.addEventListener("DOMContentLoaded", () => {
   loadState();
 
   // Attach modal overlay click-to-close
@@ -1768,6 +1449,61 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Initial routing
+  // Initial navigation
   navigateTo(state.currentView || "hub");
 });
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { state, navigateTo, openSection, openModuleAssessment, submitSectionAssessment, submitModuleAssessment, submitFinalExam };
+}
+
+/* -------------------------------------------------------------------------
+ * COMPATIBILITY & MODAL HANDLERS
+ * ------------------------------------------------------------------------- */
+function changeStudentNamePrompt() {
+  promptStudentNameChange();
+}
+
+function closePathModal() {
+  const m = document.getElementById("pathModal");
+  if (m) {
+    m.classList.remove("active");
+    m.style.display = "none";
+  }
+}
+
+function selectPath(pathId) {
+  closePathModal();
+  navigateTo("dashboard");
+}
+
+function bypassCooldownForTesting() {
+  showToast("Testing mode: Ready for assessment.", "zap");
+}
+
+// Expose globally for inline DOM event handlers
+if (typeof window !== "undefined") {
+  window.navigateTo = navigateTo;
+  window.openCourse = openCourse;
+  window.openSection = openSection;
+  window.openModuleAssessment = openModuleAssessment;
+  window.resumeCurrentLesson = resumeCurrentLesson;
+  window.submitSectionAssessment = submitSectionAssessment;
+  window.retrySectionAssessment = retrySectionAssessment;
+  window.advanceToNextSection = advanceToNextSection;
+  window.evaluateExerciseOption = evaluateExerciseOption;
+  window.renderModuleAssessment = renderModuleAssessment;
+  window.submitModuleAssessment = submitModuleAssessment;
+  window.renderExamScreen = renderExamScreen;
+  window.submitFinalExam = submitFinalExam;
+  window.renderCertificate = renderCertificate;
+  window.showToast = showToast;
+  window.promptStudentNameChange = promptStudentNameChange;
+  window.changeStudentNamePrompt = changeStudentNamePrompt;
+  window.resetCourseProgressPrompt = resetCourseProgressPrompt;
+  window.resetProgress = resetProgress;
+  window.closePathModal = closePathModal;
+  window.selectPath = selectPath;
+  window.bypassCooldownForTesting = bypassCooldownForTesting;
+  window.scrollToAssessmentForm = scrollToAssessmentForm;
+}
